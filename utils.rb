@@ -30,7 +30,7 @@ dep 'ssl cert in place', :template => 'benhoskings:nginx' do
     sudo "mkdir -p #{nginx_cert_path}"
   }
   meet {
-    names.each {|name| sudo "cp '#{load_path.parent / 'nginx' / name}' #{nginx_cert_path.to_s.end_with('/')}" }
+    names.each {|name| sudo "cp '#{var(:cert_path) / name}' #{nginx_cert_path.to_s.end_with('/')}" }
   }
 end
 
