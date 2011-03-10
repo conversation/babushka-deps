@@ -1,4 +1,4 @@
-dep 'this rails app' do
+dep 'provisioned' do
   requires [
     'libxml.managed', # for nokogiri
     'libxslt.managed',  # for nokogiri
