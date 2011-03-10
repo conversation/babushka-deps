@@ -1,3 +1,12 @@
+dep 'packages' do
+  requires [
+    'libxml.managed', # for nokogiri
+    'libxslt.managed',  # for nokogiri
+    'imagemagick.managed', # for paperclip
+    'coffeescript.src' # for barista
+  ]
+end
+
 dep 'libxml.managed' do
   installs { via :apt, 'libxml2-dev' }
   provides []
@@ -11,8 +20,6 @@ end
 dep 'imagemagick.managed' do
   provides %w[compare animate convert composite conjure import identify stream display montage mogrify]
 end
-
-dep 'rsync.managed'
 
 dep 'coffeescript.src' do
   requires 'nodejs.src'
@@ -28,3 +35,5 @@ dep 'nodejs.src' do
   source 'git://github.com/joyent/node.git'
   provides 'node', 'node-waf'
 end
+
+dep 'rsync.managed'
