@@ -21,7 +21,7 @@ meta :supervisor do
     }
     after {
       sudo 'kill -HUP `cat /var/run/supervisord.pid`'
-      sleep 2
+      sleep 5
     }
   }
 end
