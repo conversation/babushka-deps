@@ -36,7 +36,7 @@ dep 'mobwrite daemon.supervisor' do
 end
 
 dep 'mobwrite gateway.supervisor' do
-  requires 'gunicorn', ''
+  requires 'gunicorn.pip'
   command "gunicorn gateway:application"
   user "mobwrite"
   directory "/srv/http/#{user}/current/daemon"
@@ -54,4 +54,12 @@ meta :pip do
       shell "pip install #{pippable}", sudo: !File.writable?(which('pip'))
     }
   }
+end
+
+dep 'gunicorn.pip' do
+  installs 'gunicorn'
+end
+
+dep 'pip.managed' do
+  installs 'python-pip'
 end
