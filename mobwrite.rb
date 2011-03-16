@@ -27,10 +27,6 @@ end
 
 dep 'gunicorn.pip'
 
-dep 'pip.managed' do
-  installs 'python-pip'
-end
-
 dep 'mobwrite repo' do
   met? {
     "~/current/daemon".p.directory?
