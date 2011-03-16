@@ -25,9 +25,7 @@ dep 'mobwrite gateway.supervisor' do
   }
 end
 
-dep 'gunicorn.pip' do
-  installs 'gunicorn'
-end
+dep 'gunicorn.pip'
 
 dep 'pip.managed' do
   installs 'python-pip'
