@@ -44,3 +44,14 @@ dep 'mobwrite gateway.supervisor' do
     (shell("curl -I localhost:8000") || '').val_for('Server')['gunicorn']
   }
 end
+
+meta :pip do
+  accepts_list_for :installs
+  accepts_list_for :provides
+  met? { provided? }
+  meet {
+    installs.each {|pippable|
+      shell "pip install #{pippable}", sudo: !File.writable?(which('pip'))
+    }
+  }
+end
