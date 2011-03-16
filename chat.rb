@@ -22,7 +22,7 @@ dep 'chat code symlinked in' do
       log_error "#{var(:rails_root)/path} doesn't exist - it will be rendered by barista on deploy." unless result
     }
   }
-  met? { ("~/current"/path).exists? }
+  met? { "~/current/chat_server.js".p.exists? }
   before { "~/current".p.mkdir }
   meet { shell "ln -sf #{var(:rails_root)}/#{path} ~/current" }
 end
