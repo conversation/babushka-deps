@@ -6,6 +6,7 @@ dep 'mobwrite' do
 end
 
 dep 'mobwrite daemon.supervisor' do
+  requires 'mobwrite repo'
   command "python mobwrite_daemon.py"
   user "mobwrite.theconversation.edu.au"
   directory "/srv/http/#{user}/current/daemon"
@@ -15,7 +16,7 @@ dep 'mobwrite daemon.supervisor' do
 end
 
 dep 'mobwrite gateway.supervisor' do
-  requires 'gunicorn.pip'
+  requires 'mobwrite repo', 'gunicorn.pip'
   command "gunicorn gateway:application"
   user "mobwrite.theconversation.edu.au"
   directory "/srv/http/#{user}/current/daemon"
@@ -30,4 +31,13 @@ end
 
 dep 'pip.managed' do
   installs 'python-pip'
+end
+
+dep 'mobwrite repo' do
+  met? {
+    "~/current/daemon".p.directory?
+  }
+  meet {
+    git "git://github.com/conversation/mobwrite.git", to: "~/current"
+  }
 end
