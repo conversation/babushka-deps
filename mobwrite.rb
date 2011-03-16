@@ -28,8 +28,8 @@ end
 
 dep 'mobwrite daemon.supervisor' do
   command "python mobwrite_daemon.py"
-  directory "/srv/http/mobwrite/current/daemon"
-  user "mobwrite.theconversation.edu.au"
+  user "mobwrite"
+  directory "/srv/http/#{user}/current/daemon"
   met? {
     !shell("ps aux").split("\n").grep(command).empty?
   }
@@ -38,8 +38,8 @@ end
 dep 'mobwrite gateway.supervisor' do
   requires 'gunicorn', ''
   command "gunicorn gateway:application"
-  directory "/srv/http/mobwrite/current/daemon"
-  user "mobwrite.theconversation.edu.au"
+  user "mobwrite"
+  directory "/srv/http/#{user}/current/daemon"
   met? {
     (shell("curl -I localhost:8000") || '').val_for('Server')['gunicorn']
   }
