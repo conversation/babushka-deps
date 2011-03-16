@@ -5,27 +5,6 @@ dep 'mobwrite' do
   ]
 end
 
-meta :supervisor do
-  accepts_value_for :command
-  accepts_value_for :directory
-  accepts_value_for :user
-  template {
-    def conf_name
-      basename.gsub(' ', '_')
-    end
-    def conf_dest
-      "/etc/supervisor/conf.d/#{conf_name}.conf"
-    end
-    meet {
-      render_erb "supervisor/daemon.conf", :to => conf_dest, :sudo => true
-    }
-    after {
-      sudo 'kill -HUP `cat /var/run/supervisord.pid`'
-      sleep 5
-    }
-  }
-end
-
 dep 'mobwrite daemon.supervisor' do
   command "python mobwrite_daemon.py"
   user "mobwrite.theconversation.edu.au"
@@ -42,19 +21,6 @@ dep 'mobwrite gateway.supervisor' do
   directory "/srv/http/#{user}/current/daemon"
   met? {
     (shell("curl -I localhost:8000") || '').val_for('Server')['gunicorn']
-  }
-end
-
-meta :pip do
-  accepts_list_for :installs
-  accepts_list_for :provides
-  template {
-    met? { provided? }
-    meet {
-      installs.each {|pippable|
-        shell "pip install #{pippable}", sudo: !File.writable?(which('pip'))
-      }
-    }
   }
 end
 
