@@ -11,7 +11,7 @@ meta :supervisor do
   accepts_value_for :user
   template {
     def conf_name
-      name.gsub(' ', '_')
+      basename.gsub(' ', '_')
     end
     def conf_dest
       "/etc/supervisor/conf.d/#{conf_name}.conf"
