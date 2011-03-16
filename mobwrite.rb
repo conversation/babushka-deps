@@ -31,7 +31,7 @@ dep 'mobwrite daemon.supervisor' do
   user "mobwrite"
   directory "/srv/http/#{user}/current/daemon"
   met? {
-    !shell("ps aux").split("\n").grep(command).empty?
+    !shell("ps aux").split("\n").grep(/#{Regexp.escape(command)}$/).empty?
   }
 end
 
