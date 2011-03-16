@@ -4,6 +4,7 @@ dep 'packages' do
     'libxslt.managed',  # for nokogiri
     'imagemagick.managed', # for paperclip
     'coffeescript.src' # for barista
+    'supervisor.managed'
   ]
 end
 
@@ -37,3 +38,7 @@ dep 'nodejs.src' do
 end
 
 dep 'rsync.managed'
+
+dep 'supervisor.managed' do
+  provides 'supervisord', 'supervisorctl'
+end
