@@ -16,8 +16,12 @@ dep 'chat code symlinked in' do
   def path
     'public/javascripts/chat_server.js'
   end
-  requires 'app in place'
   set :rails_root, "/srv/http/theconversation.edu.au/current"
+  setup {
+    (var(:rails_root)/path).exists?.tap {|result|
+      log_error "#{var(:rails_root)/path} doesn't exist - it will be rendered by barista on deploy." unless result
+    }
+  }
   met? { ("~/current"/path).exists? }
   before { "~/current".p.mkdir }
   meet { shell "ln -sf #{var(:rails_root)}/#{path} ~/current" }
