@@ -9,6 +9,7 @@ meta :supervisor do
     def conf_dest
       "/etc/supervisor/conf.d/#{conf_name}.conf"
     end
+    requires 'supervisor.managed'
     meet {
       render_erb "supervisor/daemon.conf", :to => conf_dest, :sudo => true
     }
