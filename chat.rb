@@ -37,10 +37,8 @@ end
 
 dep 'socket.io.npm' do
   installs 'socket.io 0.6.15'
-  provides []
 end
 
 dep 'pg.npm' do
   installs 'pg 0.3.2'
-  provides []
 end
