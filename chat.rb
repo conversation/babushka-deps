@@ -3,7 +3,7 @@ dep 'chat' do
 end
 
 dep 'chat.supervisor' do
-  requires 'socket.io.npm', 'chat code symlinked in'
+  requires 'chat app'
   command "node chat_server.js"
   user "chat.theconversation.edu.au"
   directory "/srv/http/#{user}/current"
@@ -12,7 +12,14 @@ dep 'chat.supervisor' do
   }
 end
 
-dep 'chat code symlinked in' do
+dep 'chat app' do
+  requires [
+    'chat app symlinked in',
+    'socket.io.npm'
+  ]
+end
+
+dep 'chat app symlinked in' do
   def path
     'public/javascripts/chat_server.js'
   end
