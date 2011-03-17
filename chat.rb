@@ -15,7 +15,8 @@ end
 dep 'chat app' do
   requires [
     'chat app symlinked in',
-    'socket.io.npm'
+    'socket.io.npm',
+    'pg.npm'
   ]
 end
 
@@ -36,5 +37,10 @@ end
 
 dep 'socket.io.npm' do
   installs 'socket.io 0.6.15'
+  provides []
+end
+
+dep 'pg.npm' do
+  installs 'pg 0.3.2'
   provides []
 end
