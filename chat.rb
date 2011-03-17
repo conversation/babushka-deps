@@ -3,7 +3,7 @@ dep 'chat' do
 end
 
 dep 'chat.supervisor' do
-  requires 'nodejs.src', 'chat code symlinked in'
+  requires 'socket.io.npm', 'chat code symlinked in'
   command "node chat_server.js"
   user "chat.theconversation.edu.au"
   directory "/srv/http/#{user}/current"
@@ -25,4 +25,8 @@ dep 'chat code symlinked in' do
   met? { "~/current/chat_server.js".p.exists? }
   before { "~/current".p.mkdir }
   meet { shell "ln -sf #{var(:rails_root)}/#{path} ~/current" }
+end
+
+dep 'socket.io.npm' do
+  installs 'socket.io 0.6.15'
 end
