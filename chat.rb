@@ -11,7 +11,7 @@ dep 'chat.supervisor' do
   user "chat.theconversation.edu.au"
   directory "/srv/http/#{user}/current"
   met? {
-    (shell("curl -I localhost:9000") || '').val_for('Server')['node']
+    (shell("curl -I localhost:9000") || '').val_for('Server')['node.js']
   }
 end
 
