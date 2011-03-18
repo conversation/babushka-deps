@@ -4,7 +4,10 @@ end
 
 dep 'chat.supervisor' do
   requires 'chat app'
-  command "node chat_server.js"
+
+  set :chat_db 'tc_production'
+
+  command "CHAT_USER=#{var(:username)} CHAT_PASS=#{var(:chat_pass)} CHAT_DB=#{var(:chat_db)} node chat_server.js"
   user "chat.theconversation.edu.au"
   directory "/srv/http/#{user}/current"
   met? {
@@ -24,10 +27,10 @@ end
 dep 'postgres permissions' do
   requires 'benhoskings:postgres access'
   met? {
-    shell "psql tc_production -c 'SELECT id FROM messages LIMIT 1'"
+    shell "psql #{var(:chat_db)} -c 'SELECT id FROM messages LIMIT 1'"
   }
   meet {
-    sudo %Q{psql tc_production -c 'GRANT SELECT,INSERT ON messages TO "#{var(:username)}"'}, as: 'postgres'
+    sudo %Q{psql #{var(:chat_db)} -c 'GRANT SELECT,INSERT ON messages TO "#{var(:username)}"'}, as: 'postgres'
   }
 end
 
