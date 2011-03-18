@@ -14,10 +14,21 @@ end
 
 dep 'chat app' do
   requires [
+    'postgres permissions',
     'chat app symlinked in',
     'socket.io.npm',
     'pg.npm'
   ]
+end
+
+dep 'postgres permissions' do
+  requires 'benhoskings:postgres access'
+  met? {
+    shell "psql tc_production -c 'SELECT id FROM messages LIMIT 1'"
+  }
+  meet {
+    sudo %Q{psql tc_production -c 'GRANT SELECT,INSERT ON messages TO "#{var(:username)}"'}, as: 'postgres'
+  }
 end
 
 dep 'chat app symlinked in' do
