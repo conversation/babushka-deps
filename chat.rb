@@ -7,9 +7,11 @@ dep 'chat.supervisor' do
 
   set :chat_db, 'tc_production'
 
-  command "CHAT_DB=#{var(:chat_db)} node chat_server.js"
+  command "node chat_server.js"
+  environment "CHAT_DB=#{var(:chat_db)}"
   user "chat.theconversation.edu.au"
   directory "/srv/http/#{user}/current"
+
   met? {
     (shell("curl -I localhost:9000") || '').val_for('Server')['node.js']
   }
