@@ -7,7 +7,7 @@ dep 'chat.supervisor' do
 
   set :chat_db, 'tc_production'
 
-  command "CHAT_USER=#{var(:username)} CHAT_PASS=#{var(:chat_pass)} CHAT_DB=#{var(:chat_db)} node chat_server.js"
+  command "CHAT_DB=#{var(:chat_db)} node chat_server.js"
   user "chat.theconversation.edu.au"
   directory "/srv/http/#{user}/current"
   met? {
