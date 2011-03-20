@@ -5,7 +5,7 @@ end
 dep 'chat.supervisor' do
   requires 'chat app'
 
-  set :chat_db 'tc_production'
+  set :chat_db, 'tc_production'
 
   command "CHAT_USER=#{var(:username)} CHAT_PASS=#{var(:chat_pass)} CHAT_DB=#{var(:chat_db)} node chat_server.js"
   user "chat.theconversation.edu.au"
