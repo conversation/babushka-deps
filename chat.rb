@@ -17,21 +17,27 @@ end
 
 dep 'chat app' do
   requires [
-    'postgres permissions',
+    'database permissions',
     'chat app symlinked in',
     'socket.io.npm',
     'pg.npm'
   ]
 end
 
-dep 'postgres permissions' do
+dep 'database permissions' do
+  requires 'messages access', 'messages_id_seq access'
+end
+
+dep 'messages access' do
   requires 'benhoskings:postgres access'
-  met? {
-    shell "psql #{var(:chat_db)} -c 'SELECT id FROM messages LIMIT 1'"
-  }
-  meet {
-    sudo %Q{psql #{var(:chat_db)} -c 'GRANT SELECT,INSERT ON messages TO "#{var(:username)}"'}, as: 'postgres'
-  }
+  met? { shell "psql #{var(:chat_db)} -c 'SELECT id FROM messages LIMIT 1'" }
+  meet { sudo %Q{psql #{var(:chat_db)} -c 'GRANT SELECT,INSERT ON messages TO "#{var(:username)}"'}, as: 'postgres' }
+end
+
+dep 'messages_id_seq access' do
+  requires 'benhoskings:postgres access'
+  met? { shell "psql #{var(:chat_db)} -c 'SELECT sequence_name FROM messages_id_seq LIMIT 1'" }
+  meet { sudo %Q{psql #{var(:chat_db)} -c 'GRANT SELECT,UPDATE ON messages_id_seq TO "#{var(:username)}"'}, as: 'postgres' }
 end
 
 dep 'chat app symlinked in' do
