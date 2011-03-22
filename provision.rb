@@ -4,4 +4,5 @@ dep 'provisioned' do
     'cron jobs',
     'asset backups'
   ]
+  set :rails_root, '~/current'
 end
