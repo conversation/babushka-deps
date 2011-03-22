@@ -1,7 +1,3 @@
-dep 'prod data', :template => 'benhoskings:task' do
-  run { bundle_rake 'tc:data:production' }
-end
-
 dep 'cron jobs' do
   def job_path job_name
     "/etc/cron.#{job_name}/tc_#{job_name}".p
