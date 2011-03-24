@@ -21,7 +21,7 @@ dep 'up to date.repo' do
     'remove cached JS and CSS.task',
     'benhoskings:app bundled',
 
-    # 'app deployed',
+    'app deployed',
 
     'app flagged for restart.task', # and finally,
     'maintenance page down' # only let in requests post-restart-flag
