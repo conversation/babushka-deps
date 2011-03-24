@@ -19,7 +19,7 @@ dep 'up to date.repo' do
     'HEAD up to date.repo',
     'submodules up to date.task',
     'remove cached JS and CSS.task',
-    'app bundled',
+    'benhoskings:app bundled',
 
     'app deployed',
 
