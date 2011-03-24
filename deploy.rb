@@ -14,14 +14,14 @@ dep 'up to date.repo' do
   requires [
     'ref info extracted.repo',
     'branch exists.repo',
-    'maintenance page up',
+    # 'maintenance page up',
     'branch checked out.repo',
     'HEAD up to date.repo',
     'submodules up to date.task',
     'remove cached JS and CSS.task',
     'benhoskings:app bundled',
 
-    'app deployed',
+    # 'app deployed',
 
     'app flagged for restart.task', # and finally,
     'maintenance page down' # only let in requests post-restart-flag
