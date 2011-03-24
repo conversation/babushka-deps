@@ -10,12 +10,6 @@ dep 'up to date.repo' do
     set :rails_root, var(:repo_path)
     set :rails_env, 'production'
     set :username, shell('whoami')
-
-    requires Dep('current dir:deployed') # app-specific deps
-    requires [
-      'app flagged for restart.task', # and finally,
-      'maintenance page down' # only let in requests post-restart-flag
-    ]
   }
   requires [
     'ref info extracted.repo',
@@ -25,7 +19,12 @@ dep 'up to date.repo' do
     'HEAD up to date.repo',
     'submodules up to date.task',
     'remove cached JS and CSS.task',
-    'app bundled'
+    'app bundled',
+
+    'app deployed',
+
+    'app flagged for restart.task', # and finally,
+    'maintenance page down' # only let in requests post-restart-flag
   ]
 end
 
