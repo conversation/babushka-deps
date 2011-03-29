@@ -11,13 +11,18 @@ dep 'unwanted packages removed', :template => 'benhoskings:apt_packages_removed'
 end
 
 dep 'orphaned dirs deleted' do
-  def dirs
+  def paths
     %w[
       /var/cache/apt/archives/*deb
       /srv/cvs/
       /usr/java/
       /var/lib/mysql/
     ]
+  end
+  def to_remove
+    paths.reject {|path|
+      Dir[path].empty?
+    }
   end
   met? {
     to_remove.empty?
