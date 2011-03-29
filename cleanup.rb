@@ -29,7 +29,7 @@ dep 'orphaned dirs deleted' do
   }
   meet {
     to_remove.each {|path|
-      shell %Q{rm -rf "#{path}"}
+      shell "rm -rf #{path}"
     }
   }
 end
