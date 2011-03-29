@@ -26,5 +26,5 @@ dep 'db backup exists' do
   met? { backup_file.exists? }
   before { backup_prefix.mkdir }
   meet { shell "pg_dump tc_production > '#{backup_file}'" }
-  after { shell %Q{ls -t -1 #{backup_prefix} | tail -n+6 | while read f; do rm "$f"; done} }
+  after { shell %Q{ls -t -1 #{backup_prefix} | tail -n+6 | while read f; do rm "#{backup_prefix}/$f"; done} }
 end
