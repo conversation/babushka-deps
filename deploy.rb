@@ -82,7 +82,7 @@ end
 dep 'remove cached JS and CSS.task' do
   run {
     shell "rm -f public/javascripts/all.js"
-    shell "rm -f public/stylesheets/all.css"
+    shell "rm -f public/stylesheets/{base,author,editor}.css"
   }
 end
 
