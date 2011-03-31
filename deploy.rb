@@ -83,6 +83,7 @@ dep 'remove cached JS and CSS' do
   def paths
     %w[
       public/javascripts/all.js
+      public/stylesheets/all.css
       public/stylesheets/base.css
       public/stylesheets/author.css
       public/stylesheets/editor.css
