@@ -89,7 +89,7 @@ dep 'remove cached JS and CSS' do
     ]
   end
   def to_remove
-    paths.reject {|f| f.p.exists? }
+    paths.select {|f| f.p.exists? }
   end
   met? {
     to_remove.empty?
