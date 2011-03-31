@@ -96,7 +96,7 @@ dep 'remove cached JS and CSS' do
     to_remove.empty?
   }
   meet {
-    to_remove.each {|path| shell "rm #{path}" }
+    to_remove.each {|path| log_shell "Removing #{path}", "rm #{path}" }
   }
 end
 
