@@ -18,7 +18,7 @@ dep 'up to date.repo' do
     'branch checked out.repo',
     'HEAD up to date.repo',
     'submodules up to date.task',
-    'remove cached JS and CSS.task',
+    'remove cached JS and CSS',
     'benhoskings:app bundled',
 
     'app deployed',
@@ -79,10 +79,23 @@ dep 'submodules up to date.task' do
   }
 end
 
-dep 'remove cached JS and CSS.task' do
-  run {
-    shell "rm -f public/javascripts/all.js"
-    shell "rm -f public/stylesheets/{base,author,editor}.css"
+dep 'remove cached JS and CSS' do
+  def paths
+    %w[
+      public/javascripts/all.js
+      public/stylesheets/base.css
+      public/stylesheets/author.css
+      public/stylesheets/editor.css
+    ]
+  end
+  def to_remove
+    paths.reject {|f| f.p.exists? }
+  end
+  met? {
+    to_remove.empty?
+  }
+  meet {
+    to_remove.each {|path| shell "rm -f #{path}" }
   }
 end
 
