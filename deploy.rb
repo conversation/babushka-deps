@@ -18,7 +18,7 @@ dep 'up to date.repo' do
     'branch checked out.repo',
     'HEAD up to date.repo',
     'submodules up to date.task',
-    'remove cached JS and CSS',
+    'cached JS and CSS removed',
     'benhoskings:app bundled',
 
     'app deployed',
@@ -79,7 +79,7 @@ dep 'submodules up to date.task' do
   }
 end
 
-dep 'remove cached JS and CSS' do
+dep 'cached JS and CSS removed' do
   def paths
     %w[
       public/javascripts/all.js
