@@ -84,6 +84,7 @@ dep 'cached JS and CSS removed' do
     %w[
       public/javascripts/all.js
       public/stylesheets/base.css
+      public/stylesheets/screen.css
       public/stylesheets/author.css
       public/stylesheets/editor.css
     ]
