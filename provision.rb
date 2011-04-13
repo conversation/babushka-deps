@@ -1,6 +1,7 @@
 dep 'provisioned' do
   requires [
     'packages',
+    'crontab',
     'cron jobs',
     'asset backups'
   ]
