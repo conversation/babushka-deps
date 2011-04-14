@@ -20,11 +20,9 @@ dep 'up to date.repo' do
     'submodules up to date.task',
     'cached JS and CSS removed',
     'benhoskings:app bundled',
-
-    'app deployed',
-
-    'app flagged for restart.task', # and finally,
-    'maintenance page down' # only let in requests post-restart-flag
+    'app deployed', # app-specific deps
+    'app flagged for restart.task',
+    'maintenance page down'
   ]
 end
 
