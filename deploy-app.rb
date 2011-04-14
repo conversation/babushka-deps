@@ -29,6 +29,6 @@ dep 'db backup exists' do
 
   met? { backup_path.exists? }
   before { backup_prefix.mkdir }
-  meet { shell "pg_dump tc_production > '#{sqldump}' && gzip -9 '#{sqldump}'" }
-  after { shell %Q{ls -t -1 #{backup_prefix} | tail -n+6 | while read f; do rm "#{backup_prefix}/$f"; done} }
+  meet { log_shell "Dumping the production db", "pg_dump tc_development > '#{sqldump}' && gzip -9 '#{sqldump}'" }
+  after { log_shell "Removing old backups", %Q{ls -t -1 #{backup_prefix} | tail -n+6 | while read f; do rm "#{backup_prefix}/$f"; done} }
 end
