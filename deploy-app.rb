@@ -23,11 +23,11 @@ dep 'db backup exists' do
     backup_prefix / "tc_production-#{refspec}-#{@backup_time.strftime("%Y-%m-%d-%H:%M:%S")}.psql"
   end
 
-  def backup_file
+  def backup_path
     "#{sqldump}.gz".p
   end
 
-  met? { backup_file.exists? }
+  met? { backup_path.exists? }
   before { backup_prefix.mkdir }
   meet { shell "pg_dump tc_production > '#{sqldump}' && gzip -9 '#{sqldump}'" }
   after { shell %Q{ls -t -1 #{backup_prefix} | tail -n+6 | while read f; do rm "#{backup_prefix}/$f"; done} }
