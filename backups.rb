@@ -14,7 +14,8 @@ end
 
 dep 'offsite backup.cloudfiles' do
   def backup_path
-    Dep('db backup exists').context.backup_path
+    # TODO: make this better
+    Dep('db backup exists', from: dependency.dep_source).context.backup_path
   end
 
   def md5 backup_path
