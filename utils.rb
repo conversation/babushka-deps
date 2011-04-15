@@ -42,9 +42,3 @@ dep 'ssl cert in place', :template => 'benhoskings:nginx' do
     names.each {|name| sudo "cp '#{var(:cert_path) / name}' #{nginx_cert_path.to_s.end_with('/')}" }
   }
 end
-
-dep 'asset backups' do
-  requires 'rsync.managed'
-  met? { "/etc/cron.hourly/tc_asset_backups".p.readlink == "~#{var(:username)}/current/script/asset_backups.sh".p }
-  meet { sudo "ln -s ~#{var(:username)}/current/script/asset_backups.sh /etc/cron.hourly/tc_asset_backups" }
-end
