@@ -16,7 +16,7 @@ dep 'cron jobs' do
     "/etc/cron.#{job_name}/tc_#{job_name}".p
   end
   def missing_jobs
-    %w[daily weekly].reject {|job|
+    %w[hourly daily weekly].reject {|job|
       job_path(job).exists?
     }
   end
