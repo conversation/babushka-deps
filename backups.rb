@@ -3,7 +3,7 @@ dep 'db backup exists' do
 
   def backup_prefix; "~/sqldumps".p end
   def refspec; shell "git rev-parse --short HEAD" end
-  def sqldump; backup_prefix / "tc_production-#{refspec}-#{@backup_time.strftime("%Y-%m-%d-%H:%M:%S")}.psql" end
+  def sqldump; backup_prefix / "tc_production-#{@backup_time.strftime("%Y-%m-%d-%H:%M:%S")}-#{refspec}.psql" end
   def backup_path; "#{sqldump}.gz".p end
 
   met? { backup_path.exists? }
