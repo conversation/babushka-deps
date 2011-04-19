@@ -1,7 +1,7 @@
 # coding: utf-8
 
 dep 'app deployed' do
-  requires 'db backup exists', '☕ & db'
+  requires 'db backup exists'
 end
 
 dep '☕ & db', :template => 'benhoskings:task' do
