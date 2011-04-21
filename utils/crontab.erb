@@ -1,5 +1,5 @@
 # m h  dom mon dow user  command
-<%= @min                       %>  *  *   *   *   root  cd / && run-parts --report /etc/cron.hourly
-<%= (@min + 15) % 60 %> <%= @hour %>  *   *   *   root  cd / && run-parts --report /etc/cron.daily
-<%= (@min + 30) % 60 %> <%= @hour %>  *   *   7   root  cd / && run-parts --report /etc/cron.weekly
-<%= (@min + 45) % 60 %> <%= @hour %>  1   *   *   root  cd / && run-parts --report /etc/cron.monthly
+<%= @min                       %>  *  *   *   *   root  cd / && run-parts --verbose /etc/cron.hourly
+<%= (@min + 15) % 60 %> <%= @hour %>  *   *   *   root  cd / && run-parts --verbose /etc/cron.daily
+<%= (@min + 30) % 60 %> <%= @hour %>  *   *   7   root  cd / && run-parts --verbose /etc/cron.weekly
+<%= (@min + 45) % 60 %> <%= @hour %>  1   *   *   root  cd / && run-parts --verbose /etc/cron.monthly
