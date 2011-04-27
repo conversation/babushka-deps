@@ -14,7 +14,7 @@ dep 'up to date.repo' do
   requires [
     'ref info extracted.repo',
     'branch exists.repo',
-    # 'maintenance page up',
+    'maintenance page up',
     'branch checked out.repo',
     'HEAD up to date.repo',
     'submodules up to date.task',
