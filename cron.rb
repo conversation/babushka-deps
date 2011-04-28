@@ -38,16 +38,16 @@ end
 
 dep 'hourly.cronjob' do
   timing '18 * * * *'
-  command 'cd ~/current && ./script/tasks/hourly >> log/tasks.log'
+  command "cd #{'~/current'.p} && ./script/tasks/hourly >> log/tasks.log"
 end
 
 dep 'daily.cronjob' do
   # hour 11 is 1am in GMT+10.
   timing '33 11 * * *'
-  command 'cd ~/current && ./script/tasks/daily >> log/tasks.log'
+  command "cd #{'~/current'.p} && ./script/tasks/daily >> log/tasks.log"
 end
 
 dep 'weekly.cronjob' do
   timing '48 11 * * 7'
-  command 'cd ~/current && ./script/tasks/weekly >> log/tasks.log'
+  command "cd #{'~/current'.p} && ./script/tasks/weekly >> log/tasks.log"
 end
