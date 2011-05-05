@@ -18,7 +18,6 @@ dep 'up to date.repo' do
     'branch exists.repo',
     'branch checked out.repo',
     'HEAD up to date.repo',
-    'submodules up to date.task',
     'benhoskings:app bundled',
     'offsite backup.cloudfiles', 
     # 'maintenance page up',
@@ -72,12 +71,6 @@ end
 dep 'HEAD up to date.repo' do
   met? { repo.current_full_head == var(:new_id) && repo.clean? }
   meet { repo.reset_hard! var(:new_id) }
-end
-
-dep 'submodules up to date.task' do
-  run {
-    shell "git submodule update --init"
-  }
 end
 
 dep 'cached JS and CSS removed' do
