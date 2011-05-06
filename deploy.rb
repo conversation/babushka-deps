@@ -17,6 +17,7 @@ dep 'up to date.repo' do
     'app updated',
     'pre-restart',
     'app flagged for restart.task',
+    'delayed job restarted.task',
     'post-restart'
   ]
 end
