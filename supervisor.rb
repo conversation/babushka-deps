@@ -1,4 +1,5 @@
 meta :supervisor do
+  accepts_value_for :restart, :default
   accepts_value_for :command
   accepts_value_for :environment
   accepts_value_for :directory
