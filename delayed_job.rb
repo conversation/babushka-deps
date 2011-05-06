@@ -19,7 +19,7 @@ dep 'delayed job restarted.task' do
     if output.nil?
       log_error "`rake jobs:work` isn't running."
     else
-      shell "kill -s TERM #{@output.scan(/^\w+\s+(\d+)\s+/).flatten.first}"
+      shell "kill -s TERM #{output.scan(/^\w+\s+(\d+)\s+/).flatten.first}"
     end
   }
 end
