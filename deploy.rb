@@ -35,7 +35,7 @@ end
 dep 'pre-restart' do
   requires [
     'offsite backup.cloudfiles', 
-    # 'maintenance page up',
+    'maintenance page up',
     '☕ & db'
   ]
 end
