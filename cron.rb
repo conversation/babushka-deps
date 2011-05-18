@@ -42,12 +42,12 @@ dep 'hourly.cronjob' do
 end
 
 dep 'daily.cronjob' do
-  # hour 11 is 1am in GMT+10.
-  timing '33 11 * * *'
+  # hour 15 is 3pm UTC, which is 1am GMT+10.
+  timing '33 15 * * *'
   command "cd #{'~/current'.p} && RAILS_ENV=production ./script/tasks/daily >> log/tasks.log"
 end
 
 dep 'weekly.cronjob' do
-  timing '48 11 * * 7'
+  timing '48 15 * * 7'
   command "cd #{'~/current'.p} && RAILS_ENV=production ./script/tasks/weekly >> log/tasks.log"
 end
