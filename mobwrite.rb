@@ -21,7 +21,7 @@ dep 'mobwrite gateway.supervisor' do
   user "mobwrite.theconversation.edu.au"
   directory "/srv/http/#{user}/current/daemon"
   met? {
-    (shell("curl -I localhost:8000") || '').val_for('Server')['gunicorn']
+    (shell("curl -I localhost:8000") || '').val_for('Server').to_s['gunicorn']
   }
 end
 
