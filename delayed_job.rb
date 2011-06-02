@@ -17,7 +17,7 @@ dep 'delayed job restarted.task' do
     output = shell('ps aux | grep "rake jobs:work" | grep -v grep')
 
     if output.nil?
-      log_error "`rake jobs:work` isn't running."
+      log "`rake jobs:work` isn't running."
     else
       shell "kill -s TERM #{output.scan(/^\w+\s+(\d+)\s+/).flatten.first}"
     end
