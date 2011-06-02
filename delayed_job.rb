@@ -3,7 +3,7 @@ dep 'delayed job' do
 end
 
 dep 'delayed_job.supervisor' do
-  restart :always
+  restart 'always'
   command "bundle exec rake jobs:work RAILS_ENV=production"
   user "theconversation.edu.au"
   directory "/srv/http/#{user}/current"
