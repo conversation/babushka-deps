@@ -2,7 +2,7 @@ dep 'provisioned' do
   requires [
     'packages',
     'crontab',
-    'cron jobs'
+    'cronjobs'
   ]
   set :rails_root, '~/current'
 end
