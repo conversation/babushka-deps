@@ -1,16 +1,3 @@
-dep 'crontab' do
-  setup {
-    @hour = 11 # 1am in GMT+10
-    @min = rand(60)
-  }
-  met? {
-    babushka_config? "/etc/crontab"
-  }
-  meet {
-    render_erb "utils/crontab.erb", :to => "/etc/crontab", :sudo => true
-  }
-end
-
 meta :cronjob do
   accepts_value_for :timing
   accepts_value_for :command
