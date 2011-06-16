@@ -19,14 +19,14 @@ end
 
 dep 'chat app' do
   requires [
-    'database permissions',
+    'chat db permissions',
     'chat app symlinked in',
     'socket.io.npm',
     'pg.npm'
   ]
 end
 
-dep 'database permissions' do
+dep 'chat db permissions' do
   requires 'messages access', 'messages_id_seq access'
 end
 
