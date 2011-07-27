@@ -1,0 +1,23 @@
+[DEFAULT]
+destemail = dev@theconversation.edu.au
+maxretry = 3
+bantime  = 10
+
+[nginx-badbots]
+enabled = true
+port    = http,https
+filter  = nginx-badbots
+logpath = /opt/nginx/logs/access.log
+
+[nginx-noscript]
+enabled = true
+port    = http,https
+filter  = nginx-noscript
+logpath = /opt/nginx/logs/access.log
+
+[nginx-catchall]
+enabled = true
+port    = http,https
+filter  = nginx-catchall
+logpath = /opt/nginx/logs/access.log
+maxretry = 10
