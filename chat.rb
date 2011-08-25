@@ -13,7 +13,7 @@ dep 'chat.supervisor' do
   directory "/srv/http/#{user}/current"
 
   met? {
-    (shell("curl -I localhost:9000") || '').val_for('Server')['node.js']
+    ((shell("curl -I localhost:9000") || '').val_for('Server') || '')['node.js']
   }
 end
 
