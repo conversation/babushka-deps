@@ -62,5 +62,5 @@ dep 'socket.io.npm' do
 end
 
 dep 'pg.npm' do
-  installs 'pg 0.3.2'
+  installs 'pg 0.5.5'
 end
