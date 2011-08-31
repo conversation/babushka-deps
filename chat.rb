@@ -8,7 +8,7 @@ dep 'chat.supervisor' do
   set :chat_db, 'tc_production'
 
   command "node chat_server.js"
-  environment "NODE_PATH=/usr/local/lib/node_modules", "CHAT_DB=#{var(:chat_db)}"
+  environment %Q{NODE_PATH="/usr/local/lib/node_modules"}, %Q{CHAT_DB="#{var(:chat_db)}"}
   user "chat.theconversation.edu.au"
   directory "/srv/http/#{user}/current"
 
