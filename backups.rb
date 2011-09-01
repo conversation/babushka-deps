@@ -1,3 +1,17 @@
+dep 'db backed up' do
+  def live?
+    hostname[/staging/].nil?
+  end
+  setup {
+    if !live?
+      log "Skipping staging DB backup."
+    else
+      requires 'offsite backup.cloudfiles'
+    end
+    requires 'migrate db'
+  }
+end
+
 dep 'db backup exists' do
   @backup_time = Time.now
 
