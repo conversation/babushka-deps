@@ -6,7 +6,7 @@ meta :cronjob do
   end
   template {
     met? {
-      output = failable_shell('crontab -l').stdout
+      output = raw_shell('crontab -l').stdout
       if output.include?(entry)
         true
       elsif output.split("\n").detect {|l| l.ends_with?(command) }
