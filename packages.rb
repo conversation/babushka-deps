@@ -40,5 +40,10 @@ end
 dep 'rsync.managed'
 
 dep 'supervisor.managed' do
+  requires 'meld3.pip'
   provides 'supervisord', 'supervisorctl'
+end
+
+dep 'meld3.pip' do
+  provides []
 end
