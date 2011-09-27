@@ -8,7 +8,6 @@ dep 'db backed up' do
     else
       requires 'offsite backup.cloudfiles'
     end
-    requires 'migrate db'
   }
 end
 
