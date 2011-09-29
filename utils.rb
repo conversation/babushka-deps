@@ -1,4 +1,4 @@
-dep 'ssl cert in place', :domain, :cert_source, :template => 'benhoskings:nginx' do
+dep 'ssl cert in place', :nginx_prefix, :domain, :cert_source, :template => 'benhoskings:nginx' do
   def names
     %w[key crt].map {|ext| "#{domain}.#{ext}" }
   end
