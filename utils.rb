@@ -1,14 +1,14 @@
-dep 'ssl cert in place', :template => 'benhoskings:nginx' do
+dep 'ssl cert in place', :domain, :cert_source, :template => 'benhoskings:nginx' do
   def names
-    %w[key crt].map {|ext| "#{var(:domain)}.#{ext}" }
+    %w[key crt].map {|ext| "#{domain}.#{ext}" }
   end
   met? {
-    names.all? {|name| (nginx_cert_path / name).exists? }
+    names.all? {|name| (cert_path / name).exists? }
   }
   before {
-    sudo "mkdir -p #{nginx_cert_path}"
+    sudo "mkdir -p #{cert_path}"
   }
   meet {
-    names.each {|name| sudo "cp '#{var(:cert_path) / name}' #{nginx_cert_path.to_s.end_with('/')}" }
+    names.each {|name| sudo "cp '#{cert_source / name}' #{cert_path.to_s.end_with('/')}" }
   }
 end
