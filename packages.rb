@@ -37,3 +37,11 @@ end
 dep 'meld3.pip' do
   provides []
 end
+
+dep 'postgresql-contrib-9.0.managed' do
+  provides []
+end
+
+dep 'tidy.managed' do
+  provides 'tidy'
+end
