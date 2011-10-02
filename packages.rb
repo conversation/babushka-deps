@@ -1,13 +1,3 @@
-dep 'packages' do
-  requires [
-    'libxml.managed', # for nokogiri
-    'libxslt.managed',  # for nokogiri
-    'imagemagick.managed', # for paperclip
-    'coffeescript.src', # for barista
-    'supervisor.managed'
-  ]
-end
-
 dep 'libxml.managed' do
   installs { via :apt, 'libxml2-dev' }
   provides []
