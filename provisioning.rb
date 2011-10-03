@@ -17,11 +17,11 @@ dep 'theconversation.edu.au packages' do
   ]
 end
 
-dep 'jobs.theconversation.edu.au provisioned' do
+dep 'jobs.theconversation.edu.au provisioned', :username, :db_name do
   requires [
     'jobs.theconversation.edu.au packages',
     'cronjobs',
-    'postgres extension installed'.with('similarity', 'pg_trgm.sql')
+    'postgres extension installed'.with(username, db_name, 'similarity', 'pg_trgm.sql')
   ]
   set :rails_root, '~/current'
 end
