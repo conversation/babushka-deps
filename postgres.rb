@@ -8,7 +8,7 @@ dep 'postgres extension installed', :proc_name, :extension do
   met? {
     shell("psql postgres -t",
       as: 'postgres',
-      input: "select count(*) from pg_proc where proname = '#{proc_name}'"
+      input: "SELECT count(*) FROM pg_proc WHERE proname = '#{proc_name}'"
     ).strip.to_i > 0
   }
   meet {
