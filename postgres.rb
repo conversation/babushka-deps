@@ -26,5 +26,5 @@ dep 'postgres extension installed', :username, :db_name, :proc_name, :extension 
       as: username,
       input: (shell('pg_config --sharedir') / 'contrib' / extension).p.read
   }
-  before { set_language_trust false }
+  after { set_language_trust false }
 end
