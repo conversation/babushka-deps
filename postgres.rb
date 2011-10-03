@@ -5,12 +5,6 @@ dep 'read-only db permissions' do
 end
 
 dep 'postgres extension installed', :username, :db_name, :proc_name, :extension do
-  def set_language_trust val
-    shell "psql #{db_name}",
-      as: 'postgres',
-      input: "UPDATE pg_language SET lanpltrusted = '#{val ? 't' : 'f'}' WHERE lanname = 'c'"
-  end
-
   requires 'benhoskings:existing postgres db'.with(username, db_name)
 
   met? {
@@ -20,11 +14,9 @@ dep 'postgres extension installed', :username, :db_name, :proc_name, :extension 
     ).strip.to_i > 0
   }
 
-  before { set_language_trust true }
   meet {
     shell "psql #{db_name}",
-      as: username,
+      as: 'postgres',
       input: (shell('pg_config --sharedir') / 'contrib' / extension).p.read
   }
-  after { set_language_trust false }
 end
