@@ -1,3 +1,12 @@
+dep 'theconversation.edu.au provisioned' do
+  requires [
+    'theconversation.edu.au packages',
+    'cronjobs',
+    'delayed job'
+  ]
+  set :rails_root, '~/current'
+end
+
 dep 'theconversation.edu.au packages' do
   requires [
     'libxml.managed', # for nokogiri
@@ -6,6 +15,14 @@ dep 'theconversation.edu.au packages' do
     'coffeescript.src', # for barista
     'supervisor.managed'
   ]
+end
+
+dep 'jobs.theconversation.edu.au provisioned' do
+  requires [
+    'jobs.theconversation.edu.au packages',
+    'cronjobs'
+  ]
+  set :rails_root, '~/current'
 end
 
 dep 'jobs.theconversation.edu.au packages' do
