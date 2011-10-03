@@ -29,7 +29,7 @@ end
 dep 'jobs.theconversation.edu.au packages' do
   requires [
     'imagemagick.managed', # for paperclip
-    'postgresql-contrib-9.0.managed', # for search
+    'postgresql-contrib.managed', # for search
     'tidy.managed' # for upmark
   ]
 end

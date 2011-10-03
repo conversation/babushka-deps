@@ -38,7 +38,7 @@ dep 'meld3.pip' do
   provides []
 end
 
-dep 'postgresql-contrib-9.0.managed' do
+dep 'postgresql-contrib.managed' do
   provides []
 end
 
