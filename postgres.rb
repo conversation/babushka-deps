@@ -11,6 +11,8 @@ dep 'postgres extension installed', :username, :db_name, :proc_name, :extension 
       input: "UPDATE pg_language SET lanpltrusted = '#{val ? 't' : 'f'}' WHERE lanname = 'c'"
   end
 
+  requires 'benhoskings:existing postgres db'.with(username, db_name)
+
   met? {
     shell("psql #{db_name} -t",
       as: 'postgres',
