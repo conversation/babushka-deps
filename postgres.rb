@@ -17,6 +17,6 @@ dep 'postgres extension installed', :username, :db_name, :proc_name, :extension 
   meet {
     shell "psql #{db_name}",
       as: 'postgres',
-      input: (shell('pg_config --sharedir') / 'contrib' / extension).p.read
+      input: (shell('pg_config --sharedir') / extension).p.read
   }
 end
