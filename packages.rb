@@ -12,9 +12,10 @@ dep 'imagemagick.managed' do
   provides %w[compare animate convert composite conjure import identify stream display montage mogrify]
 end
 
-dep 'coffeescript.src' do
+dep 'coffeescript.src', :version do
+  version.default!('1.1.2')
   requires 'nodejs.src'
-  source 'git://github.com/jashkenas/coffee-script.git'
+  source "http://github.com/jashkenas/coffee-script/tarball/#{version}"
   provides 'coffee'
 
   configure { true }
@@ -22,8 +23,9 @@ dep 'coffeescript.src' do
   install { shell "bin/cake install", sudo: Babushka::SrcHelper.should_sudo? }
 end
 
-dep 'nodejs.src' do
-  source 'git://github.com/joyent/node.git'
+dep 'nodejs.src', :version do
+  version.default!('0.4.12')
+  source "http://nodejs.org/dist/node-v#{version}.tar.gz"
   provides 'node', 'node-waf'
 end
 
