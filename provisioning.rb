@@ -20,7 +20,7 @@ dep 'jobs.theconversation.edu.au provisioned', :username, :db_name do
   requires [
     'jobs.theconversation.edu.au packages',
     'cronjobs',
-    'postgres extension installed'.with(username, db_name, 'similarity', 'extension/pg_trgm--1.0.sql')
+    'postgres extension'.with(username, db_name, 'pg_trgm')
   ]
 end
 
