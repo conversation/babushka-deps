@@ -2,7 +2,7 @@ dep 'theconversation.edu.au provisioned', :env do
   requires [
     'theconversation.edu.au packages',
     'cronjobs'.with(env),
-    'delayed job'
+    'delayed job'.with(env)
   ]
 end
 

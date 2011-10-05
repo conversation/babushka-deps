@@ -1,10 +1,10 @@
-dep 'delayed job' do
-  requires 'delayed_job.supervisor'
+dep 'delayed job', :env do
+  requires 'delayed_job.supervisor'.with(env)
 end
 
-dep 'delayed_job.supervisor' do
+dep 'delayed_job.supervisor', :env do
   restart 'always'
-  command "bundle exec rake jobs:work RAILS_ENV=production"
+  command "bundle exec rake jobs:work RAILS_ENV=#{env}"
   user "theconversation.edu.au"
   directory "/srv/http/#{user}/current"
   met? {
