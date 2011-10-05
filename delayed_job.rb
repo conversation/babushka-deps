@@ -8,7 +8,7 @@ dep 'delayed_job.supervisor', :env do
   user "theconversation.edu.au"
   directory "/srv/http/#{user}/current"
   met? {
-    !shell("ps aux").split("\n").grep(/rake jobs:work$/).empty?
+    !shell("ps aux").split("\n").grep(/rake jobs:work RAILS_ENV=#{env}$/).empty?
   }
 end
 
