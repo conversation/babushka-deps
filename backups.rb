@@ -1,10 +1,7 @@
-dep 'db backed up' do
-  def live?
-    hostname[/staging/].nil?
-  end
+dep 'db backed up', :env do
   setup {
-    if !live?
-      log "Skipping staging DB backup."
+    if env != 'production'
+      log "Skipping DB backup on #{env}."
     else
       requires 'offsite backup.cloudfiles'
     end
