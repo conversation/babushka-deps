@@ -19,22 +19,22 @@ meta :cronjob do
   }
 end
 
-dep 'cronjobs' do
-  requires 'hourly.cronjob', 'daily.cronjob', 'weekly.cronjob'
+dep 'cronjobs', :env do
+  requires 'hourly.cronjob'.with(env), 'daily.cronjob'.with(env), 'weekly.cronjob'.with(env)
 end
 
-dep 'hourly.cronjob' do
+dep 'hourly.cronjob', :env do
   timing '18 * * * *'
-  command "cd #{'~/current'.p} && RAILS_ENV=production ./script/tasks/hourly >> log/tasks.log"
+  command "cd #{'~/current'.p} && RAILS_ENV=#{env} ./script/tasks/hourly >> log/tasks.log"
 end
 
-dep 'daily.cronjob' do
+dep 'daily.cronjob', :env do
   # hour 15 is 3pm UTC, which is 1am GMT+10.
   timing '33 15 * * *'
-  command "cd #{'~/current'.p} && RAILS_ENV=production ./script/tasks/daily >> log/tasks.log"
+  command "cd #{'~/current'.p} && RAILS_ENV=#{env} ./script/tasks/daily >> log/tasks.log"
 end
 
-dep 'weekly.cronjob' do
+dep 'weekly.cronjob', :env do
   timing '48 15 * * 7'
-  command "cd #{'~/current'.p} && RAILS_ENV=production ./script/tasks/weekly >> log/tasks.log"
+  command "cd #{'~/current'.p} && RAILS_ENV=#{env} ./script/tasks/weekly >> log/tasks.log"
 end

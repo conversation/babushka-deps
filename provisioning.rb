@@ -1,7 +1,7 @@
-dep 'theconversation.edu.au provisioned' do
+dep 'theconversation.edu.au provisioned', :env do
   requires [
     'theconversation.edu.au packages',
-    'cronjobs',
+    'cronjobs'.with(env),
     'delayed job'
   ]
 end
@@ -16,10 +16,10 @@ dep 'theconversation.edu.au packages' do
   ]
 end
 
-dep 'jobs.theconversation.edu.au provisioned', :username, :db_name do
+dep 'jobs.theconversation.edu.au provisioned', :username, :db_name, :env do
   requires [
     'jobs.theconversation.edu.au packages',
-    'cronjobs',
+    'cronjobs'.with(env),
     'postgres extension'.with(username, db_name, 'pg_trgm')
   ]
 end
