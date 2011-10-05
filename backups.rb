@@ -1,13 +1,3 @@
-dep 'db backed up', :env do
-  setup {
-    if env != 'production'
-      log "Skipping DB backup on #{env}."
-    else
-      requires 'offsite backup.cloudfiles'
-    end
-  }
-end
-
 dep 'db backup exists', :backup_path do
   @backup_time = Time.now
 

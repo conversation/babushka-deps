@@ -1,9 +1,9 @@
-dep 'db', :env do
+dep 'db backed up', :env do
   setup {
-    if !shell?('psql -l tc_production')
-      log "Skipping DB deps, because the DB doesn't exist."
+    if env != 'production'
+      log "Skipping DB backup on #{env}."
     else
-      requires 'db backed up'.with(env), 'migrate db'.with(env)
+      requires 'offsite backup.cloudfiles'
     end
   }
 end
