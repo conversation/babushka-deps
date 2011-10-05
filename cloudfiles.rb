@@ -29,7 +29,7 @@ meta :cloudfiles do
   template {
     def cloud_info() CloudInfo.instance end
     def container() 'tc_db_backups' end
-    def cloud_path() "#{container}/#{backup_path.basename}" end
+    def cloud_path() "#{container}/#{backup_path.p.basename}" end
 
     def get_upload_info
       cloud_connection {|http|
@@ -45,7 +45,7 @@ meta :cloudfiles do
     def do_cloud_upload
       cloud_connection {|http|
         File.open(backup_path) {|f|
-          log_block "Streaming #{backup_path.basename} to cloudfiles" do
+          log_block "Streaming #{backup_path.p.basename} to cloudfiles" do
             http.request(
               Net::HTTP::Put.new(
                 File.join(cloud_info.uri.path, cloud_path),
