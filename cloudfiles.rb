@@ -9,7 +9,7 @@ meta :cloudfiles do
     def storage_url() auth_info[:storage_url] end
     def uri() URI.parse storage_url end
     def auth_info() @_auth_info ||= fetch_auth_info end
-    def credentials() YAML.load_file("~/current/config/cloudfiles-live.yml".p) end
+    def credentials() YAML.load_file("~/current/config/cloudfiles-production.yml".p) end
 
     def fetch_auth_info
       Net::HTTP.new('auth.api.rackspacecloud.com', 443).tap {|http|
