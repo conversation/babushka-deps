@@ -11,7 +11,7 @@ end
 dep 'migrate db', :env, :template => 'benhoskings:task' do
   # requires 'benhoskings:maintenance page up'
   run {
-    shell "bundle exec rake db:migrate db:autoupgrade tc:data:#{env} --trace RAILS_ENV=#{env}", :log => true
+    shell! "bundle exec rake db:migrate db:autoupgrade tc:data:#{env} --trace RAILS_ENV=#{env}", :log => true
   }
 end
 
