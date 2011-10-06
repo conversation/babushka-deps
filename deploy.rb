@@ -1,4 +1,5 @@
 dep 'db backed up', :env do
+  env.default!(ENV['RAILS_ENV'] || 'production')
   setup {
     if env != 'production'
       log "Skipping DB backup on #{env}."
