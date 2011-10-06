@@ -3,7 +3,7 @@ dep 'db backed up', :env do
     if env != 'production'
       log "Skipping DB backup on #{env}."
     else
-      requires 'offsite backup.cloudfiles'
+      requires 'offsite backup.cloudfiles'.with(:db_name => 'tc_production')
     end
   }
 end

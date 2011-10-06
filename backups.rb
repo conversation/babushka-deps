@@ -1,25 +1,25 @@
-dep 'db backup exists', :backup_path do
+dep 'db backup exists', :db_name, :backup_path do
   @backup_time = Time.now
 
   def backup_prefix; "~/sqldumps".p end
   def refspec; shell "git rev-parse --short HEAD" end
-  def sqldump; backup_prefix / "tc_production-#{@backup_time.strftime("%Y-%m-%d-%H:%M:%S")}-#{refspec}.psql" end
+  def sqldump; backup_prefix / "#{db_name}-#{@backup_time.strftime("%Y-%m-%d-%H:%M:%S")}-#{refspec}.psql" end
 
   backup_path.default!("#{sqldump}.gz")
 
   met? { backup_path.p.exists? }
   before { backup_prefix.mkdir }
-  meet { log_shell "Creating #{sqldump} from tc_production", "pg_dump tc_production > '#{sqldump}' && gzip -9 '#{sqldump}'" }
+  meet { log_shell "Creating #{sqldump} from #{db_name}", "pg_dump #{db_name} > '#{sqldump}' && gzip -9 '#{sqldump}'" }
   after { log_shell "Removing old sqldumps", %Q{ls -t -1 #{backup_prefix} | tail -n+6 | while read f; do rm "#{backup_prefix}/$f"; done} }
 end
 
-dep 'offsite backup.cloudfiles', :backup_path do
+dep 'offsite backup.cloudfiles', :db_name, :backup_path do
   def md5
     cmd = which('md5') ? 'md5 -q' : 'md5sum'
     shell("#{cmd} '#{backup_path}'").split(/\s/, 2).first
   end
 
-  requires 'db backup exists'.with(backup_path)
+  requires 'db backup exists'.with(db_name, backup_path)
 
   met? {
     upload_info = get_upload_info
