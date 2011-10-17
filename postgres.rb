@@ -12,9 +12,9 @@ dep 'postgres extension', :username, :db_name, :extension do
   end
 
   met? {
-    psql("SELECT count(*) FROM pg_extension WHERE extname = '#{extension}'").to_i > 0
+    psql(%{SELECT count(*) FROM pg_extension WHERE extname = '#{extension}'}).to_i > 0
   }
   meet {
-    psql("CREATE EXTENSION '#{extension}'")
+    psql(%{CREATE EXTENSION "#{extension}"})
   }
 end
