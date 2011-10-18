@@ -1,10 +1,13 @@
-dep 'db backed up', :env do
+dep 'db backed up', :env, :db_name do
   env.default!(ENV['RAILS_ENV'] || 'production')
+  db_name.default!(
+    yaml('config/database.yml')[env.to_s]['database']
+  )
   setup {
     if env != 'production'
       log "Skipping DB backup on #{env}."
     else
-      requires 'offsite backup.cloudfiles'.with(:db_name => 'tc_production')
+      requires 'offsite backup.cloudfiles'.with(db_name: db_name)
     end
   }
 end
