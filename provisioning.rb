@@ -20,6 +20,7 @@ dep 'jobs.theconversation.edu.au provisioned', :username, :db_name, :env do
   requires [
     'jobs.theconversation.edu.au packages',
     'cronjobs'.with(env),
+    'delayed job'.with(env),
     'postgres extension'.with(username, db_name, 'pg_trgm')
   ]
 end
