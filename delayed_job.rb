@@ -5,7 +5,7 @@ end
 dep 'delayed_job.supervisor', :env do
   restart 'always'
   command "bundle exec rake jobs:work RAILS_ENV=#{env}"
-  user "theconversation.edu.au"
+  user shell('whoami')
   directory "/srv/http/#{user}/current"
   met? {
     !shell("ps aux").split("\n").grep(/rake jobs:work RAILS_ENV=#{env}$/).empty?
