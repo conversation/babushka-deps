@@ -12,13 +12,6 @@ dep 'db backed up', :env, :db_name do
   }
 end
 
-dep 'migrate db', :env, :template => 'benhoskings:task' do
-  # requires 'benhoskings:maintenance page up'
-  run {
-    shell! "bundle exec rake db:migrate db:autoupgrade --trace RAILS_ENV=#{env}", :log => true
-  }
-end
-
 dep 'cache cleared' do
   met? {
     shell("git clean -ndx public/*.html public/pages/*.html").empty?
