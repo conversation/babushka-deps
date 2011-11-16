@@ -10,7 +10,7 @@ dep 'db backup exists', :db_name, :backup_path do
   met? { backup_path.p.exists? }
   before { backup_prefix.mkdir }
   meet { log_shell "Creating #{backup_path} from #{db_name}", "pg_dump #{db_name} | gzip -9 - > '#{backup_path}'" }
-  after { log_shell "Removing old sqldumps", %Q{ls -t -1 #{backup_prefix} | tail -n+6 | while read f; do rm "#{backup_prefix}/$f"; done} }
+  after { log_shell "Removing old sqldumps", %Q{ls -t -1 #{backup_prefix} | tail -n+3 | while read f; do rm "#{backup_prefix}/$f"; done} }
 end
 
 dep 'offsite backup.cloudfiles', :db_name, :backup_path do
