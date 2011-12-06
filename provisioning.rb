@@ -20,6 +20,7 @@ dep 'theconversation.edu.au dev', :root do
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
     'coffeescript.src', # for barista
+    'geoip.managed', # for geoip-c
 
     'geoip database'.with(root: root)
   ]
