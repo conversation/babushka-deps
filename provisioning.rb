@@ -32,6 +32,9 @@ dep 'theconversation.edu.au dev packages' do
   ]
 end
 
+dep 'dw.theconversation.edu.au provisioned', :env, :app_root do
+  requires ['cronjobs'.with(env)]
+end
 
 dep 'jobs.theconversation.edu.au provisioned', :username, :db_name, :env do
   requires [
