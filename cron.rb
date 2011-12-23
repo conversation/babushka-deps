@@ -10,6 +10,7 @@ meta :cronjob do
       if output.include?(entry)
         true
       elsif output.split("\n").detect {|l| l.ends_with?(command) }
+        # Don't add the same job to the crontab a second time.
         met "The job is scheduled, but with different timing."
       end
     }
