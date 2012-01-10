@@ -5,6 +5,7 @@ end
 dep 'chat.supervisor', :username, :db_name, :tc_path do
   requires 'chat app'.with(username, db_name, tc_path)
 
+  username.default!(shell('whoami'))
   db_name.default!('tc_production')
   tc_path.default!('/srv/http/theconversation.edu.au/current')
 
