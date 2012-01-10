@@ -23,7 +23,7 @@ end
 
 dep 'theconversation.edu.au dev packages' do
   requires [
-    'postgresql.managed',
+    'benhoskings:postgres.managed',
     'libxml.managed', # for nokogiri
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
