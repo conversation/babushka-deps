@@ -53,7 +53,7 @@ end
 
 dep 'jobs.theconversation.edu.au dev' do
   requires [
-    'theconversation.edu.au dev', # The same packages the main app uses
+    'theconversation.edu.au dev packages', # The same packages the main app uses
     'postgresql-contrib.managed', # for search
     'tidy.managed' # for upmark
   ]
