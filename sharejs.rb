@@ -30,7 +30,7 @@ end
 
 dep 'npm packages installed', template: "benhoskings:task" do
   # No apparent equivalent for bundle check command
-  run { shell %Q{npm install} }
+  run { shell %Q{npm install}, cd: "~/current" }
 end
 
 dep 'sharejs db permissions', :username, :db_name do
