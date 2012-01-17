@@ -1,7 +1,5 @@
 dep 'sharejs', :username, :env do
   requires [
-    'sharejs packages',
-
     'sharejs.supervisor'.with(username: username, env: env)
   ]
 end
@@ -30,11 +28,9 @@ dep 'sharejs app', :username, :db_name do
   ]
 end
 
-dep 'npm packages installed' do
+dep 'npm packages installed', template: "benhoskings:task" do
   # No apparent equivalent for bundle check command
-  run {
-    shell %Q{npm install}
-  }
+  run { shell %Q{npm install} }
 end
 
 dep 'sharejs db permissions', :username, :db_name do
