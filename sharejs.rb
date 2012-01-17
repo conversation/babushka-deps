@@ -1,21 +1,21 @@
-dep 'sharejs' do
+dep 'sharejs', :username, :env do
   requires [
     'sharejs packages',
 
-    'sharejs.supervisor'.with(username: username)
+    'sharejs.supervisor'.with(username: username, env: env)
   ]
 end
 
 
-dep 'sharejs.supervisor', :username, :environment, :tc_path do
-  requires 'sharejs app'.with(username, db_name, tc_path)
+dep 'sharejs.supervisor', :username, :env, :db_name do
+  requires 'sharejs app'.with(username, db_name)
 
   username.default!(shell('whoami'))
-  db_name.default!("tc_#{environment}")
+  db_name.default!("tc_#{env}")
 
   command "coffee app.coffee"
-  environment %Q{NODE_ENV="#{environment}"}
-  user "sharejs.theconversation.edu.au"
+  environment %Q{NODE_ENV="#{env}"}
+  user username
   directory "/srv/http/#{user}/current"
 
   met? {
