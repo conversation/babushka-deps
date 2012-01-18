@@ -31,6 +31,8 @@ end
 
 dep 'rsync.managed'
 
+dep 'socat.managed'
+
 dep 'supervisor.managed' do
   requires 'meld3.pip'
   provides 'supervisord', 'supervisorctl'
