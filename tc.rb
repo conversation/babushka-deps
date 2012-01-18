@@ -3,7 +3,10 @@ dep 'theconversation.edu.au provisioned', :env, :app_root do
     'theconversation.edu.au packages',
     'cronjobs'.with(env),
     'delayed job'.with(env),
-    'geoip database'.with(app_root: app_root)
+    'geoip database'.with(app_root: app_root),
+
+    # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
+    'read-only db permissions'.with("tc_#{env}", 'dw.theconversation.edu.au')
   ]
 end
 
