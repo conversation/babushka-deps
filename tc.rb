@@ -12,6 +12,7 @@ end
 
 dep 'theconversation.edu.au dev' do
   requires [
+    'benhoskings:postgres.managed',
     'theconversation.edu.au dev packages',
     'geoip database'.with(app_root: '.')
   ]
@@ -26,7 +27,6 @@ end
 
 dep 'theconversation.edu.au dev packages' do
   requires [
-    'benhoskings:postgres.managed',
     'libxml.managed', # for nokogiri
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
