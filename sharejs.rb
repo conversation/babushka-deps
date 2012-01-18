@@ -41,6 +41,7 @@ end
 
 dep 'table access', :username, :db_name, :table_name do
   requires 'benhoskings:postgres access'.with(username)
+  requires 'table sequence access'.with(username, db_name, "#{table_name}_id_seq")
   met? { shell "psql #{db_name} -c 'SELECT id FROM #{table_name} LIMIT 1'" }
-  meet { sudo %Q{psql #{db_name} -c 'GRANT SELECT,INSERT ON #{table_name} TO "#{username}"'}, as: 'postgres' }
+  meet { sudo %Q{psql #{db_name} -c 'GRANT SELECT,INSERT,DELETE,UPDATE ON #{table_name} TO "#{username}"'}, as: 'postgres' }
 end
