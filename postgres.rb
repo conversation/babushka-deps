@@ -1,7 +1,7 @@
 dep 'read-only db permissions', :db_name, :username, :check_table do
   check_table.default!('users')
   requires 'benhoskings:postgres access'.with(username)
-  met? { shell "psql #{db_name} -c 'SELECT id FROM #{check_table} LIMIT 1'" }
+  met? { sudo "psql #{db_name} -c 'SELECT id FROM #{check_table} LIMIT 1'", as: username }
   meet { sudo %Q{psql #{db_name} -c 'GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO "#{username}"'}, as: 'postgres' }
 end
 
