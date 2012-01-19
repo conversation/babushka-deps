@@ -6,7 +6,7 @@ dep 'theconversation.edu.au provisioned', :env, :app_root do
     'geoip database'.with(app_root: app_root),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
-    'read-only db permissions'.with("tc_#{env}", 'dw.theconversation.edu.au')
+    'read-only db permissions'.with("tc_#{env}", 'dw.theconversation.edu.au', 'content')
   ]
 end
 
