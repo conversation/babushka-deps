@@ -1,6 +1,12 @@
-dep 'backup.tc-dev.net provisioned', :env, :app_root do
+dep 'backup.tc-dev.net provisioned' do
   requires [
     'backup.tc-dev.net packages'
+  ]
+end
+
+dep 'backup.tc-dev.net packages' do
+  requires [
+    'backup.tc-dev.net dev packages'
   ]
 end
 
