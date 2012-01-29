@@ -31,6 +31,7 @@ dep 'theconversation.edu.au dev packages' do
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
     'coffeescript.src', # for barista
-    'geoip.managed' # for geoip-c
+    'geoip.managed', # for geoip-c
+    'phantomjs.managed' # for js testing
   ]
 end

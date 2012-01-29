@@ -42,6 +42,16 @@ dep 'meld3.pip' do
   provides []
 end
 
+dep 'phantomjs.managed' do
+  requires { 
+    on :apt, 'etienne.ppa'
+  }
+end
+
+dep 'etienne.ppa' do
+  adds 'ppa:jerome-etienne/neoip'
+end
+
 dep 'postgresql-contrib.managed' do
   provides []
 end
