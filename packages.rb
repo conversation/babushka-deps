@@ -52,6 +52,7 @@ end
 dep 'phantomjs.src' do
   source 'http://phantomjs.googlecode.com/files/phantomjs-1.4.1-source.tar.gz'
   configure { shell 'qmake-qt4' }
+  install { sudo 'cp bin/phantomjs /usr/local/bin/' }
   requires 'qt-dev.managed'
 end
 
