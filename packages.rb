@@ -59,6 +59,7 @@ dep 'qt-dev.managed' do
   installs {
     on :apt, 'libqt4-dev', 'libqtwebkit-dev', 'qt4-qmake'
   }
+  provides []
 end
 
 dep 'postgresql-contrib.managed' do
