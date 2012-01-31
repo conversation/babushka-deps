@@ -32,6 +32,6 @@ dep 'theconversation.edu.au dev packages' do
     'imagemagick.managed', # for paperclip
     'coffeescript.src', # for barista
     'geoip.managed', # for geoip-c
-    'phantomjs.managed' # for js testing
+    'phantomjs' # for js testing
   ]
 end

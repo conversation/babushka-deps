@@ -42,14 +42,23 @@ dep 'meld3.pip' do
   provides []
 end
 
-dep 'phantomjs.managed' do
-  requires { 
-    on :apt, 'etienne.ppa'
+dep 'phantomjs' do
+  requires {
+    on :linux, 'phantomjs.src'
+    on :osx, dep('phantomjs.managed')
   }
 end
 
-dep 'etienne.ppa' do
-  adds 'ppa:jerome-etienne/neoip'
+dep 'phantomjs.src' do
+  source 'http://phantomjs.googlecode.com/files/phantomjs-1.4.1-source.tar.gz'
+  configure { shell 'qmake-qt4' }
+  requires 'qt-dev.managed'
+end
+
+dep 'qt-dev.managed' do
+  installs {
+    on :apt, 'libqt4-dev', 'libqtwebkit-dev', 'qt4-qmake'
+  }
 end
 
 dep 'postgresql-contrib.managed' do
