@@ -11,8 +11,8 @@ dep 'chat.supervisor', :username, :env, :db_name, :tc_path do
 
   command "node chat_server.js"
   environment %Q{NODE_PATH="/usr/local/lib/node_modules"}, %Q{CHAT_DB="#{db_name}"}
-  user "chat.theconversation.edu.au"
-  directory "/srv/http/#{user}/current"
+  user username
+  directory tc_path
 
   met? {
     ((shell("curl -I localhost:9000") || '').val_for('Server') || '')['node.js']
