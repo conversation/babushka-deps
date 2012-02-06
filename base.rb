@@ -2,8 +2,8 @@ dep 'system provisioned', :domain, :app_user, :password, :key do
   requires [
     'base system provisioned'.with(domain, password, key),
     'benhoskings:running.nginx',
-    "#{domain} packages",
-    'users setup'.with(domain, password, key)
+    "#{app_user} packages",
+    'users setup'.with(app_user, password, key)
   ]
 end
 
