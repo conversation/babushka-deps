@@ -1,3 +1,8 @@
+dep 'bundler.gem' do
+  installs 'bundler --pre'
+  provides 'bundle >= 1.1.rc.7'
+end
+
 dep 'libxml.managed' do
   installs { via :apt, 'libxml2-dev' }
   provides []

@@ -37,6 +37,7 @@ end
 
 dep 'theconversation.edu.au dev packages' do
   requires [
+    'bundler.gem',
     'libxml.managed', # for nokogiri
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
