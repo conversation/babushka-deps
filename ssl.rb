@@ -1,8 +1,8 @@
 dep 'ssl certificate', :env, :domain do
-  requires if env == 'production'
-    'ssl cert in place'.with(domain: domain)
+  if env == 'production'
+    requires 'ssl cert in place'.with(domain: domain)
   else
-    'benhoskings:self signed cert.nginx'.with(
+    requires 'benhoskings:self signed cert.nginx'.with(
       country: 'AU',
       state: 'VIC',
       city: 'Melbourne',
