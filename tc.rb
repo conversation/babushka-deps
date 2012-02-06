@@ -1,4 +1,4 @@
-dep 'theconversation.edu.au provisioned', :env, :app_root do
+dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :app_root do
   requires [
     'theconversation.edu.au packages',
     'cronjobs'.with(env),
@@ -6,7 +6,17 @@ dep 'theconversation.edu.au provisioned', :env, :app_root do
     'geoip database'.with(app_root: app_root),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
-    'read-only db permissions'.with("tc_#{env}", 'dw.theconversation.edu.au', 'content')
+    'read-only db permissions'.with("tc_#{env}", 'dw.theconversation.edu.au', 'content'),
+
+    'ssl certificate'.with(domain),
+
+    'benhoskings:rails app'.with(
+      :domain => domain,
+      :username => app_user,
+      :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
+      :enable_ssl => 'yes',
+      :data_required => 'yes'
+    )
   ]
 end
 
