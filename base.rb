@@ -9,7 +9,6 @@ end
 
 dep 'base system provisioned', :domain, :password, :key do
   requires [
-    'benhoskings:ruby.src'.with(version: '1.9.3', patchlevel: 'p0'),
     'benhoskings:user setup'.with(key: key),
     'benhoskings:system'.with(host_name: domain),
     'benhoskings:lamp stack removed',
