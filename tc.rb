@@ -1,5 +1,6 @@
 dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :app_root do
   requires [
+    'user setup'.with(key: key),
     'theconversation.edu.au packages',
     'cronjobs'.with(env),
     'delayed job'.with(env),
