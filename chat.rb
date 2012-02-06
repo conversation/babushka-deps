@@ -1,13 +1,13 @@
-dep 'chat', :username do
-  requires 'chat.supervisor'.with(username: username)
+dep 'chat', :env do
+  requires 'chat.supervisor'.with(env: env)
 end
 
-dep 'chat.supervisor', :username, :db_name, :tc_path do
-  requires 'chat app'.with(username, db_name, tc_path)
-
+dep 'chat.supervisor', :username, :env, :db_name, :tc_path do
   username.default!(shell('whoami'))
-  db_name.default!('tc_production')
+  db_name.default!("tc_#{env}")
   tc_path.default!('/srv/http/theconversation.edu.au/current')
+
+  requires 'chat app'.with(username, db_name, tc_path)
 
   command "node chat_server.js"
   environment %Q{NODE_PATH="/usr/local/lib/node_modules"}, %Q{CHAT_DB="#{db_name}"}
