@@ -6,7 +6,7 @@ dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :key, :app_r
     'delayed job'.with(env),
     'geoip database'.with(app_root: app_root),
 
-    'ssl certificate'.with(domain),
+    'ssl certificate'.with(env, domain),
 
     'benhoskings:rails app'.with(
       :domain => domain,
