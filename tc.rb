@@ -6,9 +6,6 @@ dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :app_root do
     'delayed job'.with(env),
     'geoip database'.with(app_root: app_root),
 
-    # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
-    'read-only db permissions'.with("tc_#{env}", 'dw.theconversation.edu.au', 'content'),
-
     'ssl certificate'.with(domain),
 
     'benhoskings:rails app'.with(
@@ -17,7 +14,10 @@ dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :app_root do
       :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
       :enable_ssl => 'yes',
       :data_required => 'yes'
-    )
+    ),
+
+    # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
+    'read-only db permissions'.with("tc_#{env}", 'dw.theconversation.edu.au', 'content')
   ]
 end
 
