@@ -20,7 +20,7 @@ dep 'coffeescript.src', :version do
 
   configure { true }
   build { shell "bin/cake build" }
-  install { shell "bin/cake install", sudo: Babushka::SrcHelper.should_sudo? }
+  install { shell "bin/cake install", :sudo => Babushka::SrcHelper.should_sudo? }
 end
 
 dep 'nodejs.src', :version do
