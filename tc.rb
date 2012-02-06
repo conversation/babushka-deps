@@ -1,4 +1,4 @@
-dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :app_root do
+dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :key, :app_root do
   requires [
     'user setup'.with(key: key),
     'theconversation.edu.au packages',
