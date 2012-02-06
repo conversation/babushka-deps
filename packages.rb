@@ -1,6 +1,5 @@
 dep 'bundler.gem' do
-  installs 'bundler --pre'
-  provides 'bundle >= 1.1.rc.7'
+  provides 'bundle'
 end
 
 dep 'libxml.managed' do
