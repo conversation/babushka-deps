@@ -1,3 +1,18 @@
+dep 'ssl certificate', :env, :domain do
+  requires if env == 'production'
+    'ssl cert in place'.with(domain: domain)
+  else
+    'benhoskings:self signed cert.nginx'.with(
+      country: 'AU',
+      state: 'VIC',
+      city: 'Melbourne',
+      organisation: 'The Conversation',
+      domain: domain,
+      email: 'dev@theconversation.edu.au'
+    )
+  end
+end
+
 dep 'ssl cert in place', :nginx_prefix, :domain, :cert_source, :template => 'benhoskings:nginx' do
   nginx_prefix.default('/opt/nginx')
   cert_source.default('~/current/config/dollhouse/assets/certs')
