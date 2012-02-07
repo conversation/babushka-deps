@@ -9,11 +9,11 @@ dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :key, :app_r
     'ssl certificate'.with(env, domain),
 
     'benhoskings:rails app'.with(
-      :domain => domain,
-      :username => app_user,
-      :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
-      :enable_ssl => 'yes',
-      :data_required => 'yes'
+      domain: domain,
+      username: app_user,
+      domain_aliases: 'theconversation.com theconversation.org.au conversation.edu.au',
+      enable_ssl: 'yes',
+      data_required: 'yes'
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
