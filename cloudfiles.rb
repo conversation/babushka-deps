@@ -9,13 +9,23 @@ meta :cloudfiles do
     def storage_url() auth_info[:storage_url] end
     def uri() URI.parse storage_url end
     def auth_info() @_auth_info ||= fetch_auth_info end
-    def credentials() YAML.load_file("~/current/config/cloudfiles-production.yml".p) end
+    def backup_container
+      cloudfiles['backup_container']
+    end
+
+    def cloudfiles
+      app_config['cloudfiles']
+    end
+
+    def app_config
+      YAML.load_file("~/current/config/application.yml".p)
+    end
 
     def fetch_auth_info
       Net::HTTP.new('auth.api.rackspacecloud.com', 443).tap {|http|
         http.use_ssl = true
       }.start {|http|
-        response = http.get('/v1.0', {'X-Auth-User' => credentials['username'], 'X-Auth-Key' => credentials['api_key']})
+        response = http.get('/v1.0', {'X-Auth-User' => cloudfiles['username'], 'X-Auth-Key' => cloudfiles['api_key']})
         if response.is_a? Net::HTTPSuccess
           {
             :auth_token => response['X-Auth-Token'],
@@ -28,8 +38,7 @@ meta :cloudfiles do
 
   template {
     def cloud_info() CloudInfo.instance end
-    def container() 'tc_db_backups' end
-    def cloud_path() "#{container}/#{backup_path.p.basename}" end
+    def cloud_path() "#{cloud_info.backup_container}/#{backup_path.p.basename}" end
 
     def get_upload_info
       cloud_connection {|http|
