@@ -9,8 +9,8 @@ end
 
 dep 'base system provisioned', :host_name, :password, :key do
   requires [
-    'benhoskings:user setup'.with(key: key),
     'benhoskings:system'.with(host_name: host_name),
+    'benhoskings:user setup'.with(key: key),
     'benhoskings:lamp stack removed',
     'benhoskings:postfix removed',
     'benhoskings:postgres.managed'
