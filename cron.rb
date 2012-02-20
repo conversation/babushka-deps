@@ -24,6 +24,11 @@ dep 'cronjobs', :env do
   requires 'hourly.cronjob'.with(env), 'daily.cronjob'.with(env), 'weekly.cronjob'.with(env)
 end
 
+dep 'minutely.cronjob', :env do
+  timing '* * * * *'
+  command "cd #{'~/current'.p} && RAILS_ENV=#{env} ./script/tasks/minutely >> log/tasks.log"
+end
+
 dep 'hourly.cronjob', :env do
   timing '18 * * * *'
   command "cd #{'~/current'.p} && RAILS_ENV=#{env} ./script/tasks/hourly >> log/tasks.log"
