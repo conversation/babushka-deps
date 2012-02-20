@@ -4,7 +4,6 @@ dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :key, :app_r
     'theconversation.edu.au packages',
     'cronjobs'.with(env),
     'delayed job'.with(env),
-    'geoip database'.with(app_root: app_root),
 
     'ssl certificate'.with(env, domain),
 
@@ -26,7 +25,6 @@ dep 'theconversation.edu.au dev' do
   requires [
     'benhoskings:postgres.managed',
     'theconversation.edu.au dev packages',
-    'geoip database'.with(app_root: '.')
   ]
 end
 
@@ -44,7 +42,6 @@ dep 'theconversation.edu.au dev packages' do
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
     'coffeescript.src', # for barista
-    'geoip.managed', # for geoip-c
     'phantomjs' # for js testing
   ]
 end
