@@ -12,7 +12,7 @@ dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :key, :app_r
       domain: domain,
       username: app_user,
       domain_aliases: 'theconversation.com theconversation.org.au conversation.edu.au',
-      enable_ssl: 'yes',
+      enable_https: 'yes',
       data_required: 'yes'
     ),
 
