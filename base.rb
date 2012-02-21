@@ -20,5 +20,4 @@ end
 dep 'users setup', :username, :password, :key do
   requires 'benhoskings:user auth setup'.with(username, password, key)
   requires 'benhoskings:user auth setup'.with("mobwrite.#{username}", password, key)
-  requires 'benhoskings:user auth setup'.with("chat.#{username}", password, key)
 end
