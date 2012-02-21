@@ -3,7 +3,8 @@ dep 'proxied app', :env, :app_name, :domain, :port do
   requires 'benhoskings:vhost enabled.nginx'.with(
     domain: domain,
     type: 'proxy',
-    host: 'localhost',
+    proxy_host: 'localhost',
+    proxy_port: port,
     enable_ssl: 'no',
   )
 end
