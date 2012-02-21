@@ -42,7 +42,7 @@ dep 'theconversation.edu.au dev packages' do
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
     'coffeescript.src', # for barista
-    'phantomjs' # for js testing
+    'phantomjs', # for js testing
     'memcached.managed'
   ]
 end
