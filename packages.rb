@@ -7,6 +7,8 @@ dep 'libxml.managed' do
   provides []
 end
 
+dep 'memcached.managed'
+
 dep 'libxslt.managed' do
   installs { via :apt, 'libxslt1-dev' }
   provides []
