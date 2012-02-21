@@ -1,4 +1,4 @@
-dep 'mobwrite' do
+dep 'mobwrite', :env do
   requires [
     'mobwrite daemon.supervisor',
     'mobwrite gateway.supervisor'
