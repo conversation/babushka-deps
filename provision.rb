@@ -43,7 +43,6 @@ dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => '
   requires 'public key in place'.with(host, keys)
   requires 'babushka bootstrapped'.with(host)
 
-  app_user.default!('theconversation.edu.au')
   keys.default!(File.read('./config/authorized_keys'))
 
   run {
