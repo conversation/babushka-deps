@@ -37,7 +37,9 @@ dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => '
   end
 
   def remote_babushka dep_spec, args = {}
-    unmeetable! unless remote_shell('babushka', dep_spec, '--defaults', '--colour', *args.keys.map {|k| "#{k}=#{args[k]}" })
+    unless remote_shell('babushka', dep_spec, '--defaults', '--colour', *args.keys.map {|k| "#{k}=#{args[k]}" })
+      unmeetable! "The remote babushka reported an error."
+    end
   end
 
   requires 'public key in place'.with(host, keys)
