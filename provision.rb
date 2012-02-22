@@ -50,8 +50,8 @@ dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => '
     # This has to be separate because we use 1.9 hashes everywhere else.
     remote_babushka 'benhoskings:ruby.src', version: '1.9.3', patchlevel: 'p0'
 
-    # All system-wide provisioning for this app that should run as root.
-    remote_babushka "conversation:system provisioned for #{app_user}",
+    # All the system-wide config for this app, like packages and user accounts.
+    remote_babushka "conversation:system provisioned",
       host_name: host,
       app_user: app_user,
       password: password,
@@ -59,12 +59,13 @@ dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => '
 
     # Set up the app user on the server to accept pushes to ~/current.
     as(app_user) { remote_babushka 'benhoskings:web repo' }
+
     # Locally, push code to ~/current on the server.
     Dep('benhoskings:pushed.push').meet(remote: env)
 
     # Now that the code is in place, provision the app.
     as(app_user) {
-      remote_babushka "conversation:#{app_user} provisioned",
+      remote_babushka "conversation:#{app_user} app",
         env: env,
         domain: server_name,
         app_user: app_user,
@@ -72,4 +73,16 @@ dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => '
         listen_host: '[:ffff::IP]'
     }
   }
+end
+
+dep 'system provisioned', :host_name, :app_user, :password, :key do
+  requires [
+    'benhoskings:system'.with(host_name: host_name),
+    'benhoskings:user setup'.with(key: key),
+    'benhoskings:lamp stack removed',
+    'benhoskings:postfix removed',
+    "#{app_user} system".with(host_name, app_user, password, key),
+    "#{app_user} packages",
+    'benhoskings:user auth setup'.with(app_user, password, key)
+  ]
 end

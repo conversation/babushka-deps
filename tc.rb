@@ -1,21 +1,15 @@
-dep 'system provisioned for theconversation.edu.au', :host_name, :app_user, :password, :key do
+dep 'theconversation.edu.au system', :host_name, :app_user, :password, :key do
   requires [
-    'base system provisioned'.with(host_name, password, key),
-    "#{app_user} packages",
-    'benhoskings:running.nginx',
-    'benhoskings:user auth setup'.with(app_user, password, key),
     'benhoskings:user auth setup'.with("mobwrite.#{app_user}", password, key),
   ]
 end
 
-dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :key, :app_root do
+dep 'theconversation.edu.au app', :env, :domain, :app_user, :key, :app_root do
   requires [
     'benhoskings:user setup'.with(key: key),
-    'theconversation.edu.au packages',
     'geoip database'.with(app_root: app_root),
     'cronjobs'.with(env),
     'delayed job'.with(env),
-
     'ssl certificate'.with(env, domain),
 
     'benhoskings:rails app'.with(
@@ -32,21 +26,23 @@ dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :key, :app_r
   ]
 end
 
+dep 'theconversation.edu.au packages' do
+  requires [
+    'benhoskings:running.nginx',
+    'supervisor.managed',
+    'theconversation.edu.au common packages'
+  ]
+end
+
 dep 'theconversation.edu.au dev' do
   requires [
-    'theconversation.edu.au dev packages',
+    'theconversation.edu.au common packages',
+    'phantomjs', # for js testing
     'geoip database'.with(app_root: '.')
   ]
 end
 
-dep 'theconversation.edu.au packages' do
-  requires [
-    'theconversation.edu.au dev packages',
-    'supervisor.managed'
-  ]
-end
-
-dep 'theconversation.edu.au dev packages' do
+dep 'theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
     'benhoskings:postgres.managed',
@@ -56,6 +52,5 @@ dep 'theconversation.edu.au dev packages' do
     'libxml.managed', # for nokogiri
     'libxslt.managed', # for nokogiri
     'memcached.managed', # for fragment caching
-    'phantomjs' # for js testing
   ]
 end
