@@ -31,7 +31,11 @@ dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => '
 
   def remote_shell *cmd
     host_spec = "#{@user || 'root'}@#{host}"
-    log "#{host_spec.colorize("on grey")} $ #{cmd.map {|i| i.sub(/^(.{50})(.{3}).*/m, '\1...') }.join(' ')}" do
+    opening_message = [
+      host_spec.colorize("on grey"), # user@host spec
+      cmd.map {|i| i.sub(/^(.{50})(.{3}).*/m, '\1...') }.join(' ') # the command, with long args truncated
+    ].join(' $ ')
+    log opening_message, :closing_status => opening_message do
       shell "ssh", host_spec, cmd.map{|i| "'#{i}'" }.join(' '), log: true
     end
   end
