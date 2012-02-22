@@ -12,6 +12,7 @@ dep 'theconversation.edu.au provisioned', :env, :domain, :app_user, :key, :app_r
   requires [
     'benhoskings:user setup'.with(key: key),
     'theconversation.edu.au packages',
+    'geoip database'.with(app_root: app_root),
     'cronjobs'.with(env),
     'delayed job'.with(env),
 
@@ -34,6 +35,7 @@ end
 dep 'theconversation.edu.au dev' do
   requires [
     'theconversation.edu.au dev packages',
+    'geoip database'.with(app_root: '.')
   ]
 end
 
