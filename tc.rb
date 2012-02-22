@@ -39,11 +39,11 @@ dep 'theconversation.edu.au dev packages' do
   requires [
     'bundler.gem',
     'benhoskings:postgres.managed',
+    'coffeescript.src', # for barista
+    'imagemagick.managed', # for paperclip
     'libxml.managed', # for nokogiri
     'libxslt.managed', # for nokogiri
-    'imagemagick.managed', # for paperclip
-    'coffeescript.src', # for barista
-    'phantomjs', # for js testing
-    'memcached.managed'
+    'memcached.managed', # for fragment caching
+    'phantomjs' # for js testing
   ]
 end
