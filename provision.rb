@@ -20,7 +20,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'provision the bastard', :host, :env, :app_user, :password, :keys, :template => 'task' do
+dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => 'task' do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -51,7 +51,7 @@ dep 'provision the bastard', :host, :env, :app_user, :password, :keys, :template
     remote_babushka 'benhoskings:ruby.src', version: '1.9.3', patchlevel: 'p0'
 
     # All system-wide provisioning for this app that should run as root.
-    remote_babushka "conversation:system provisioned",
+    remote_babushka "conversation:system provisioned for #{app_user}",
       host_name: host,
       app_user: app_user,
       password: password,

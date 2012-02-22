@@ -1,3 +1,11 @@
+dep 'system provisioned for jobs.theconversation.edu.au', :host_name, :app_user, :password, :key do
+  requires [
+    'base system provisioned'.with(host_name, password, key),
+    'benhoskings:running.nginx',
+    'benhoskings:user auth setup'.with(app_user, password, key),
+  ]
+end
+
 dep 'jobs.theconversation.edu.au provisioned', :username, :db_name, :env do
   requires [
     'jobs.theconversation.edu.au packages',

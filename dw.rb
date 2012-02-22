@@ -1,3 +1,11 @@
+dep 'system provisioned for dw.theconversation.edu.au', :host_name, :app_user, :password, :key do
+  requires [
+    'base system provisioned'.with(host_name, password, key),
+    'benhoskings:running.nginx',
+    'benhoskings:user auth setup'.with(app_user, password, key)
+  ]
+end
+
 dep 'dw.theconversation.edu.au provisioned', :env, :app_root do
   requires [
     'dw.theconversation.edu.au packages',
