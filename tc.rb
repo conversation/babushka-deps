@@ -32,7 +32,6 @@ end
 
 dep 'theconversation.edu.au dev' do
   requires [
-    'benhoskings:postgres.managed',
     'theconversation.edu.au dev packages',
   ]
 end
