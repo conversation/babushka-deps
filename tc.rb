@@ -1,6 +1,7 @@
 dep 'system provisioned for theconversation.edu.au', :host_name, :app_user, :password, :key do
   requires [
     'base system provisioned'.with(host_name, password, key),
+    "#{app_user} packages",
     'benhoskings:running.nginx',
     'benhoskings:user auth setup'.with(app_user, password, key),
     'benhoskings:user auth setup'.with("mobwrite.#{app_user}", password, key),

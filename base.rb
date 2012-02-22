@@ -4,6 +4,5 @@ dep 'base system provisioned', :host_name, :password, :key do
     'benhoskings:user setup'.with(key: key),
     'benhoskings:lamp stack removed',
     'benhoskings:postfix removed',
-    "#{app_user} packages",
   ]
 end
