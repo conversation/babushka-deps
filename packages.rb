@@ -1,3 +1,11 @@
+dep 'aspell.managed'
+
+dep 'aspell dictionary.managed', :for => :linux do
+  requires 'aspell.managed'
+  installs 'aspell-en'
+  provides []
+end
+
 dep 'bundler.gem' do
   provides 'bundle'
 end

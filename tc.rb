@@ -39,6 +39,7 @@ dep 'theconversation.edu.au dev packages' do
   requires [
     'bundler.gem',
     'benhoskings:postgres.managed',
+    'aspell dictionary.managed',
     'coffeescript.src', # for barista
     'imagemagick.managed', # for paperclip
     'libxml.managed', # for nokogiri
