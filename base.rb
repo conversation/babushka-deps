@@ -2,7 +2,6 @@ dep 'system provisioned', :host_name, :app_user, :password, :key do
   requires [
     'base system provisioned'.with(host_name, password, key),
     'benhoskings:running.nginx',
-    "#{app_user} packages",
     'users setup'.with(app_user, password, key)
   ]
 end
@@ -14,6 +13,7 @@ dep 'base system provisioned', :host_name, :password, :key do
     'benhoskings:lamp stack removed',
     'benhoskings:postfix removed',
     'benhoskings:postgres.managed'
+    "#{app_user} packages",
   ]
 end
 
