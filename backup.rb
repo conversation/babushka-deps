@@ -12,6 +12,7 @@ end
 
 dep 'backup.tc-dev.net dev packages' do
   requires [
+    'benhoskings:postgres.managed',
     'socat.managed' # for DB tunnelling
   ]
 end

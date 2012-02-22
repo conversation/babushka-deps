@@ -21,6 +21,7 @@ end
 
 dep 'counter.theconversation.edu.au dev packages' do
   requires [
+    'benhoskings:postgres.managed',
     'geoip.managed', # for geoip-c
   ]
 end
