@@ -13,7 +13,12 @@ end
 
 dep 'jobs.theconversation.edu.au dev' do
   requires [
-    'theconversation.edu.au dev packages', # The same packages the main app uses
+    'bundler.gem',
+    'benhoskings:postgres.managed',
+    'libxml.managed', # for nokogiri
+    'libxslt.managed', # for nokogiri
+    'imagemagick.managed', # for paperclip
+    'coffeescript.src', # for barista
     'postgresql-contrib.managed', # for search
     'tidy.managed' # for upmark
   ]
