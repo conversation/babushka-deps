@@ -16,7 +16,7 @@ dep 'babushka bootstrapped', :host do
     }
   }
   meet {
-    shell %{ssh root@#{host} 'bash -c "`wget -O- babushka.me/up/hard`"'}
+    shell %{ssh root@#{host} 'bash -'}, :input => shell('curl babushka.me/up')
   }
 end
 
