@@ -72,10 +72,9 @@ dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => '
     as(app_user) {
       remote_babushka "conversation:#{app_user} app",
         env: env,
-        domain: server_name,
+        domain: domain,
         app_user: app_user,
-        key: TC::Auth::PUBLIC_KEYS,
-        listen_host: '[:ffff::IP]'
+        key: keys
     }
   }
 end

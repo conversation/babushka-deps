@@ -1,15 +1,7 @@
-dep 'system provisioned for jobs.theconversation.edu.au', :host_name, :app_user, :password, :key do
-  requires [
-    'base system provisioned'.with(host_name, password, key),
-    "#{app_user} packages",
-    'benhoskings:running.nginx',
-    'benhoskings:user auth setup'.with(app_user, password, key),
-  ]
-end
+dep 'jobs.theconversation.edu.au system', :host_name, :app_user, :password, :key
 
-dep 'jobs.theconversation.edu.au provisioned', :username, :db_name, :env do
+dep 'jobs.theconversation.edu.au app', :username, :db_name, :env do
   requires [
-    'jobs.theconversation.edu.au packages',
     'cronjobs'.with(env),
     'delayed job'.with(env),
     'postgres extension'.with(username, db_name, 'pg_trgm')
@@ -17,10 +9,18 @@ dep 'jobs.theconversation.edu.au provisioned', :username, :db_name, :env do
 end
 
 dep 'jobs.theconversation.edu.au packages' do
-  requires 'jobs.theconversation.edu.au dev'
+  requires [
+    'benhoskings:running.nginx',
+    'supervisor.managed',
+    'jobs.theconversation.edu.au common packages'
+  ]
 end
 
 dep 'jobs.theconversation.edu.au dev' do
+  requires 'jobs.theconversation.edu.au common packages'
+end
+
+dep 'jobs.theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
     'benhoskings:postgres.managed',
