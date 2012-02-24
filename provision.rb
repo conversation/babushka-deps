@@ -20,7 +20,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => 'task' do
+dep 'host provisioned', :host, :env, :app_user, :domain, :password, :keys, :template => 'task' do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -50,6 +50,7 @@ dep 'host provisioned', :host, :env, :app_user, :password, :keys, :template => '
   requires 'babushka bootstrapped'.with(host)
 
   keys.default!(File.read('./config/authorized_keys'))
+  domain.default!(app_user) if env == 'production'
 
   run {
     # This has to be separate because we use 1.9 hashes everywhere else.

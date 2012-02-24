@@ -5,8 +5,6 @@ dep 'theconversation.edu.au system', :host_name, :app_user, :password, :key do
 end
 
 dep 'theconversation.edu.au app', :env, :domain, :app_user, :key, :app_root do
-  domain.default!(env == 'production' ? app_user : 'staging.tc-dev.net')
-
   requires [
     'benhoskings:user setup'.with(key: key),
     'geoip database'.with(app_root: app_root),
