@@ -11,7 +11,7 @@ end
 
 dep 'babushka bootstrapped', :host do
   met? {
-    shell("ssh root@#{host} 'babushka --version'")[/[\d\.]{5,} \([0-9a-f]{7,}\)/].tap {|result|
+    raw_shell("ssh root@#{host} 'babushka --version'").stdout[/[\d\.]{5,} \([0-9a-f]{7,}\)/].tap {|result|
       log_ok "#{host} is running babushka-#{result}." if result
     }
   }
