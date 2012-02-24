@@ -20,7 +20,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'host provisioned', :host, :env, :app_user, :domain, :password, :keys, :template => 'task' do
+dep 'host provisioned', :host, :env, :app_user, :domain, :keys, :template => 'task' do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -76,13 +76,13 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :password, :keys, :temp
   }
 end
 
-dep 'system provisioned', :host_name, :app_user, :password, :key do
+dep 'system provisioned', :host_name, :app_user, :key do
   requires [
     'benhoskings:system'.with(host_name: host_name),
     'benhoskings:user setup'.with(key: key),
     'benhoskings:lamp stack removed',
     'benhoskings:postfix removed',
-    "#{app_user} system".with(host_name, app_user, password, key),
+    "#{app_user} system".with(host_name, app_user, key),
     "#{app_user} packages",
     'benhoskings:user setup for provisioning'.with(app_user, key)
   ]

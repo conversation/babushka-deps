@@ -1,4 +1,4 @@
-dep 'jobs.theconversation.edu.au system', :host_name, :app_user, :password, :key
+dep 'jobs.theconversation.edu.au system', :host_name, :app_user, :key
 
 dep 'jobs.theconversation.edu.au app', :username, :db_name, :env do
   requires [
