@@ -53,29 +53,24 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :password, :keys, :temp
   domain.default!(app_user) if env == 'production'
 
   run {
-    # This has to be separate because we use 1.9 hashes everywhere else.
-    remote_babushka 'benhoskings:ruby.src', version: '1.9.3', patchlevel: 'p0'
+    as('root') {
+      # This has to be separate because we use 1.9 hashes everywhere else.
+      remote_babushka 'benhoskings:ruby.src', version: '1.9.3', patchlevel: 'p0'
 
-    # All the system-wide config for this app, like packages and user accounts.
-    remote_babushka "conversation:system provisioned",
-      host_name: host,
-      app_user: app_user,
-      password: password,
-      key: keys
+      # All the system-wide config for this app, like packages and user accounts.
+      remote_babushka "conversation:system provisioned", host_name: host, app_user: app_user, key: keys
+    }
 
-    # Set up the app user on the server to accept pushes to ~/current.
-    as(app_user) { remote_babushka 'benhoskings:web repo' }
-
-    # Locally, push code to ~/current on the server.
-    Dep('benhoskings:pushed.push').meet(remote: env)
-
-    # Now that the code is in place, provision the app.
     as(app_user) {
-      remote_babushka "conversation:#{app_user} app",
-        env: env,
-        domain: domain,
-        app_user: app_user,
-        key: keys
+      # Set up the app user on the server to accept pushes to ~/current.
+      remote_babushka 'benhoskings:web repo'
+
+      # Locally, push code to ~/current on the server.
+      Dep('benhoskings:pushed.push').meet(remote: env)
+
+      # Now that the code is in place, provision the app.
+      remote_babushka "conversation:#{app_user} app", env: env, domain: domain, app_user: app_user, key: keys
+
     }
   }
 end
