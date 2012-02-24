@@ -71,6 +71,7 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :password, :keys, :temp
       # Now that the code is in place, provision the app.
       remote_babushka "conversation:#{app_user} app", env: env, domain: domain, app_user: app_user, key: keys
 
+      remote_babushka "benhoskings:passwordless sudo removed"
     }
   }
 end
@@ -83,6 +84,6 @@ dep 'system provisioned', :host_name, :app_user, :password, :key do
     'benhoskings:postfix removed',
     "#{app_user} system".with(host_name, app_user, password, key),
     "#{app_user} packages",
-    'benhoskings:user auth setup'.with(app_user, password, key)
+    'benhoskings:user setup for provisioning'.with(app_user, key)
   ]
 end

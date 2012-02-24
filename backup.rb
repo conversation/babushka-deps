@@ -1,6 +1,6 @@
 dep 'backup.tc-dev.net system', :host_name, :app_user, :password, :key do
   requires [
-    'benhoskings:user auth setup'.with("dw.#{app_user}", password, key) # For DW loads from psql on the backup machine
+    'benhoskings:user setup for provisioning'.with("dw.#{app_user}", key) # For DW loads from psql on the backup machine
   ]
 end
 

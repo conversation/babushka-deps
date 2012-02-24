@@ -1,6 +1,6 @@
 dep 'theconversation.edu.au system', :host_name, :app_user, :password, :key do
   requires [
-    'benhoskings:user auth setup'.with("mobwrite.#{app_user}", password, key),
+    'benhoskings:user setup for provisioning'.with("mobwrite.#{app_user}", key),
   ]
 end
 
