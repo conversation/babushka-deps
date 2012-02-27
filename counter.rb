@@ -7,7 +7,7 @@ dep 'counter.theconversation.edu.au app', :env, :app_root do
   ]
 end
 
-dep 'counter.theconversation.edu.au provisioned' do
+dep 'counter.theconversation.edu.au packages' do
   requires [
     'benhoskings:running.nginx',
     'benhoskings:postgres.managed',
