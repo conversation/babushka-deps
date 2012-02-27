@@ -73,7 +73,9 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :app_root, :keys, :temp
 
       # Now that the code is in place, provision the app.
       remote_babushka "conversation:app provisioned", env: env, domain: domain, app_user: app_user, app_root: app_root, key: keys
+    }
 
+    as('root') {
       remote_babushka "benhoskings:passwordless sudo removed"
     }
   }
