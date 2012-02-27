@@ -51,7 +51,7 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :keys, :template => 'ta
   requires 'git remote'.with('production', app_user, host)
   requires 'git remote'.with('staging', domain, host)
 
-  keys.default!(File.read('./config/authorized_keys'))
+  keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   domain.default!(app_user) if env == 'production'
 
   run {
