@@ -20,7 +20,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'host provisioned', :host, :env, :app_user, :domain, :keys, :template => 'task' do
+dep 'host provisioned', :host, :env, :app_user, :domain, :app_root, :keys, :template => 'task' do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -53,6 +53,7 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :keys, :template => 'ta
 
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   domain.default!(app_user) if env == 'production'
+  app_root.default!('~/current')
 
   run {
     as('root') {
@@ -71,7 +72,7 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :keys, :template => 'ta
       Dep('benhoskings:pushed.push').meet(remote: env)
 
       # Now that the code is in place, provision the app.
-      remote_babushka "conversation:app provisioned", env: env, domain: domain, app_user: app_user, key: keys
+      remote_babushka "conversation:app provisioned", env: env, domain: domain, app_user: app_user, app_root: app_root, key: keys
 
       remote_babushka "benhoskings:passwordless sudo removed"
     }
@@ -90,8 +91,8 @@ dep 'system provisioned', :host_name, :app_user, :key do
   ]
 end
 
-dep 'app provisioned', :env, :domain, :app_user, :key do
+dep 'app provisioned', :env, :domain, :app_user, :app_root, :key do
   requires [
-    "#{app_user} app".with(env, domain, app_user, key),
+    "#{app_user} app".with(env, domain, app_user, app_root, key),
   ]
 end
