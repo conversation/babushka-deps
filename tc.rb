@@ -4,7 +4,7 @@ dep 'theconversation.edu.au system', :host_name, :app_user, :key do
   ]
 end
 
-dep 'theconversation.edu.au app', :env, :domain, :app_user, :key, :app_root do
+dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
   requires [
     'benhoskings:user setup'.with(key: key),
     'geoip database'.with(app_root: app_root),
