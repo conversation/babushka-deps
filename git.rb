@@ -8,6 +8,6 @@ dep 'git remote', :remote_name, :user, :host do
     ).any?
   }
   meet {
-    shell "git remote add #{name} '#{remote_spec}'"
+    shell "git remote add #{remote_name} '#{remote_spec}'"
   }
 end
