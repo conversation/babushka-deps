@@ -1,5 +1,5 @@
 dep 'ruby 1.9.managed', :version, :patchlevel do
-  requires 'apt source'.with(:uri => 'http://apt.tc-dev.net/', :repo => 'main')
+  requires 'our apt source'
 
   version.default!('1.9.3')
   patchlevel.default!('p0')
