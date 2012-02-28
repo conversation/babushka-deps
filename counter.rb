@@ -22,7 +22,7 @@ end
 dep 'counter.theconversation.edu.au packages' do
   requires [
     'benhoskings:running.nginx',
-    'benhoskings:postgres.managed',
+    'postgres.managed',
     'geoip.managed' # for geoip-c
   ]
 end

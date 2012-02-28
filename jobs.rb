@@ -23,7 +23,7 @@ end
 dep 'jobs.theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
-    'benhoskings:postgres.managed',
+    'postgres.managed',
     'libxml.managed', # for nokogiri
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip

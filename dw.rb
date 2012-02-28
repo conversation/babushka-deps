@@ -20,7 +20,7 @@ end
 
 dep 'dw.theconversation.edu.au common packages' do
   requires [
-    'benhoskings:postgres.managed',
+    'postgres.managed',
     'socat.managed' # for DB tunnelling
   ]
 end
