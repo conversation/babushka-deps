@@ -32,6 +32,6 @@ dep 'mobwrite repo' do
     "~/current/daemon".p.directory?
   }
   meet {
-    git "git://github.com/conversation/mobwrite.git", to: "~/current"
+    git "git://github.com/conversation/mobwrite.git", :to => "~/current"
   }
 end

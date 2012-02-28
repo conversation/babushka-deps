@@ -15,7 +15,7 @@ meta :cronjob do
       end
     }
     meet {
-      shell 'crontab -', input: [shell('crontab -l'), entry].compact.join("\n").end_with("\n")
+      shell 'crontab -', :input => [shell('crontab -l'), entry].compact.join("\n").end_with("\n")
     }
   }
 end

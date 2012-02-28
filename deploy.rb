@@ -7,7 +7,7 @@ dep 'db backed up', :env, :db_name do
     if env != 'production'
       log "Skipping DB backup on #{env}."
     else
-      requires 'offsite backup.cloudfiles'.with(db_name: db_name)
+      requires 'offsite backup.cloudfiles'.with(:db_name => db_name)
     end
   }
 end
@@ -17,6 +17,6 @@ dep 'cache cleared' do
     shell("git clean -ndx public/*.html public/pages/*.html").empty?
   }
   meet {
-    shell "git clean -fdx public/*.html public/pages/*.html", log: true
+    shell "git clean -fdx public/*.html public/pages/*.html", :log => true
   }
 end

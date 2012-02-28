@@ -14,7 +14,7 @@ dep 'nginx-badbots.conf' do
     )
   }
   meet {
-    render_erb "throttling/#{name}", to: "/etc/fail2ban/filter.d/#{name}"
+    render_erb "throttling/#{name}", :to => "/etc/fail2ban/filter.d/#{name}"
   }
 end
 
@@ -26,7 +26,7 @@ dep 'nginx-noscript.conf' do
     )
   }
   meet {
-    render_erb "throttling/#{name}", to: "/etc/fail2ban/filter.d/#{name}"
+    render_erb "throttling/#{name}", :to => "/etc/fail2ban/filter.d/#{name}"
   }
 end
 
@@ -38,7 +38,7 @@ dep 'nginx-catchall.conf' do
     )
   }
   meet {
-    render_erb "throttling/#{name}", to: "/etc/fail2ban/filter.d/#{name}"
+    render_erb "throttling/#{name}", :to => "/etc/fail2ban/filter.d/#{name}"
   }
 end
 
@@ -50,7 +50,7 @@ dep 'local fail2ban config' do
     )
   }
   meet {
-    render_erb "throttling/jail.local", to: "/etc/fail2ban/jail.local"
+    render_erb "throttling/jail.local", :to => "/etc/fail2ban/jail.local"
   }
 end
 

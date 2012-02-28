@@ -1,5 +1,5 @@
 dep 'chat', :env do
-  requires 'chat.supervisor'.with(env: env)
+  requires 'chat.supervisor'.with(:env => env)
 end
 
 dep 'chat.supervisor', :username, :env, :db_name, :tc_path do
@@ -36,13 +36,13 @@ end
 dep 'messages access', :username, :db_name do
   requires 'benhoskings:postgres access'.with(username)
   met? { shell? "psql #{db_name} -c 'SELECT id FROM messages LIMIT 1'" }
-  meet { sudo %Q{psql #{db_name} -c 'GRANT SELECT,INSERT ON messages TO "#{username}"'}, as: 'postgres' }
+  meet { sudo %Q{psql #{db_name} -c 'GRANT SELECT,INSERT ON messages TO "#{username}"'}, :as => 'postgres' }
 end
 
 dep 'messages_id_seq access', :username, :db_name do
   requires 'benhoskings:postgres access'.with(username)
   met? { shell? "psql #{db_name} -c 'SELECT sequence_name FROM messages_id_seq LIMIT 1'" }
-  meet { sudo %Q{psql #{db_name} -c 'GRANT SELECT,UPDATE ON messages_id_seq TO "#{username}"'}, as: 'postgres' }
+  meet { sudo %Q{psql #{db_name} -c 'GRANT SELECT,UPDATE ON messages_id_seq TO "#{username}"'}, :as => 'postgres' }
 end
 
 dep 'chat app symlinked in', :tc_path do

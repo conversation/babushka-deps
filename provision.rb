@@ -1,11 +1,11 @@
 dep 'public key in place', :host, :keys do
   met? {
     shell("ssh -o PasswordAuthentication=no root@#{host} 'true'").tap {|result|
-      log "root@#{host} is#{"n't" unless result} accessible via publickey auth.", as: (:ok if result)
+      log "root@#{host} is#{"n't" unless result} accessible via publickey auth.", :as => (:ok if result)
     }
   }
   meet {
-    shell "ssh root@#{host} 'mkdir -p ~/.ssh; cat > ~/.ssh/authorized_keys'", input: keys
+    shell "ssh root@#{host} 'mkdir -p ~/.ssh; cat > ~/.ssh/authorized_keys'", :input => keys
   }
 end
 
@@ -36,7 +36,7 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :app_root, :keys, :temp
       cmd.map {|i| i.sub(/^(.{50})(.{3}).*/m, '\1...') }.join(' ') # the command, with long args truncated
     ].join(' $ ')
     log opening_message, :closing_status => opening_message do
-      shell "ssh", "-A", host_spec, cmd.map{|i| "'#{i}'" }.join(' '), log: true
+      shell "ssh", "-A", host_spec, cmd.map{|i| "'#{i}'" }.join(' '), :log => true
     end
   end
 
@@ -57,10 +57,10 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :app_root, :keys, :temp
   run {
     as('root') {
       # This has to be separate because we use 1.9 hashes everywhere else.
-      remote_babushka 'benhoskings:ruby.src', version: '1.9.3', patchlevel: 'p0'
+      remote_babushka 'benhoskings:ruby.src', :version => '1.9.3', :patchlevel => 'p0'
 
       # All the system-wide config for this app, like packages and user accounts.
-      remote_babushka "conversation:system provisioned", host_name: host, app_user: app_user, key: keys
+      remote_babushka "conversation:system provisioned", :host_name => host, :app_user => app_user, :key => keys
     }
 
     as(app_user) {
@@ -68,10 +68,10 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :app_root, :keys, :temp
       remote_babushka 'benhoskings:web repo'
 
       # Locally, push code to ~/current on the server.
-      Dep('benhoskings:pushed.push').meet(remote: env)
+      Dep('benhoskings:pushed.push').meet(:remote => env)
 
       # Now that the code is in place, provision the app.
-      remote_babushka "conversation:app provisioned", env: env, domain: domain, app_user: app_user, app_root: app_root, key: keys
+      remote_babushka "conversation:app provisioned", :env => env, :domain => domain, :app_user => app_user, :app_root => app_root, :key => keys
     }
 
     as('root') {
@@ -82,8 +82,8 @@ end
 
 dep 'system provisioned', :host_name, :app_user, :key do
   requires [
-    'benhoskings:system'.with(host_name: host_name),
-    'benhoskings:user setup'.with(key: key),
+    'benhoskings:system'.with(:host_name => host_name),
+    'benhoskings:user setup'.with(:key => key),
     'benhoskings:lamp stack removed',
     'benhoskings:postfix removed',
     "#{app_user} system".with(host_name, app_user, key),

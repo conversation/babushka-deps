@@ -6,19 +6,19 @@ end
 
 dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
   requires [
-    'benhoskings:user setup'.with(key: key),
-    'geoip database'.with(app_root: app_root),
+    'benhoskings:user setup'.with(:key => key),
+    'geoip database'.with(:app_root => app_root),
     'cronjobs'.with(env),
     'delayed job'.with(env),
     'ssl certificate'.with(env, domain),
 
     'benhoskings:rails app'.with(
-      env: env,
-      domain: domain,
-      username: app_user,
-      domain_aliases: 'theconversation.com theconversation.org.au conversation.edu.au',
-      enable_https: 'yes',
-      data_required: 'yes'
+      :env => env,
+      :domain => domain,
+      :username => app_user,
+      :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
+      :enable_https => 'yes',
+      :data_required => 'yes'
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
@@ -38,7 +38,7 @@ dep 'theconversation.edu.au dev' do
   requires [
     'theconversation.edu.au common packages',
     'phantomjs', # for js testing
-    'geoip database'.with(app_root: '.')
+    'geoip database'.with(:app_root => '.')
   ]
 end
 

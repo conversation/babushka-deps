@@ -23,7 +23,7 @@ dep 'offsite backup.cloudfiles', :db_name, :backup_path do
 
   met? {
     upload_info = get_upload_info
-    log "Rackspace returned HTTP #{upload_info.code}.", as: (:ok if upload_info.is_a?(Net::HTTPSuccess))
+    log "Rackspace returned HTTP #{upload_info.code}.", :as => (:ok if upload_info.is_a?(Net::HTTPSuccess))
 
     if upload_info.is_a?(Net::HTTPSuccess)
       local_hash = md5

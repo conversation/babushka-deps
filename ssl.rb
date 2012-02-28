@@ -1,14 +1,14 @@
 dep 'ssl certificate', :env, :domain do
   if env == 'production'
-    requires 'ssl cert in place'.with(domain: domain)
+    requires 'ssl cert in place'.with(:domain => domain)
   else
     requires 'benhoskings:self signed cert.nginx'.with(
-      country: 'AU',
-      state: 'VIC',
-      city: 'Melbourne',
-      organisation: 'The Conversation',
-      domain: domain,
-      email: 'dev@theconversation.edu.au'
+      :country => 'AU',
+      :state => 'VIC',
+      :city => 'Melbourne',
+      :organisation => 'The Conversation',
+      :domain => domain,
+      :email => 'dev@theconversation.edu.au'
     )
   end
 end
