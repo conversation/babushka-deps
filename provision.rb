@@ -79,7 +79,7 @@ end
 
 dep 'system provisioned', :host_name, :app_user, :key do
   requires [
-    'benhoskings:ruby 1.9.managed'.with(:version => '1.9.3', :patchlevel => 'p0'),
+    'ruby 1.9.managed'.with(:version => '1.9.3', :patchlevel => 'p0'),
     'benhoskings:system'.with(:host_name => host_name),
     'benhoskings:user setup'.with(:key => key),
     'benhoskings:lamp stack removed',
