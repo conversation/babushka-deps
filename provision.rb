@@ -56,6 +56,9 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :app_root, :keys, :temp
 
   run {
     as('root') {
+      # Run this separately since it changes the ruby binary we're running against.
+      remote_babushka 'conversation:ruby 1.9.managed', :version => '1.9.3', :patchlevel => 'p0'
+
       # All the system-wide config for this app, like packages and user accounts.
       remote_babushka "conversation:system provisioned", :host_name => host, :app_user => app_user, :key => keys
     }
@@ -79,7 +82,6 @@ end
 
 dep 'system provisioned', :host_name, :app_user, :key do
   requires [
-    'ruby 1.9.managed'.with(:version => '1.9.3', :patchlevel => 'p0'),
     'benhoskings:system'.with(:host_name => host_name),
     'benhoskings:user setup'.with(:key => key),
     'benhoskings:lamp stack removed',
