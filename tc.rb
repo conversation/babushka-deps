@@ -52,6 +52,6 @@ dep 'theconversation.edu.au common packages' do
     'imagemagick.managed', # for paperclip
     'libxml.managed', # for nokogiri
     'libxslt.managed', # for nokogiri
-    'memcached.managed', # for fragment caching
+    'memcached.managed' # for fragment caching
   ]
 end

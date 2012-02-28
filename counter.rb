@@ -23,7 +23,7 @@ dep 'counter.theconversation.edu.au packages' do
   requires [
     'benhoskings:running.nginx',
     'benhoskings:postgres.managed',
-    'geoip.managed', # for geoip-c
+    'geoip.managed' # for geoip-c
   ]
 end
 
@@ -31,6 +31,6 @@ end
 
 dep 'counter.theconversation.edu.au dev' do
   requires [
-    'geoip database'.with(:app_root => '.'),
+    'geoip database'.with(:app_root => '.')
   ]
 end
