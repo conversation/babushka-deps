@@ -23,8 +23,8 @@ end
 dep 'postgres.managed', :version do
   version.default('9.1')
   requires {
-    on :apt, 'set.locale', 'our apt source'
-    on :brew, 'set.locale'
+    on :apt, 'benhoskings:set.locale', 'our apt source'
+    on :brew, 'benhoskings:set.locale'
   }
   installs {
     via :apt, ["postgresql-#{owner.version}", "libpq-dev"]
