@@ -41,7 +41,7 @@ dep 'nodejs.managed', :version do
   requires 'our apt source'
   version.default!('0.6.10')
   installs 'nodejs'
-  provides "node ~> #{version}", 'node-waf'
+  provides "node ~> #{version}"
 end
 
 dep 'npm.managed', :version do
