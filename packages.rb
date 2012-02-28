@@ -28,7 +28,7 @@ end
 
 dep 'coffeescript.src', :version do
   version.default!('1.1.2')
-  requires 'nodejs.src'
+  requires 'nodejs.managed'
   source "http://github.com/jashkenas/coffee-script/tarball/#{version}"
   provides 'coffee'
 
@@ -37,10 +37,17 @@ dep 'coffeescript.src', :version do
   install { shell "bin/cake install", :sudo => Babushka::SrcHelper.should_sudo? }
 end
 
-dep 'nodejs.src', :version do
-  version.default!('0.4.12')
-  source "http://nodejs.org/dist/node-v#{version}.tar.gz"
-  provides 'node', 'node-waf'
+dep 'nodejs.managed', :version do
+  requires 'our apt source'
+  version.default!('0.6.10')
+  installs 'nodejs'
+  provides "node ~> #{version}", 'node-waf'
+end
+
+dep 'npm.managed', :version do
+  requires 'nodejs.managed', 'our apt source'
+  version.default!('1.1.0')
+  provides "npm ~> #{version}"
 end
 
 dep 'rsync.managed'

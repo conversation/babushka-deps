@@ -86,6 +86,7 @@ dep 'system provisioned', :host_name, :app_user, :key do
     'benhoskings:user setup'.with(:key => key),
     'benhoskings:lamp stack removed',
     'benhoskings:postfix removed',
+    'npm.managed', # pull in our node/npm before the default babushka ones' checks.
     "#{app_user} system".with(host_name, app_user, key),
     "#{app_user} packages",
     'benhoskings:user setup for provisioning'.with(app_user, key)
