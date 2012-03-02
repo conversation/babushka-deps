@@ -42,7 +42,10 @@ dep 'nodejs.managed', :version do
     on :apt, 'our apt source'
   }
   version.default!('0.6.10')
-  installs 'nodejs'
+  installs {
+    via :apt, 'nodejs'
+    via :brew, 'node'
+  }
   provides "node ~> #{version}"
 end
 
