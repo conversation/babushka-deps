@@ -38,14 +38,19 @@ dep 'coffeescript.src', :version do
 end
 
 dep 'nodejs.managed', :version do
-  requires 'our apt source'
+  requires {
+    on :apt, 'our apt source'
+  }
   version.default!('0.6.10')
   installs 'nodejs'
   provides "node ~> #{version}"
 end
 
 dep 'npm.managed', :version do
-  requires 'nodejs.managed', 'our apt source'
+  requires {
+    on :apt, 'our apt source', 'nodejs.managed'
+    otherwise 'nodejs.managed'
+  }
   version.default!('1.1.0')
   provides "npm ~> #{version}"
 end
