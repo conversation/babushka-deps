@@ -20,7 +20,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'host provisioned', :host, :env, :app_user, :domain, :app_root, :keys, :template => 'task' do
+dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys, :template => 'task' do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -68,7 +68,7 @@ dep 'host provisioned', :host, :env, :app_user, :domain, :app_root, :keys, :temp
       remote_babushka 'benhoskings:web repo'
 
       # Locally, push code to ~/current on the server.
-      Dep('benhoskings:pushed.push').meet(:remote => env)
+      Dep('benhoskings:pushed.push').meet(ref, env)
 
       # Now that the code is in place, provision the app.
       remote_babushka "conversation:app provisioned", :env => env, :domain => domain, :app_user => app_user, :app_root => app_root, :key => keys
