@@ -10,7 +10,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
       :env => env,
       :domain => domain,
       :username => app_user,
-      :enable_https => 'no',
+      :enable_https => 'yes',
       :data_required => 'yes'
     ),
 
