@@ -10,7 +10,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     'geoip database'.with(:app_root => app_root),
     'cronjobs'.with(env),
     'delayed job'.with(env),
-    'ssl certificate'.with(env, domain, app_user),
+    'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
 
     'benhoskings:rails app'.with(
       :env => env,
