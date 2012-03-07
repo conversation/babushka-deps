@@ -15,7 +15,7 @@ end
 
 dep 'ssl cert in place', :nginx_prefix, :domain, :cert_source, :template => 'benhoskings:nginx' do
   nginx_prefix.default!('/opt/nginx')
-  cert_source.default('~/current/config/dollhouse/assets/certs')
+  cert_source.default('~/current/config/certs')
   def names
     %w[key crt].map {|ext| "#{domain}.#{ext}" }
   end
