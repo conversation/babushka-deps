@@ -1,10 +1,6 @@
-dep 'ssl certificate', :env, :domain, :root_domain do
+dep 'ssl certificate', :env, :domain, :cert_name do
   if env == 'production'
-    if domain == root_domain
-      requires 'ssl cert in place'.with(:domain => root_domain)
-    else
-      requires 'ssl cert in place'.with(:domain => "*.#{root_domain}")
-    end
+    requires 'ssl cert in place'.with(:domain => domain, :cert_name => cert_name)
   else
     requires 'benhoskings:self signed cert.nginx'.with(
       :country => 'AU',
@@ -17,18 +13,15 @@ dep 'ssl certificate', :env, :domain, :root_domain do
   end
 end
 
-dep 'ssl cert in place', :nginx_prefix, :domain, :cert_source, :template => 'benhoskings:nginx' do
+dep 'ssl cert in place', :nginx_prefix, :domain, :cert_name, :cert_source, :template => 'benhoskings:nginx' do
   nginx_prefix.default!('/opt/nginx')
   cert_source.default('~/current/config/certs')
-  def names
-    %w[key crt].map {|ext| "#{domain}.#{ext}" }
-  end
   met? {
-    names.all? {|name| (cert_path / name).exists? }
+    %w[key crt].all? {|ext| (cert_path / "#{domain}.#{ext}").exists? }
   }
   meet {
     sudo "mkdir -p #{cert_path}"
-    names.each {|name| sudo "cp '#{cert_source / name}' #{cert_path.to_s.end_with('/')}" }
+    %w[key crt].all? {|ext| sudo "cp '#{cert_source / cert_name}.#{ext}' '#{cert_path / domain}.#{ext}'" }
     sudo "chmod 600 '#{cert_path / domain}'.*"
   }
 end

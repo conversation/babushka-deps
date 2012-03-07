@@ -4,7 +4,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
   requires [
     'benhoskings:user setup'.with(:key => key),
     'geoip database'.with(:app_root => app_root),
-    'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
+    'ssl certificate'.with(env, domain, '*.theconversation.edu.au'),
 
     'benhoskings:rails app'.with(
       :env => env,
