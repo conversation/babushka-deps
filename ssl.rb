@@ -26,10 +26,8 @@ dep 'ssl cert in place', :nginx_prefix, :domain, :cert_source, :template => 'ben
   met? {
     names.all? {|name| (cert_path / name).exists? }
   }
-  before {
-    sudo "mkdir -p #{cert_path}"
-  }
   meet {
+    sudo "mkdir -p #{cert_path}"
     names.each {|name| sudo "cp '#{cert_source / name}' #{cert_path.to_s.end_with('/')}" }
   }
 end
