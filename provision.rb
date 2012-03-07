@@ -32,7 +32,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys, :template => 'task' do
+dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys, :check_path, :expected_content do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -58,15 +58,41 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     end
   end
 
-  requires 'public key in place'.with(host, keys)
-  requires 'babushka bootstrapped'.with(host)
-  requires 'git remote'.with(env, app_user, host)
+  requires_when_unmet 'public key in place'.with(host, keys)
+  requires_when_unmet 'babushka bootstrapped'.with(host)
+  requires_when_unmet 'git remote'.with(env, app_user, host)
 
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   domain.default!(app_user) if env == 'production'
   app_root.default!('~/current')
+  check_path.default!('/health')
 
-  run {
+  met? {
+    cmd = raw_shell("curl -v -H 'Host: #{domain}' http://#{host}#{check_path}")
+
+    if !cmd.ok?
+      log "Couldn't reach #{host}."
+    else
+      log_ok "#{host} is up."
+
+      response_code = cmd.stderr.val_for('HTTP/1.1')
+      if response_code != '200 OK'
+        log_warn "http://#{domain}#{check_path} on #{host} responded with #{response_code}:\n#{cmd.stdout}"
+        unmeetable! unless confirm("Sure you want to provision #{domain} on it?")
+      else
+        log_ok "#{domain}#{check_path} responded with 200 OK."
+
+        if !cmd.stdout[/#{Regexp.escape(expected_content)}/]
+          log_warn "#{domain} doesn't contain '#{expected_content}'."
+          unmeetable! unless confirm("Sure you want to provision #{domain} on it?")
+        else
+          log_ok "#{domain} on #{host} says '#{expected_content}'."
+        end
+      end
+    end
+  }
+
+  meet {
     as('root') {
       # Run this separately since it changes the ruby binary we're running against.
       remote_babushka 'conversation:ruby 1.9.managed', :version => '1.9.3', :patchlevel => 'p0'
