@@ -1,4 +1,4 @@
-dep 'counter.theconversation.edu.au system', :host_name, :app_user, :key
+dep 'counter.theconversation.edu.au system', :app_user, :key
 
 dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
   requires [
