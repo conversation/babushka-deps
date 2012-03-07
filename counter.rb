@@ -11,7 +11,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
       :domain => domain,
       :username => app_user,
       :enable_https => 'yes',
-      :data_required => 'yes'
+      :data_required => 'no'
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
