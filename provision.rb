@@ -89,6 +89,10 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     as('root') {
       remote_babushka "benhoskings:passwordless sudo removed"
     }
+
+    as(app_user) {
+      remote_babushka "benhoskings:unicorn running", :app_root => "~/current", :env => env
+    }
   }
 end
 
