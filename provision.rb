@@ -1,4 +1,16 @@
+dep 'no known_hosts conflicts', :host do
+  met? {
+    "~/.ssh/known_hosts".p.grep(/\b#{Regexp.escape(host)}\b/).empty?.tap {|result|
+      log_ok "#{host} doesn't appear in #{'~/.ssh/known_hosts'.p}." if result
+    }
+  }
+  meet {
+    shell "sed -i '' -e '/#{Regexp.escape(host)}/d' ~/.ssh/known_hosts"
+  }
+end
+
 dep 'public key in place', :host, :keys do
+  requires 'no known_hosts conflicts'.with(host)
   met? {
     shell("ssh -o PasswordAuthentication=no root@#{host} 'true'").tap {|result|
       log "root@#{host} is#{"n't" unless result} accessible via publickey auth.", :as => (:ok if result)
