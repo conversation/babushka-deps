@@ -93,7 +93,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   }
 
   prepare {
-    unmeetable! "OK, bailing." if @should_confirm unless confirm("Sure you want to provision #{domain} on #{host}?")
+    unmeetable! "OK, bailing." if @should_confirm && !confirm("Sure you want to provision #{domain} on #{host}?")
   }
 
   meet {
