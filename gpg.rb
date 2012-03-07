@@ -8,5 +8,6 @@ dep 'gpg key', :key_id do
     shell('gpg --list-keys') # To initialize the config if it's not there
     shell("gpg --recv-keys #{key_id}")
     shell('apt-key add -', :input => shell("gpg --export --armor #{key_id}"))
+    shell('apt-get update')
   }
 end
