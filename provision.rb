@@ -60,7 +60,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
       remote_babushka 'conversation:ruby 1.9.managed', :version => '1.9.3', :patchlevel => 'p0'
 
       # All the system-wide config for this app, like packages and user accounts.
-      remote_babushka "conversation:system provisioned", :host_name => host, :app_user => app_user, :key => keys
+      remote_babushka "conversation:system provisioned", :env => env, :app_user => app_user, :key => keys
     }
 
     as(app_user) {
@@ -80,9 +80,9 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   }
 end
 
-dep 'system provisioned', :host_name, :app_user, :key do
+dep 'system provisioned', :env, :app_user, :key do
   requires [
-    'benhoskings:system'.with(:host_name => host_name),
+    'benhoskings:system'.with(:host_name => "#{env}-#{Time.now.strftime('%Y-%m-%d')}"),
     'benhoskings:user setup'.with(:key => key),
     'benhoskings:lamp stack removed',
     'benhoskings:postfix removed',
