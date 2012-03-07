@@ -77,19 +77,23 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
 
       response_code = cmd.stderr.val_for('HTTP/1.1')
       if response_code != '200 OK'
+        @should_confirm = true
         log_warn "http://#{domain}#{check_path} on #{host} responded with #{response_code}:\n#{cmd.stdout}"
-        unmeetable! unless confirm("Sure you want to provision #{domain} on it?")
       else
         log_ok "#{domain}#{check_path} responded with 200 OK."
 
         if !cmd.stdout[/#{Regexp.escape(expected_content)}/]
+          @should_confirm = true
           log_warn "#{domain} doesn't contain '#{expected_content}'."
-          unmeetable! unless confirm("Sure you want to provision #{domain} on it?")
         else
           log_ok "#{domain} on #{host} says '#{expected_content}'."
         end
       end
     end
+  }
+
+  prepare {
+    unmeetable! "OK, bailing." if @should_confirm unless confirm("Sure you want to provision #{domain} on #{host}?")
   }
 
   meet {
