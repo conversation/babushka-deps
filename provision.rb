@@ -41,7 +41,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   end
 
   def remote_babushka dep_spec, args = {}
-    unless remote_shell('babushka', dep_spec, '--defaults', '--colour', *args.keys.map {|k| "#{k}=#{args[k]}" })
+    unless remote_shell('babushka', dep_spec, '--defaults', '--colour', '--show-args', *args.keys.map {|k| "#{k}=#{args[k]}" })
       unmeetable! "The remote babushka reported an error."
     end
   end
