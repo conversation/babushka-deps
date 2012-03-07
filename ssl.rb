@@ -29,5 +29,6 @@ dep 'ssl cert in place', :nginx_prefix, :domain, :cert_source, :template => 'ben
   meet {
     sudo "mkdir -p #{cert_path}"
     names.each {|name| sudo "cp '#{cert_source / name}' #{cert_path.to_s.end_with('/')}" }
+    sudo "chmod 600 '#{cert_path / domain}'.*"
   }
 end
