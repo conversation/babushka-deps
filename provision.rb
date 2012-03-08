@@ -71,7 +71,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     cmd = raw_shell("curl -v -H 'Host: #{domain}' http://#{host}#{check_path}")
 
     if !cmd.ok?
-      log "Couldn't reach #{host}."
+      log "Couldn't connect to http://#{host}."
     else
       log_ok "#{host} is up."
 
