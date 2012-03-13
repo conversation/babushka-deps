@@ -35,8 +35,8 @@ end
 
 dep 'sharejs db permissions', :username, :db_name do
   # Access to draft tables
-  requires 'table access'.with(username, db_name, "article_draft_operations")
-  requires 'table access'.with(username, db_name, "article_draft_snapshots" )
+  requires 'table access'.with(username, db_name, "sharejs.article_draft_operations")
+  requires 'table access'.with(username, db_name, "sharejs.article_draft_snapshots")
 end
 
 dep 'table access', :username, :db_name, :table_name do
