@@ -1,3 +1,12 @@
+dep 'upload assets', :env do
+  met? {
+    shell? "bundle exec rake tc:assets:upload_required RAILS_ENV=#{env}"
+  }
+  meet {
+    shell "bundle exec rake tc:assets:upload RAILS_ENV=#{env}", log: true
+  }
+end
+
 dep 'db backed up', :env, :db_name do
   env.default!(ENV['RAILS_ENV'] || 'production')
   db_name.default!(
