@@ -2,7 +2,7 @@ dep 'aspell.managed'
 
 dep 'aspell dictionary.managed', :for => :linux do
   requires 'aspell.managed'
-  installs 'aspell-en'
+  installs 'aspell-en', 'libaspell-dev'
   provides []
 end
 
