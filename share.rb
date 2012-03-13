@@ -5,7 +5,7 @@ dep 'sharejs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
     'benhoskings:user setup'.with(:key => key),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
 
-    "conversation:sharejs".with(:username => domain, :env => env, :domain => server_name),
+    "conversation:sharejs".with(app_user, env),
 
     "benhoskings:vhost enabled.nginx".with(
       :type => 'proxy',
