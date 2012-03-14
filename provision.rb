@@ -142,6 +142,7 @@ end
 
 dep 'app provisioned', :env, :domain, :app_user, :app_root, :key do
   requires [
+    "app env vars set".with(env),
     "#{app_user} app".with(env, domain, app_user, app_root, key)
   ]
 end
