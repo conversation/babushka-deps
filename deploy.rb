@@ -3,7 +3,7 @@ dep 'upload assets', :env do
     shell? "bundle exec rake tc:assets:upload_required RAILS_ENV=#{env}"
   }
   meet {
-    shell "bundle exec rake tc:assets:upload RAILS_ENV=#{env}", log: true
+    shell "bundle exec rake tc:assets:upload RAILS_ENV=#{env}", :log => true
   }
 end
 
