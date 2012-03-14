@@ -81,11 +81,13 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
       else
         log_ok "#{domain}#{check_path} responded with 200 OK."
 
-        if !cmd.stdout[/#{Regexp.escape(expected_content)}/]
+        check_output = shell("curl -v -H 'Host: #{domain}' http://#{host}")
+
+        if !check_output[/#{Regexp.escape(expected_content)}/]
           @should_confirm = true
-          log_warn "#{domain} doesn't contain '#{expected_content}'."
+          log_warn "#{domain} on #{host} doesn't contain '#{expected_content}'."
         else
-          log_ok "#{domain} on #{host} says '#{expected_content}'."
+          log_ok "#{domain} on #{host} contains '#{expected_content}'."
         end
       end
     end
