@@ -1,4 +1,4 @@
-dep 'upload assets', :env do
+dep 'upload assets', :env, :deploying do
   met? {
     shell? "bundle exec rake tc:assets:upload_required RAILS_ENV=#{env}"
   }
