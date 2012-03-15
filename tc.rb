@@ -14,7 +14,6 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     'cronjobs'.with(env),
     'delayed job'.with(env),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
-    'delayed job'.with(env),
     'restore db'.with(env, app_user, db_name, app_root),
 
     'benhoskings:rails app'.with(
