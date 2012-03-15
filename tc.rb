@@ -5,12 +5,18 @@ dep 'theconversation.edu.au system', :app_user, :key do
 end
 
 dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
+  def db_name
+    YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
+  end
+
   requires [
     'benhoskings:user setup'.with(:key => key),
     'geoip database'.with(:app_root => app_root),
     'cronjobs'.with(env),
     'delayed job'.with(env),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
+    'delayed job'.with(env),
+    'restore db'.with(env, app_user, db_name, app_root),
 
     'benhoskings:rails app'.with(
       :env => env,
@@ -22,7 +28,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
-    'read-only db permissions'.with(YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database'], 'dw.theconversation.edu.au', 'content')
+    'read-only db permissions'.with(db_name, 'dw.theconversation.edu.au', 'content')
   ]
 end
 
