@@ -10,7 +10,6 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
   end
 
   requires [
-    'benhoskings:user setup'.with(:key => key),
     'geoip database'.with(:app_root => app_root),
     'cronjobs'.with(env),
     'delayed job'.with(env),

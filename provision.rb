@@ -143,6 +143,7 @@ end
 
 dep 'app provisioned', :env, :domain, :app_user, :app_root, :key do
   requires [
+    'benhoskings:user setup'.with(:key => key),
     "app env vars set".with(env),
     "#{app_user} app".with(env, domain, app_user, app_root, key)
   ]
