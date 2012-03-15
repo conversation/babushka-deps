@@ -100,7 +100,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   meet {
     as('root') {
       # run this separately to ensure everything is running in UTF-8 mode
-      remote_babushka 'set.locale'.with('en_AU')
+      remote_babushka 'set.locale', :locale_name => 'en_AU'
 
       # Run this separately since it changes the ruby binary we're running against.
       remote_babushka 'conversation:ruby 1.9.managed', :version => '1.9.3', :patchlevel => 'p0'
