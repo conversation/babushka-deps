@@ -7,7 +7,7 @@ dep 'geoip.managed' do
 end
 
 dep 'geoip database', :source, :app_root do
-  source.default!('http://www.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz')
+  source.default!('http://c10736763.r63.cf2.rackcdn.com/GeoLiteCity.dat.gz')
   app_root.default('~/current')
   def local_path
     app_root / 'db' / File.basename(source.to_s.chomp('.gz'))
