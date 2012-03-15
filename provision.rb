@@ -107,6 +107,8 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     }
 
     as(app_user) {
+      remote_babushka 'benhoskings:user setup', :key => key
+
       # Set up the app user on the server to accept pushes to ~/current.
       remote_babushka 'benhoskings:web repo'
 
@@ -143,7 +145,6 @@ end
 
 dep 'app provisioned', :env, :domain, :app_user, :app_root, :key do
   requires [
-    'benhoskings:user setup'.with(:key => key),
     "app env vars set".with(env),
     "#{app_user} app".with(env, domain, app_user, app_root, key)
   ]
