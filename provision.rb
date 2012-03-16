@@ -75,7 +75,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     else
       log_ok "#{host} is up."
 
-      if cmd.stderr.val_for('HTTP/1.1') != '200 OK'
+      if cmd.stderr.val_for('Status') != '200 OK'
         @should_confirm = true
         log_warn "http://#{domain}#{check_path} on #{host} reported a problem:\n#{cmd.stdout}"
       else
