@@ -5,15 +5,7 @@ dep 'sharejs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
     'benhoskings:user setup'.with(:key => key),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
 
-    "conversation:sharejs".with(app_user, env),
-
-    "benhoskings:vhost enabled.nginx".with(
-      :type => 'proxy',
-      :domain => domain,
-      :proxy_host => 'localhost',
-      :proxy_port => 9000,
-      :enable_https => 'yes'
-    )
+    "sharejs".with(:username => app_user, :env => env)
   ]
 end
 
@@ -38,6 +30,6 @@ dep 'sharejs.theconversation.edu.au common packages' do
     'bundler.gem',
     'postgres.managed',
     "npm",
-    "conversation:coffeescript.src"
+    "coffeescript.src"
   ]
 end
