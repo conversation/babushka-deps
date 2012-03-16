@@ -112,7 +112,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     as(app_user) {
       remote_babushka 'benhoskings:user setup', :key => keys
 
-      remote_babushka 'app env vars set', :env => env
+      remote_babushka 'conversation:app env vars set', :env => env
 
       # Set up the app user on the server to accept pushes to ~/current.
       remote_babushka 'benhoskings:web repo'
