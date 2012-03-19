@@ -23,7 +23,7 @@ end
 
 dep 'sharejs app', :username, :db_name do
   requires [
-    'sharejs db permissions'.with(username, db_name),
+    'schema ownership'.with(username, db_name, "sharejs"),
     'npm packages installed',
   ]
 end
@@ -33,12 +33,22 @@ dep 'npm packages installed', :template => "benhoskings:task" do
   run { shell %Q{npm install}, :cd => "~/current" }
 end
 
-dep 'sharejs db permissions', :username, :db_name do
-  requires 'schema access'.with(username, db_name, "sharejs", "sharejs.article_draft_snapshots")
+dep 'schema exists', :username, :db_name, :schema_name do
+  requires 'benhoskings:postgres access'.with(username)
+  met? {
+    shell?("psql #{db_name} -t -c '\\dn'").val_for(schema_name)
+  }
+  meet {
+    sudo %Q{psql #{db_name} -c 'CREATE SCHEMA #{schema_name} AUTHORIZATION #{username}}, :as => 'postgres'
+  }
 end
 
-dep 'schema access', :username, :db_name, :schema_name, :check_table_name do
+dep 'schema ownership', :username, :db_name, :schema_name do
   requires 'benhoskings:postgres access'.with(username)
-  met? { shell? "psql #{db_name} -c 'SELECT * FROM #{check_table_name} LIMIT 1'" }
-  meet { sudo %Q{psql #{db_name} -c 'GRANT ALL PRIVILEGES ON SCHEMA #{schema_name} TO "#{username}"'}, :as => 'postgres' }
+  met? {
+    shell?("psql #{db_name} -t -c '\\dn'").val_for(schema_name) == "| #{username}"
+  }
+  meet {
+    sudo %Q{psql #{db_name} -c 'ALTER SCHEMA #{schema_name} OWNER TO #{username}}, :as => 'postgres'
+  }
 end
