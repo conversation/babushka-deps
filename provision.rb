@@ -53,9 +53,20 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   end
 
   def remote_babushka dep_spec, args = {}
-    unless remote_shell('babushka', dep_spec, '--defaults', '--update', '--show-args', *args.keys.map {|k| "#{k}=#{args[k]}" })
-      unmeetable! "The remote babushka reported an error."
-    end
+    opts = [
+      '--defaults',
+      '--update',
+      '--show-args'
+    ]
+
+    remote_shell(
+      'babushka',
+      dep_spec,
+      *opts,
+      *args.keys.map {|k| "#{k}=#{args[k]}" }
+    ).tap {|result|
+      unmeetable! "The remote babushka reported an error." unless result
+    }
   end
 
   requires_when_unmet 'public key in place'.with(host, keys)
