@@ -44,7 +44,7 @@ dep 'schema exists', :username, :db_name, :schema_name do
 end
 
 dep 'schema ownership', :username, :db_name, :schema_name do
-  requires 'benhoskings:postgres access'.with(username)
+  requires 'schema exists'.with(username, db_name, schema_name)
   met? {
     shell?("psql #{db_name} -t -c '\\dn'").val_for(schema_name) == "| #{username}"
   }
