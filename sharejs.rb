@@ -1,6 +1,6 @@
-dep 'sharejs', :username, :env do
+dep 'sharejs', :username, :env, :db_name do
   requires [
-    'sharejs.supervisor'.with(:username => username, :env => env)
+    'sharejs.supervisor'.with(username, env, db_name)
   ]
 end
 

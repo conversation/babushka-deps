@@ -5,7 +5,7 @@ dep 'sharejs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
     'benhoskings:user setup'.with(:key => key),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
 
-    "sharejs".with(:username => app_user, :env => env)
+    "sharejs".with(username, env, "tc_#{env}")
   ]
 end
 
