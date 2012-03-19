@@ -55,9 +55,11 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   def remote_babushka dep_spec, args = {}
     opts = [
       '--defaults',
-      '--update',
+      ('--update' if Babushka::Base.task.opt(:update)),
+      ('--debug' if Babushka::Base.task.opt(:debug)),
+      ('--colour' if $stdin.tty?),
       '--show-args'
-    ]
+    ].compact
 
     remote_shell(
       'babushka',
