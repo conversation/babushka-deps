@@ -1,6 +1,6 @@
 dep 'no known_hosts conflicts', :host do
   met? {
-    "~/.ssh/known_hosts".p.grep(/\b#{Regexp.escape(host)}\b/).empty?.tap {|result|
+    "~/.ssh/known_hosts".p.grep(/\b#{Regexp.escape(host)}\b/).blank?.tap {|result|
       log_ok "#{host} doesn't appear in #{'~/.ssh/known_hosts'.p}." if result
     }
   }
