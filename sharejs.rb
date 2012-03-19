@@ -39,7 +39,7 @@ dep 'schema exists', :username, :db_name, :schema_name do
     shell?("psql #{db_name} -t -c '\\dn'").val_for(schema_name)
   }
   meet {
-    sudo %Q{psql #{db_name} -c 'CREATE SCHEMA #{schema_name} AUTHORIZATION #{username}}, :as => 'postgres'
+    sudo %Q{psql #{db_name} -c 'CREATE SCHEMA #{schema_name} AUTHORIZATION #{username}'}, :as => 'postgres'
   }
 end
 
@@ -49,6 +49,6 @@ dep 'schema ownership', :username, :db_name, :schema_name do
     shell?("psql #{db_name} -t -c '\\dn'").val_for(schema_name) == "| #{username}"
   }
   meet {
-    sudo %Q{psql #{db_name} -c 'ALTER SCHEMA #{schema_name} OWNER TO #{username}}, :as => 'postgres'
+    sudo %Q{psql #{db_name} -c 'ALTER SCHEMA #{schema_name} OWNER TO #{username}'}, :as => 'postgres'
   }
 end
