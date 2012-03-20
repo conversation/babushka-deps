@@ -1,7 +1,9 @@
 dep 'read-only schema access', :username, :owner_name, :db_name, :schema_name, :check_table do
   requires 'schema exists'.with(owner_name, db_name, schema_name)
   met? {
-    raw_shell("psql #{db_name} -t -c '\\dn'", :as => 'postgres').stdout.val_for(schema_name) == "| #{username}"
+    cmd = raw_shell("psql #{db_name} -t -c 'SELECT id FROM #{check_table} LIMIT 1'", :as => 'postgres')
+    # If we have schema access, the only reason this should fail is if we can't access the table itself.
+    cmd.ok? || cmd.stderr['permission denied for relation']
   }
   meet {
     sudo %Q{psql #{db_name} -c 'GRANT USAGE ON SCHEMA "#{schema_name}" TO "#{username}"'}, :as => 'postgres'
