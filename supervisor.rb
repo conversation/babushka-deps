@@ -15,8 +15,7 @@ meta :supervisor do
     requires 'supervisor.managed'
     meet {
       render_erb "supervisor/daemon.conf", :to => conf_dest, :sudo => true
-      sudo "supervisorctl reread"
-      sudo "supervisorctl start #{conf_name}"
+      sudo "supervisorctl reload"
       sleep start_delay
     }
   }
