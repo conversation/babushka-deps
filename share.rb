@@ -3,7 +3,6 @@ dep 'sharejs.theconversation.edu.au system', :app_user, :key
 dep 'sharejs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
   requires [
     'benhoskings:user setup'.with(:key => key),
-    'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
 
     "sharejs".with(app_user, env, "tc_#{env}")
   ]
