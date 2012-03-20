@@ -24,10 +24,12 @@ dep 'sharejs.supervisor', :username, :env, :db_name do
   }
 end
 
-dep 'sharejs app', :username, :db_name do
+dep 'sharejs app', :username, :tc_username, :db_name do
+  tc_username.default!('theconversation.edu.au')
   requires [
     'schema ownership'.with(username, db_name, "sharejs"),
     'sharejs tables exist'.with(username, db_name),
+    'read-only schema access'.with(tc_username, username, db_name, 'sharejs', 'article_draft_snapshots'),
     'npm packages installed',
   ]
 end
@@ -86,5 +88,15 @@ dep 'schema ownership', :username, :db_name, :schema_name do
   }
   meet {
     sudo %Q{psql #{db_name} -c 'ALTER SCHEMA "#{schema_name}" OWNER TO "#{username}"'}, :as => 'postgres'
+  }
+end
+
+dep 'read-only schema access', :username, :owner_name, :db_name, :schema_name do
+  requires 'schema exists'.with(owner_name, db_name, schema_name)
+  met? {
+    raw_shell("psql #{db_name} -t -c '\\dn'", :as => 'postgres').stdout.val_for(schema_name) == "| #{username}"
+  }
+  meet {
+    sudo %Q{psql #{db_name} -c 'GRANT USAGE ON SCHEMA "#{schema_name}" TO "#{username}"'}, :as => 'postgres'
   }
 end
