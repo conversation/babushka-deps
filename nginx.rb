@@ -34,6 +34,7 @@ dep 'vhost configured', :type, :domain, :domain_aliases, :path, :listen_host, :l
 
   type.default('unicorn').choose(%w[unicorn proxy static])
   path.default("~#{domain}/current".p) if shell?('id', domain)
+  nginx_prefix.default!('/opt/nginx')
 
   requires 'benhoskings:configured.nginx'.with(nginx_prefix)
   requires 'benhoskings:unicorn configured'.with(path) if type == 'unicorn'
