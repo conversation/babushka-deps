@@ -30,6 +30,7 @@ dep 'sharejs app', :username, :tc_username, :db_name do
     'schema ownership'.with(username, db_name, "sharejs"),
     'sharejs tables exist'.with(username, db_name),
     'read-only schema access'.with(tc_username, username, db_name, 'sharejs', 'article_draft_snapshots'),
+    'read-only db permissions'.with(db_name, 'sharejs', tc_username, 'article_draft_snapshots'),
     'npm packages installed',
   ]
 end
