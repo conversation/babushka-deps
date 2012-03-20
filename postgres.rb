@@ -26,7 +26,7 @@ dep 'table exists', :username, :db_name, :table_name, :table_schema do
     shell? "psql #{db_name} -t -c '\\d #{table_name}'", :as => 'postgres'
   }
   meet {
-    sudo %Q{psql #{db_name} -c 'CREATE TABLE #{table_name} (#{table_schema});}, :as => 'postgres'
+    sudo %Q{psql #{db_name} -c 'CREATE TABLE #{table_name} (#{table_schema})'}, :as => 'postgres'
   }
 end
 
