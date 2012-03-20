@@ -16,6 +16,17 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
     'restore db'.with(env, app_user, db_name, app_root),
 
+    # Configure this first, to write our custom config out
+    'vhost enabled.nginx'.with(
+      :type => 'unicorn',
+      :domain => domain,
+      :path => app_root,
+      :proxy_host => 'localhost',
+      :proxy_port => 9000,
+      :enable_https => 'yes',
+      :force_https => 'no'
+    ),
+
     'benhoskings:rails app'.with(
       :env => env,
       :domain => domain,
