@@ -15,6 +15,7 @@ dep 'sharejs.supervisor', :username, :env, :db_name do
   environment %Q{NODE_ENV="#{env}"}
   user username
   directory "/srv/http/#{user}/current"
+  restart 'always'
 
   start_delay 10
 
