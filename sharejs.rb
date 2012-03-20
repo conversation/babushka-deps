@@ -27,13 +27,46 @@ end
 dep 'sharejs app', :username, :db_name do
   requires [
     'schema ownership'.with(username, db_name, "sharejs"),
+    'sharejs tables exist'.with(username, db_name),
     'npm packages installed',
   ]
+end
+
+dep 'sharejs tables exist', :username, :db_name do
+  requires 'table exists'.with(username, db_name, 'sharejs.article_draft_operations', <<-SQL)
+    doc text NOT NULL,
+    v int4 NOT NULL,
+    op text NOT NULL,
+    meta text NOT NULL,
+    CONSTRAINT operations_pkey PRIMARY KEY (doc, v)
+  SQL
+
+  requires 'table exists'.with(username, db_name, 'sharejs.article_draft_snapshots', <<-SQL)
+    doc text NOT NULL,
+    v int4 NOT NULL,
+    type text NOT NULL,
+    snapshot text NOT NULL,
+    meta text NOT NULL,
+    created_at timestamp(6) NOT NULL,
+    CONSTRAINT snapshots_pkey PRIMARY KEY (doc, v)
+  SQL
 end
 
 dep 'npm packages installed', :template => "benhoskings:task" do
   # No apparent equivalent for bundle check command
   run { shell %Q{npm install}, :cd => "~/current" }
+end
+
+dep 'table exists', :username, :db_name, :table_name, :table_schema do
+  if table_name['.']
+    requires 'schema exists'.with(username, db_name, table_name.to_s.split('.', 2).first)
+  end
+  met? {
+    shell? "psql #{db_name} -t -c '\\d #{table_name}'", :as => 'postgres'
+  }
+  meet {
+    sudo %Q{psql #{db_name} -c 'CREATE TABLE #{table_name} (#{table_schema});}, :as => 'postgres'
+  }
 end
 
 dep 'schema exists', :username, :db_name, :schema_name do
