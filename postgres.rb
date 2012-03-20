@@ -1,4 +1,4 @@
-dep 'read-only db permissions', :db_name, :schema, :username, :check_table do
+dep 'read-only db access', :db_name, :schema, :username, :check_table do
   schema.default!('public')
   check_table.default!('users')
   requires 'benhoskings:postgres access'.with(username)

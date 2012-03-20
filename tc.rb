@@ -37,7 +37,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
-    'read-only db permissions'.with(
+    'read-only db access'.with(
       :db_name => db_name,
       :username => 'dw.theconversation.edu.au',
       :check_table => 'content'
