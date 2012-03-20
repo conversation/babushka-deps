@@ -17,7 +17,7 @@ meta :supervisor do
       render_erb "supervisor/daemon.conf", :to => conf_dest, :sudo => true
     }
     after {
-      sudo 'kill -HUP `cat /var/run/supervisord.pid`'
+      sudo "supervisorctl reread && supervisorctl start #{conf_name}"
       sleep start_delay
     }
   }
