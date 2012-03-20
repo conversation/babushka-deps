@@ -1,5 +1,5 @@
-dep 'vhost enabled.nginx', :type, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https do
-  requires 'vhost configured.nginx'.with(type, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix, enable_http, enable_https, force_https)
+dep 'vhost enabled', :type, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https, :template => 'benhoskings:nginx' do
+  requires 'vhost configured'.with(type, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix, enable_http, enable_https, force_https)
   met? { vhost_link.exists? }
   meet {
     sudo "mkdir -p #{nginx_prefix / 'conf/vhosts/on'}"
@@ -8,7 +8,7 @@ dep 'vhost enabled.nginx', :type, :domain, :domain_aliases, :path, :listen_host,
   after { restart_nginx }
 end
 
-dep 'vhost configured.nginx', :type, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https do
+dep 'vhost configured', :type, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https, :template => 'benhoskings:nginx' do
   domain_aliases.default('').ask('Domains to alias (no need to specify www. aliases)')
   listen_host.default!('[::]')
   listen_port.default!('80')
