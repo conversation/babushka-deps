@@ -42,11 +42,13 @@ dep 'nodejs.managed', :version do
     on :apt, 'our apt source'
   }
   version.default!('0.6.10')
+  met? {
+    in_path? "node ~> #{version}"
+  }
   installs {
     via :apt, 'nodejs'
     via :brew, 'node'
   }
-  provides "node ~> #{version}"
 end
 
 dep 'npm.managed', :version do
@@ -55,7 +57,9 @@ dep 'npm.managed', :version do
     otherwise 'nodejs.managed'
   }
   version.default!('1.1.0')
-  provides "npm ~> #{version}"
+  met? {
+    in_path? "npm ~> #{version}"
+  }
 end
 
 dep 'rsync.managed'
