@@ -35,8 +35,8 @@ dep 'vhost configured.nginx', :type, :domain, :domain_aliases, :path, :listen_ho
   type.default('unicorn').choose(%w[unicorn proxy static])
   path.default("~#{domain}/current".p) if shell?('id', domain)
 
-  requires 'configured.nginx'.with(nginx_prefix)
-  requires 'unicorn configured'.with(path) if type == 'unicorn'
+  requires 'benhoskings:configured.nginx'.with(nginx_prefix)
+  requires 'benhoskings:unicorn configured'.with(path) if type == 'unicorn'
 
   met? {
     Babushka::Renderable.new(vhost_conf).from?(dependency.load_path.parent / "nginx/tc_vhost.conf.erb")
