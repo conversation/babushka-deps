@@ -16,7 +16,16 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
     'restore db'.with(env, app_user, db_name, app_root),
 
-    # Configure this first, to write our custom config out
+    'benhoskings:rails app'.with(
+      :env => env,
+      :domain => domain,
+      :username => app_user,
+      :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
+      :enable_https => 'yes',
+      :data_required => 'yes'
+    ),
+
+    # Replace the default config with our own.
     'vhost enabled.nginx'.with(
       :type => 'unicorn',
       :domain => domain,
@@ -25,15 +34,6 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
       :proxy_port => 9000,
       :enable_https => 'yes',
       :force_https => 'no'
-    ),
-
-    'benhoskings:rails app'.with(
-      :env => env,
-      :domain => domain,
-      :username => app_user,
-      :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
-      :enable_https => 'yes',
-      :data_required => 'yes'
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
