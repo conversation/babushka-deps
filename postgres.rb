@@ -1,4 +1,4 @@
-dep 'read-only schema access', :username, :owner_name, :db_name, :schema_name do
+dep 'read-only schema access', :username, :owner_name, :db_name, :schema_name, :check_table do
   requires 'schema exists'.with(owner_name, db_name, schema_name)
   met? {
     raw_shell("psql #{db_name} -t -c '\\dn'", :as => 'postgres').stdout.val_for(schema_name) == "| #{username}"
