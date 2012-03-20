@@ -39,7 +39,7 @@ end
 dep 'schema exists', :username, :db_name, :schema_name do
   requires 'benhoskings:postgres access'.with(username)
   met? {
-    raw_shell("psql #{db_name} -t -c '\\dn'").stdout.val_for(schema_name)
+    raw_shell("psql #{db_name} -t -c '\\dn'", :as => 'postgres').stdout.val_for(schema_name)
   }
   meet {
     sudo %Q{psql #{db_name} -c 'CREATE SCHEMA "#{schema_name}" AUTHORIZATION "#{username}"'}, :as => 'postgres'
@@ -49,7 +49,7 @@ end
 dep 'schema ownership', :username, :db_name, :schema_name do
   requires 'schema exists'.with(username, db_name, schema_name)
   met? {
-    raw_shell("psql #{db_name} -t -c '\\dn'").stdout.val_for(schema_name) == "| #{username}"
+    raw_shell("psql #{db_name} -t -c '\\dn'", :as => 'postgres').stdout.val_for(schema_name) == "| #{username}"
   }
   meet {
     sudo %Q{psql #{db_name} -c 'ALTER SCHEMA "#{schema_name}" OWNER TO "#{username}"'}, :as => 'postgres'
