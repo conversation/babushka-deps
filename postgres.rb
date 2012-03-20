@@ -1,7 +1,7 @@
 dep 'read-only schema access', :username, :owner_name, :db_name, :schema_name, :check_table do
   requires 'schema exists'.with(owner_name, db_name, schema_name)
   met? {
-    cmd = raw_shell("psql #{db_name} -t -c 'SELECT id FROM #{check_table} LIMIT 1'", :as => 'postgres')
+    cmd = raw_shell("psql #{db_name} -t -c 'SELECT * FROM #{check_table} LIMIT 1'", :as => 'postgres')
     # If we have schema access, the only reason this should fail is if we can't access the table itself.
     cmd.ok? || cmd.stderr['permission denied for relation']
   }
@@ -14,7 +14,7 @@ dep 'read-only db access', :db_name, :schema, :username, :check_table do
   schema.default!('public')
   check_table.default!('users')
   requires 'benhoskings:postgres access'.with(username)
-  met? { shell? %Q{psql #{db_name} -c 'SELECT id FROM "#{check_table}" LIMIT 1'}, :sudo => username }
+  met? { shell? %Q{psql #{db_name} -c 'SELECT * FROM "#{check_table}" LIMIT 1'}, :sudo => username }
   meet { sudo %Q{psql #{db_name} -c 'GRANT SELECT ON ALL TABLES IN SCHEMA "#{schema}" TO "#{username}"'}, :as => 'postgres' }
 end
 
