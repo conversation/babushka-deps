@@ -1,12 +1,6 @@
-dep 'sharejs', :username, :env, :db_name do
-  requires [
-    'sharejs.supervisor'.with(username, env, db_name)
-  ]
-end
 
-
-dep 'sharejs.supervisor', :username, :env, :db_name do
-  requires 'sharejs app'.with(username, db_name)
+dep 'sharejs.supervisor', :username, :tc_username, :env, :db_name do
+  requires 'sharejs app'.with(username, tc_username, db_name)
 
   username.default!(shell('whoami'))
   db_name.default!("tc_#{env}")
