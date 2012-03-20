@@ -23,10 +23,10 @@ dep 'table exists', :username, :db_name, :table_name, :table_schema do
     requires 'schema exists'.with(username, db_name, table_name.to_s.split('.', 2).first)
   end
   met? {
-    shell? "psql #{db_name} -t -c '\\d #{table_name}'", :as => 'postgres'
+    shell? "psql #{db_name} -t -c '\\d #{table_name}'", :as => username
   }
   meet {
-    sudo %Q{psql #{db_name} -c 'CREATE TABLE #{table_name} (#{table_schema})'}, :as => 'postgres'
+    sudo %Q{psql #{db_name} -c 'CREATE TABLE #{table_name} (#{table_schema})'}, :as => username
   }
 end
 
