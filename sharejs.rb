@@ -16,6 +16,8 @@ dep 'sharejs.supervisor', :username, :env, :db_name do
   user username
   directory "/srv/http/#{user}/current"
 
+  start_delay 10
+
   met? {
     ((shell("curl -I localhost:9000") || '').val_for('X-Refspec') || '').length > 0
   }

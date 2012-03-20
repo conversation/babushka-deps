@@ -4,6 +4,7 @@ meta :supervisor do
   accepts_list_for :environment
   accepts_value_for :directory
   accepts_value_for :user
+  accepts_value_for :start_delay, 5
   template {
     def conf_name
       basename.gsub(' ', '_')
@@ -17,7 +18,7 @@ meta :supervisor do
     }
     after {
       sudo 'kill -HUP `cat /var/run/supervisord.pid`'
-      sleep 5
+      sleep start_delay
     }
   }
 end
