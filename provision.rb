@@ -53,19 +53,20 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   end
 
   def remote_babushka dep_spec, args = {}
-    opts = [
+    remote_args = [
       '--defaults',
       ('--update' if Babushka::Base.task.opt(:update)),
-      ('--debug' if Babushka::Base.task.opt(:debug)),
+      ('--debug'  if Babushka::Base.task.opt(:debug)),
       ('--colour' if $stdin.tty?),
       '--show-args'
     ].compact
 
+    remote_args.concat args.keys.map {|k| "#{k}=#{args[k]}" }
+
     remote_shell(
       'babushka',
       dep_spec,
-      *opts,
-      *args.keys.map {|k| "#{k}=#{args[k]}" }
+      *remote_args
     ).tap {|result|
       unmeetable! "The remote babushka reported an error." unless result
     }
