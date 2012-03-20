@@ -24,6 +24,7 @@ server {
   <% end %>
 
   server_name <%= server_names.join(' ') %>;
+  root <%= path / 'public' %>;
 
   if ($host !~ ^<%= domain.to_s.gsub('.', '\.') %>$) {
     rewrite ^(.*)$ http://<%= domain %>$1 permanent;
