@@ -49,6 +49,7 @@ dep 'theconversation.edu.au packages' do
   requires [
     'benhoskings:running.nginx',
     'supervisor.managed',
+    'memcached.managed', # for fragment caching
     'theconversation.edu.au common packages'
   ]
 end
@@ -71,7 +72,6 @@ dep 'theconversation.edu.au common packages' do
     'coffeescript.src', # for barista
     'imagemagick.managed', # for paperclip
     'libxml.managed', # for nokogiri
-    'libxslt.managed', # for nokogiri
-    'memcached.managed' # for fragment caching
+    'libxslt.managed' # for nokogiri
   ]
 end
