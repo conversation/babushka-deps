@@ -56,6 +56,7 @@ end
 dep 'theconversation.edu.au dev' do
   requires [
     'theconversation.edu.au common packages',
+    'pv.managed', # for db:production:pull (and it's awesome anyway)
     'phantomjs', # for js testing
     'geoip database'.with(:app_root => '.')
   ]

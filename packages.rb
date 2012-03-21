@@ -62,6 +62,8 @@ dep 'npm.managed', :version do
   }
 end
 
+dep 'pv.managed'
+
 dep 'rsync.managed'
 
 dep 'socat.managed'
