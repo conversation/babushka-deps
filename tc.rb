@@ -1,7 +1,4 @@
 dep 'theconversation.edu.au system', :app_user, :key do
-  requires [
-    'benhoskings:user setup for provisioning'.with("mobwrite.#{app_user}", key),
-  ]
 end
 
 dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
