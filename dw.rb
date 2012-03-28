@@ -12,12 +12,9 @@ dep 'dw.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key d
       :enable_https => 'yes'
     ),
 
-    'benhoskings:db'.with(
+    'benhoskings:existing postgres db'.with(
       :username => app_user,
-      :root => app_root,
-      :env => env,
-      :data_required => 'no',
-      :require_db_deps => 'yes'
+      :db_name => "tc_dw_#{env}"
     )
   ]
 end
