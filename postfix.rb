@@ -1,15 +1,17 @@
-def postfix_conf
-  "/etc/postfix/main.cf"
-end
-
-def restart_postfix
-  if postfix_running?
-    log_shell "restarting postfix", "/etc/init.d/postfix restart", :sudo => true
+meta :postfix do
+  def postfix_conf
+    "/etc/postfix/main.cf"
   end
-end
 
-def postfix_running?
-  shell? "netstat -an | grep -E '^tcp.*[.:]25 +.*LISTEN'"
+  def restart_postfix
+    if postfix_running?
+      log_shell "restarting postfix", "/etc/init.d/postfix restart", :sudo => true
+    end
+  end
+
+  def postfix_running?
+    shell? "netstat -an | grep -E '^tcp.*[.:]25 +.*LISTEN'"
+  end
 end
 
 dep 'postfix.managed'
