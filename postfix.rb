@@ -4,7 +4,7 @@ end
 
 def restart_postfix
   if postfix_running?
-    log_shell "restarting postfix", "invoke.rc-d postfix restart", :sudo => true
+    log_shell "restarting postfix", "/etc/init.d/postfix restart", :sudo => true
   end
 end
 
