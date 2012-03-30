@@ -128,6 +128,8 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
 
       remote_babushka 'conversation:app env vars set', :env => env
 
+      remote_babushka 'conversation:running.postfix'
+
       # Set up the app user on the server to accept pushes to ~/current.
       remote_babushka 'benhoskings:web repo'
 
