@@ -12,7 +12,7 @@ def postfix_running?
   shell? "netstat -an | grep -E '^tcp.*[.:]25 +.*LISTEN'"
 end
 
-def 'postfix.managed'
+dep 'postfix.managed'
 
 dep 'running.postfix' do
 
