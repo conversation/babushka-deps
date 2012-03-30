@@ -17,7 +17,6 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
       :env => env,
       :domain => domain,
       :username => app_user,
-      :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
       :enable_https => 'yes',
       :data_required => 'yes'
     ),
@@ -26,6 +25,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     'vhost enabled'.with(
       :type => 'unicorn',
       :domain => domain,
+      :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
       :path => app_root,
       :proxy_host => 'localhost',
       :proxy_port => 9000,
