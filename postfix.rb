@@ -33,6 +33,9 @@ dep 'running.postfix' do
 end
 
 dep 'configured.postfix' do
+  def hostname
+    shell('hostname -f').chomp
+  end
 
   requires 'postfix.managed'
   met? {
