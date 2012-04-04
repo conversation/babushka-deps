@@ -1,4 +1,8 @@
-dep 'counter.theconversation.edu.au system', :app_user, :key
+dep 'counter.theconversation.edu.au system', :app_user, :key do
+  requires [
+    'benhoskings:user setup for provisioning'.with("dw.theconversation.edu.au", key) # For DW loads from psql on the counter machine
+  ]
+end
 
 dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
   requires [
