@@ -23,7 +23,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
 
     # Replace the default config with our own.
     'vhost enabled'.with(
-      :type => 'unicorn',
+      :app_name => 'tc',
       :domain => domain,
       :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
       :path => app_root,

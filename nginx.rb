@@ -1,5 +1,5 @@
-dep 'vhost enabled', :type, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https, :template => 'benhoskings:nginx' do
-  requires 'vhost configured'.with(type, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix, enable_http, enable_https, force_https)
+dep 'vhost enabled', :app_name, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https, :template => 'benhoskings:nginx' do
+  requires 'vhost configured'.with(app_name, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix, enable_http, enable_https, force_https)
   met? { vhost_link.exists? }
   meet {
     sudo "mkdir -p #{nginx_prefix / 'conf/vhosts/on'}"
@@ -8,7 +8,7 @@ dep 'vhost enabled', :type, :domain, :domain_aliases, :path, :listen_host, :list
   after { restart_nginx }
 end
 
-dep 'vhost configured', :type, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https, :template => 'benhoskings:nginx' do
+dep 'vhost configured', :app_name, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https, :template => 'benhoskings:nginx' do
   domain_aliases.default('').ask('Domains to alias (no need to specify www. aliases)')
   listen_host.default!('[::]')
   listen_port.default!('80')
@@ -32,18 +32,17 @@ dep 'vhost configured', :type, :domain, :domain_aliases, :path, :listen_host, :l
     ).uniq
   end
 
-  type.default('unicorn').choose(%w[unicorn proxy static])
   path.default("~#{domain}/current".p) if shell?('id', domain)
   nginx_prefix.default!('/opt/nginx')
 
   requires 'benhoskings:configured.nginx'.with(nginx_prefix)
-  requires 'benhoskings:unicorn configured'.with(path) if type == 'unicorn'
+  requires 'benhoskings:unicorn configured'.with(path)
 
   met? {
-    Babushka::Renderable.new(vhost_conf).from?(dependency.load_path.parent / "nginx/tc_vhost.conf.erb")
+    Babushka::Renderable.new(vhost_conf).from?(dependency.load_path.parent / "nginx/#{app_name}_vhost.conf.erb")
   }
   meet {
     sudo "mkdir -p #{nginx_prefix / 'conf/vhosts'}"
-    render_erb "nginx/tc_vhost.conf.erb", :to => vhost_conf, :sudo => true
+    render_erb "nginx/#{app_name}_vhost.conf.erb", :to => vhost_conf, :sudo => true
   }
 end
