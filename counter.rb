@@ -17,6 +17,15 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
       :data_required => 'no'
     ),
 
+    # Replace the default config with our own.
+    'vhost enabled'.with(
+      :app_name => 'counter',
+      :domain => domain,
+      :path => app_root,
+      :enable_https => 'yes',
+      :force_https => 'no'
+    ),
+
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
     'read-only db access'.with(
       :db_name => YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database'],
