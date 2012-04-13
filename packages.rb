@@ -105,3 +105,19 @@ end
 dep 'tidy.managed' do
   provides 'tidy'
 end
+
+dep 'graphite-web.pip' do
+  requires %w[carbon.pip whisper.pip django.pip django-tagging.pip uwsgi.pip simplejson.pip]
+end
+
+dep 'carbon.pip'
+
+dep 'whisper.pip'
+
+dep 'django.pip'
+
+dep 'django-tagging.pip'
+
+dep 'uwsgi.pip'
+
+dep 'simplejson.pip'
