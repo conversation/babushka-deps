@@ -50,7 +50,8 @@ dep 'theconversation.edu.au packages' do
     'benhoskings:running.nginx',
     'supervisor.managed',
     'memcached.managed', # for fragment caching
-    'theconversation.edu.au common packages'
+    'theconversation.edu.au common packages',
+    'socat.managed' # for DB tunnelling
   ]
 end
 
