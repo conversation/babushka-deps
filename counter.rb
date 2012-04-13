@@ -39,7 +39,9 @@ dep 'counter.theconversation.edu.au packages' do
   requires [
     'benhoskings:running.nginx',
     'postgres.managed',
-    'geoip.managed' # for geoip-c
+    'geoip.managed', # for geoip-c
+    'libxml.managed', # for nokogiri
+    'libxslt.managed' # for nokogiri
   ]
 end
 
