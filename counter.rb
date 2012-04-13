@@ -41,7 +41,8 @@ dep 'counter.theconversation.edu.au packages' do
     'postgres.managed',
     'geoip.managed', # for geoip-c
     'libxml.managed', # for nokogiri
-    'libxslt.managed' # for nokogiri
+    'libxslt.managed', # for nokogiri
+    'socat.managed' # for DB tunnelling
   ]
 end
 
