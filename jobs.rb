@@ -1,10 +1,21 @@
 dep 'jobs.theconversation.edu.au system', :app_user, :key
 
-dep 'jobs.theconversation.edu.au app', :username, :db_name, :env do
+dep 'jobs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
+  def db_name
+    YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
+  end
+
   requires [
     'cronjobs'.with(env),
     'delayed job'.with(env),
-    'postgres extension'.with(username, db_name, 'pg_trgm')
+    'postgres extension'.with(app_user, db_name, 'pg_trgm'),
+    'benhoskings:rails app'.with(
+      :env => env,
+      :domain => domain,
+      :username => app_user,
+      :enable_https => 'yes',
+      :data_required => 'yes'
+    )
   ]
 end
 
