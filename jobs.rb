@@ -9,6 +9,7 @@ dep 'jobs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key
     'cronjobs'.with(env),
     'delayed job'.with(env),
     'postgres extension'.with(app_user, db_name, 'pg_trgm'),
+    'ssl certificate'.with(env, domain, 'jobs.theconversation.edu.au'),
     'benhoskings:rails app'.with(
       :env => env,
       :domain => domain,
