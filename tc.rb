@@ -13,6 +13,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     'geoip database'.with(:app_root => app_root),
     'cronjobs'.with(env),
     'delayed job'.with(env),
+    'postgres extension'.with(app_user, db_name, 'pg_trgm'),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
     'restore db'.with(env, app_user, db_name, app_root),
 
