@@ -150,9 +150,19 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   }
 end
 
+dep 'localhost hosts entry' do
+  met? {
+    "/etc/hosts".p.grep(/^127\.0\.0\.1/)
+  }
+  meet {
+    "/etc/hosts".p.append("127.0.0.1 localhost.localdomain localhost\n")
+  }
+end
+
 dep 'system provisioned', :env, :app_user, :key do
   requires [
     'benhoskings:utc',
+    'conversation:localhost hosts entry',
     'benhoskings:system'.with(:host_name => "#{env}-#{Time.now.strftime('%Y-%m-%d')}"),
     'benhoskings:user setup'.with(:key => key),
     'benhoskings:lamp stack removed',
