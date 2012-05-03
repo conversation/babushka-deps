@@ -69,6 +69,7 @@ dep 'theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
     'postgres.managed',
+    'postgresql-contrib.managed', # for search
     'geoip.managed', # for geoip-c
     'aspell dictionary.managed',
     'coffeescript.src', # for barista

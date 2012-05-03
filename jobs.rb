@@ -36,11 +36,11 @@ dep 'jobs.theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
     'postgres.managed',
+    'postgresql-contrib.managed', # for search
     'libxml.managed', # for nokogiri
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
     'coffeescript.src', # for barista
-    'postgresql-contrib.managed', # for search
     'tidy.managed' # for upmark
   ]
 end
