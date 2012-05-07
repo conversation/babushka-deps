@@ -99,6 +99,10 @@ dep 'qt-dev.managed' do
 end
 
 dep 'postgresql-contrib.managed' do
+  installs {
+    via :apt, 'postgresql-contrib'
+    otherwise []
+  }
   provides []
 end
 
