@@ -37,6 +37,7 @@ end
 
 dep 'counter.theconversation.edu.au packages' do
   requires [
+    'curl.lib',
     'benhoskings:running.nginx',
     'postgres.managed',
     'geoip.managed', # for geoip-c

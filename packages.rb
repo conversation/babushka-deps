@@ -10,6 +10,11 @@ dep 'bundler.gem' do
   provides 'bundle'
 end
 
+# Actually headers, but 'lib' will do the trick for now.
+dep 'curl.lib' do
+  installs 'libcurl4-openssl-dev'
+end
+
 dep 'libxml.managed' do
   installs { via :apt, 'libxml2-dev' }
   provides []

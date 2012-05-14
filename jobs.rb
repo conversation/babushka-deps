@@ -22,6 +22,7 @@ end
 
 dep 'jobs.theconversation.edu.au packages' do
   requires [
+    'curl.lib',
     'benhoskings:running.nginx',
     'supervisor.managed',
     'jobs.theconversation.edu.au common packages'

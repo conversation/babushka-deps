@@ -10,6 +10,7 @@ end
 
 dep 'sharejs.theconversation.edu.au packages' do
   requires [
+    'curl.lib',
     'benhoskings:running.nginx',
     'supervisor.managed',
     'theconversation.edu.au common packages'
