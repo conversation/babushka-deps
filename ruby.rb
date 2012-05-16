@@ -1,4 +1,4 @@
-dep 'ruby 1.9.managed', :version, :patchlevel do
+dep 'ruby 1.9.bin', :version, :patchlevel do
   requires 'our apt source'
 
   version.default!('1.9.3')
