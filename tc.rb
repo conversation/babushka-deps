@@ -74,6 +74,7 @@ dep 'theconversation.edu.au common packages' do
     'geoip.managed', # for geoip-c
     'aspell dictionary.managed',
     'coffeescript.src', # for barista
+    'tidy.bin', # for upmark preprocessing in MarkdownController
     'imagemagick.managed', # for paperclip
     'libxml.managed', # for nokogiri
     'libxslt.managed' # for nokogiri
