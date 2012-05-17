@@ -69,8 +69,6 @@ end
 
 dep 'pv.managed'
 
-dep 'rsync.managed'
-
 dep 'socat.managed'
 
 dep 'supervisor.managed' do
