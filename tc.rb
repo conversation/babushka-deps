@@ -50,17 +50,17 @@ dep 'theconversation.edu.au packages' do
   requires [
     'curl.lib',
     'benhoskings:running.nginx',
-    'supervisor.managed',
-    'memcached.managed', # for fragment caching
+    'supervisor.bin',
+    'memcached.bin', # for fragment caching
     'theconversation.edu.au common packages',
-    'socat.managed' # for DB tunnelling
+    'socat.bin' # for DB tunnelling
   ]
 end
 
 dep 'theconversation.edu.au dev' do
   requires [
     'theconversation.edu.au common packages',
-    'pv.managed', # for db:production:pull (and it's awesome anyway)
+    'pv.bin', # for db:production:pull (and it's awesome anyway)
     'phantomjs', # for js testing
     'geoip database'.with(:app_root => '.')
   ]
@@ -69,14 +69,14 @@ end
 dep 'theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
-    'postgres.managed',
-    'postgresql-contrib.managed', # for search
-    'geoip.managed', # for geoip-c
-    'aspell dictionary.managed',
+    'postgres.bin',
+    'postgresql-contrib.lib', # for search
+    'geoip.bin', # for geoip-c
+    'aspell dictionary.lib',
     'coffeescript.src', # for barista
     'tidy.bin', # for upmark preprocessing in MarkdownController
-    'imagemagick.managed', # for paperclip
-    'libxml.managed', # for nokogiri
-    'libxslt.managed' # for nokogiri
+    'imagemagick.bin', # for paperclip
+    'libxml.lib', # for nokogiri
+    'libxslt.lib' # for nokogiri
   ]
 end

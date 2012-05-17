@@ -14,7 +14,7 @@ meta :postfix do
   end
 end
 
-dep 'postfix.managed'
+dep 'postfix.bin'
 
 dep 'running.postfix' do
 
@@ -39,7 +39,7 @@ dep 'configured.postfix' do
     shell('hostname -f').chomp
   end
 
-  requires 'postfix.managed'
+  requires 'postfix.bin'
   met? {
     Babushka::Renderable.new(postfix_conf).from?(dependency.load_path.parent / "postfix/main.cf.erb")
   }

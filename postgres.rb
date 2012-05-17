@@ -65,7 +65,7 @@ dep 'postgres extension', :username, :db_name, :extension do
   }
 end
 
-dep 'postgres.managed', :version do
+dep 'postgres.bin', :version do
   version.default('9.1')
   requires {
     on :apt, 'benhoskings:set.locale', 'our apt source'

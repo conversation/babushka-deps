@@ -1,9 +1,8 @@
-dep 'aspell.managed'
+dep 'aspell.bin'
 
-dep 'aspell dictionary.managed', :for => :linux do
-  requires 'aspell.managed'
+dep 'aspell dictionary.lib', :for => :linux do
+  requires 'aspell.bin'
   installs 'aspell-en', 'libaspell-dev'
-  provides []
 end
 
 dep 'bundler.gem' do
@@ -15,25 +14,23 @@ dep 'curl.lib' do
   installs 'libcurl4-openssl-dev'
 end
 
-dep 'libxml.managed' do
+dep 'libxml.lib' do
   installs { via :apt, 'libxml2-dev' }
-  provides []
 end
 
-dep 'memcached.managed'
+dep 'memcached.bin'
 
-dep 'libxslt.managed' do
+dep 'libxslt.lib' do
   installs { via :apt, 'libxslt1-dev' }
-  provides []
 end
 
-dep 'imagemagick.managed' do
+dep 'imagemagick.bin' do
   provides %w[compare animate convert composite conjure import identify stream display montage mogrify]
 end
 
 dep 'coffeescript.src', :version do
   version.default!('1.1.2')
-  requires 'nodejs.managed'
+  requires 'nodejs.bin'
   source "http://github.com/jashkenas/coffee-script/tarball/#{version}"
   provides 'coffee'
 
@@ -42,7 +39,7 @@ dep 'coffeescript.src', :version do
   install { shell "bin/cake install", :sudo => Babushka::SrcHelper.should_sudo? }
 end
 
-dep 'nodejs.managed', :version do
+dep 'nodejs.bin', :version do
   requires {
     on :apt, 'our apt source'
   }
@@ -56,10 +53,10 @@ dep 'nodejs.managed', :version do
   }
 end
 
-dep 'npm.managed', :version do
+dep 'npm.bin', :version do
   requires {
-    on :apt, 'our apt source', 'nodejs.managed'
-    otherwise 'nodejs.managed'
+    on :apt, 'our apt source', 'nodejs.bin'
+    otherwise 'nodejs.bin'
   }
   version.default!('1.1.0')
   met? {
@@ -67,11 +64,11 @@ dep 'npm.managed', :version do
   }
 end
 
-dep 'pv.managed'
+dep 'pv.bin'
 
-dep 'socat.managed'
+dep 'socat.bin'
 
-dep 'supervisor.managed' do
+dep 'supervisor.bin' do
   requires 'meld3.pip'
   provides 'supervisord', 'supervisorctl'
 end
@@ -83,30 +80,30 @@ end
 dep 'phantomjs' do
   requires {
     on :linux, 'phantomjs.src'
-    on :osx, dep('phantomjs.managed')
+    on :osx, 'phantomjs.bin'
   }
 end
+
+dep 'phantomjs.bin'
 
 dep 'phantomjs.src' do
   source 'http://phantomjs.googlecode.com/files/phantomjs-1.4.1-source.tar.gz'
   configure { shell 'qmake-qt4' }
   install { sudo 'cp bin/phantomjs /usr/local/bin/' }
-  requires 'qt-dev.managed'
+  requires 'qt-dev.lib'
 end
 
-dep 'qt-dev.managed' do
+dep 'qt-dev.lib' do
   installs {
     on :apt, 'libqt4-dev', 'libqtwebkit-dev', 'qt4-qmake'
   }
-  provides []
 end
 
-dep 'postgresql-contrib.managed' do
+dep 'postgresql-contrib.lib' do
   installs {
     via :apt, 'postgresql-contrib'
     otherwise []
   }
-  provides []
 end
 
 dep 'tidy.bin'

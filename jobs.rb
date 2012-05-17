@@ -24,7 +24,7 @@ dep 'jobs.theconversation.edu.au packages' do
   requires [
     'curl.lib',
     'benhoskings:running.nginx',
-    'supervisor.managed',
+    'supervisor.bin',
     'jobs.theconversation.edu.au common packages'
   ]
 end
@@ -36,11 +36,11 @@ end
 dep 'jobs.theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
-    'postgres.managed',
-    'postgresql-contrib.managed', # for search
-    'libxml.managed', # for nokogiri
-    'libxslt.managed', # for nokogiri
-    'imagemagick.managed', # for paperclip
+    'postgres.bin',
+    'postgresql-contrib.lib', # for search
+    'libxml.lib', # for nokogiri
+    'libxslt.lib', # for nokogiri
+    'imagemagick.bin', # for paperclip
     'coffeescript.src', # for barista
     'tidy.bin' # for upmark
   ]

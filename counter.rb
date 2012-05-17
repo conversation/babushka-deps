@@ -39,11 +39,11 @@ dep 'counter.theconversation.edu.au packages' do
   requires [
     'curl.lib',
     'benhoskings:running.nginx',
-    'postgres.managed',
-    'geoip.managed', # for geoip-c
-    'libxml.managed', # for nokogiri
-    'libxslt.managed', # for nokogiri
-    'socat.managed' # for DB tunnelling
+    'postgres.bin',
+    'geoip.bin', # for geoip-c
+    'libxml.lib', # for nokogiri
+    'libxslt.lib', # for nokogiri
+    'socat.bin' # for DB tunnelling
   ]
 end
 

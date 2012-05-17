@@ -12,7 +12,7 @@ dep 'sharejs.theconversation.edu.au packages' do
   requires [
     'curl.lib',
     'benhoskings:running.nginx',
-    'supervisor.managed',
+    'supervisor.bin',
     'theconversation.edu.au common packages'
   ]
 end
@@ -28,7 +28,7 @@ end
 dep 'sharejs.theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
-    'postgres.managed',
+    'postgres.bin',
     "npm",
     "coffeescript.src"
   ]

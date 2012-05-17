@@ -43,7 +43,7 @@ dep 'nginx-catchall.conf' do
 end
 
 dep 'local fail2ban config' do
-  requires 'fail2ban.managed'
+  requires 'fail2ban.bin'
   met? {
     Babushka::Renderable.new("/etc/fail2ban/jail.local").from?(
       dependency.load_path.parent / "throttling/jail.local"
@@ -54,6 +54,6 @@ dep 'local fail2ban config' do
   }
 end
 
-dep 'fail2ban.managed' do
+dep 'fail2ban.bin' do
   provides %w[fail2ban-client fail2ban-server fail2ban-regex]
 end

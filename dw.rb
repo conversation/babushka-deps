@@ -33,7 +33,7 @@ end
 
 dep 'dw.theconversation.edu.au common packages' do
   requires [
-    'postgres.managed',
-    'socat.managed' # for DB tunnelling
+    'postgres.bin',
+    'socat.bin' # for DB tunnelling
   ]
 end

@@ -1,4 +1,4 @@
-dep 'geoip.managed' do
+dep 'geoip.bin' do
   installs {
     via :apt, 'geoip-bin', 'libgeoip-dev'
     otherwise 'geoip'

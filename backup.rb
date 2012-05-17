@@ -8,7 +8,7 @@ dep 'backup.tc-dev.net app'
 
 dep 'backup.tc-dev.net packages' do
   requires [
-    'postgres.managed',
-    'socat.managed' # for DB tunnelling
+    'postgres.bin',
+    'socat.bin' # for DB tunnelling
   ]
 end
