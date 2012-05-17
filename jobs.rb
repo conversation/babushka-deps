@@ -42,6 +42,6 @@ dep 'jobs.theconversation.edu.au common packages' do
     'libxslt.managed', # for nokogiri
     'imagemagick.managed', # for paperclip
     'coffeescript.src', # for barista
-    'tidy.managed' # for upmark
+    'tidy.bin' # for upmark
   ]
 end

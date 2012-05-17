@@ -111,9 +111,7 @@ dep 'postgresql-contrib.managed' do
   provides []
 end
 
-dep 'tidy.managed' do
-  provides 'tidy'
-end
+dep 'tidy.bin'
 
 dep 'graphite-web.pip' do
   requires %w[carbon.pip whisper.pip django.pip django-tagging.pip uwsgi.pip simplejson.pip]
