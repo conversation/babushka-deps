@@ -14,11 +14,7 @@ meta :cloudfiles do
     end
 
     def cloudfiles
-      app_config['cloudfiles']
-    end
-
-    def app_config
-      YAML.load_file("~/current/config/application.yml".p)
+      "~/current/config/application.yml".p.yaml['cloudfiles']
     end
 
     def fetch_auth_info
