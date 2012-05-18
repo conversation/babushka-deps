@@ -9,7 +9,7 @@ dep 'dw.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key d
       :env => env,
       :domain => domain,
       :username => app_user,
-      :enable_https => 'yes'
+      :enable_https => 'no'
     ),
 
     'benhoskings:existing postgres db'.with(
