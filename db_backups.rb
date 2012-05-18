@@ -29,9 +29,9 @@ dep 'offsite backup.cloudfiles', :db_name, :backup_path do
       local_hash = md5
       remote_hash = upload_info.header.to_hash['etag'].first
       if local_hash != remote_hash
-        unmet "Checksum mismatch: local was #{local_hash} but rackspace reported #{remote_hash}."
+        log_error "Checksum mismatch: local was #{local_hash} but rackspace reported #{remote_hash}."
       else
-        met "Rackspace says the file is intact."
+        log_ok "Rackspace says the file is intact."
       end
     end
   }

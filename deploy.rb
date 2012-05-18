@@ -10,7 +10,7 @@ end
 dep 'db backed up', :env, :db_name do
   env.default!(ENV['RAILS_ENV'] || 'production')
   db_name.default!(
-    yaml('config/database.yml')[env.to_s]['database']
+    'config/database.yml'.p.yaml[env.to_s]['database']
   )
   setup {
     if env != 'production'
