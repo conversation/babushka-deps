@@ -29,7 +29,7 @@ dep 'imagemagick.bin' do
 end
 
 dep 'coffeescript.src', :version do
-  version.default!('1.1.2')
+  version.default!('1.3.3')
   requires 'nodejs.bin'
   source "http://github.com/jashkenas/coffee-script/tarball/#{version}"
   provides "coffee ~> #{version}"
