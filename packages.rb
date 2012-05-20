@@ -32,7 +32,7 @@ dep 'coffeescript.src', :version do
   version.default!('1.1.2')
   requires 'nodejs.bin'
   source "http://github.com/jashkenas/coffee-script/tarball/#{version}"
-  provides 'coffee'
+  provides "coffee ~> #{version}"
 
   configure { true }
   build { shell "bin/cake build" }
