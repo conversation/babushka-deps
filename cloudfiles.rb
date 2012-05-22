@@ -50,7 +50,7 @@ meta :cloudfiles do
     def do_cloud_upload
       cloud_connection {|http|
         File.open(backup_path) {|f|
-          log_block "Streaming #{backup_path.p.basename} to cloudfiles" do
+          log_block "Streaming #{backup_path.p.basename} to #{cloud_info.backup_container}" do
             http.request(
               Net::HTTP::Put.new(
                 File.join(cloud_info.uri.path, cloud_path),
