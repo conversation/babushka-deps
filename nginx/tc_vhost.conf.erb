@@ -52,14 +52,17 @@ server {
     proxy_buffers         4 32k;
   }
 
-  error_page 503 /system/maintenance.html;
-
-  try_files $uri/index.html $uri.html $uri @app;
-
   # POSTs are intended for the app, not cached pages. We use '=' to let @app set the response code.
   error_page 405 = @app;
+  # Respond with the maintenance page whenever the status is 503.
+  error_page 503 /system/maintenance.html;
+
+  # Serve cached pages if they exist; otherwise, punt the request to the app.
+  try_files $uri/index.html $uri.html $uri @app;
 
   location @app {
+    # If the maintenance page exists, then respond with HTTP 503 (which will
+    # serve the maintenace page; see error_page above).
     if (-f $document_root/system/maintenance.html) {
       return 503;
     }
