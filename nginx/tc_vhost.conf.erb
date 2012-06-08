@@ -53,14 +53,17 @@ server {
   }
 
   error_page 503 /system/maintenance.html;
-  location /system/maintenance.html { return 503; }
 
-  try_files $uri/index.html $uri.html $uri /system/maintenance.html @app;
+  try_files $uri/index.html $uri.html $uri @app;
 
   # POSTs are intended for the app, not cached pages. We use '=' to let @app set the response code.
   error_page 405 = @app;
 
   location @app {
+    if (-f $document_root/system/maintenance.html) {
+      return 503;
+    }
+
     proxy_pass           http://<%= upstream_name %>;
     proxy_redirect       off;
 
