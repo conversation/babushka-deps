@@ -2,7 +2,7 @@ dep 'ruby 1.9.bin', :version, :patchlevel do
   requires 'our apt source'
 
   version.default!('1.9.3')
-  patchlevel.default!('p0')
+  patchlevel.default!('p194')
   installs 'ruby1.9.1-full'
   provides "ruby >= #{version}#{patchlevel}", 'gem', 'irb'
 end

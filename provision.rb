@@ -117,7 +117,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
       remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
 
       # Run this separately since it changes the ruby binary we're running against.
-      remote_babushka 'conversation:ruby 1.9.bin', :version => '1.9.3', :patchlevel => 'p0'
+      remote_babushka 'conversation:ruby 1.9.bin', :version => '1.9.3', :patchlevel => 'p194'
 
       # All the system-wide config for this app, like packages and user accounts.
       remote_babushka "conversation:system provisioned", :env => env, :app_user => app_user, :key => keys
