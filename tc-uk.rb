@@ -3,7 +3,6 @@ end
 
 dep 'theconversation.org.uk app', :env, :domain, :app_user, :app_root, :key do
   requires [
-    # Replace the default config with our own.
     'benhoskings:vhost enabled'.with(
       :domain => domain,
       :path => app_root,
