@@ -4,6 +4,7 @@ end
 dep 'theconversation.org.uk app', :env, :domain, :app_user, :app_root, :key do
   requires [
     'benhoskings:vhost enabled'.with(
+      :type => 'static',
       :domain => domain,
       :path => app_root,
       :enable_https => 'no',
