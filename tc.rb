@@ -27,6 +27,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     # Replace the default config with our own.
     'vhost enabled'.with(
       :app_name => 'tc',
+      :env => env,
       :domain => domain,
       :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
       :path => app_root,
@@ -34,6 +35,11 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
       :proxy_port => 9000,
       :enable_https => 'yes',
       :force_https => 'no'
+    ),
+    'http basic logins.nginx'.with(
+      :domain => domain,
+      :username => 'tc',
+      :pass => ''
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.

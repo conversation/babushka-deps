@@ -40,7 +40,16 @@ server {
     break;
   }
 
+  <% if env == 'staging' %>
+    auth_basic 'Restricted';
+    auth_basic_user_file htpasswd;
+  <% end %>
+
   location /sharejs/ {
+    <% if env == 'staging' %>
+      auth_basic off;
+    <% end %>
+
     proxy_pass            http://<%= proxy_host %>:<%= proxy_port %>/;
     proxy_redirect        off;
 
