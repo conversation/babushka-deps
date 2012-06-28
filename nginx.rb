@@ -57,7 +57,6 @@ dep 'http basic logins.nginx', :nginx_prefix, :domain, :username, :pass do
 end
 
 dep 'http basic auth enabled.nginx', :nginx_prefix, :domain do
-  requires 'configured.nginx'.with(nginx_prefix)
   met? { shell("curl -I #{domain}").val_for('HTTP/1.1')[/^401\b/] }
   meet {
     append_to_file %Q{auth_basic 'Restricted';\nauth_basic_user_file htpasswd;}, vhost_common, :sudo => true
