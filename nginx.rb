@@ -1,5 +1,5 @@
-dep 'vhost enabled', :app_name, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https, :template => 'benhoskings:nginx' do
-  requires 'vhost configured'.with(app_name, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix, enable_http, enable_https, force_https)
+dep 'vhost enabled', :app_name, :env, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https, :template => 'benhoskings:nginx' do
+  requires 'vhost configured'.with(app_name, env, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix, enable_http, enable_https, force_https)
   met? { vhost_link.exists? }
   meet {
     sudo "mkdir -p #{nginx_prefix / 'conf/vhosts/on'}"
