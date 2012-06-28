@@ -1,8 +1,11 @@
 dep 'aspell.bin'
 
-dep 'aspell dictionary.lib', :for => :linux do
+dep 'aspell dictionary.lib' do
   requires 'aspell.bin'
-  installs 'aspell-en', 'libaspell-dev'
+  installs {
+    on :linux, 'aspell-en', 'libaspell-dev'
+    otherwise []
+  }
 end
 
 dep 'bundler.gem' do
