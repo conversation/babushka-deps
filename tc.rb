@@ -36,11 +36,12 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
       :enable_https => 'yes',
       :force_https => 'no'
     ),
-    'http basic logins.nginx'.with(
-      :domain => domain,
-      :username => 'tc',
-      :pass => ''
-    ),
+
+    # 'http basic logins.nginx'.with(
+    #   :domain => domain,
+    #   :username => 'tc',
+    #   :pass => ''
+    # ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
     'read-only db access'.with(
