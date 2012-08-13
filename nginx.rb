@@ -96,7 +96,7 @@ end
 
 dep 'startup script.nginx', :nginx_prefix do
   requires 'nginx.src'.with(:nginx_prefix => nginx_prefix)
-  requires 'rcconf.managed'
+  requires 'rcconf.bin'
   met? { shell("rcconf --list").val_for('nginx') == 'on' }
   meet {
     render_erb 'nginx/nginx.init.d.erb', :to => '/etc/init.d/nginx', :perms => '755', :sudo => true

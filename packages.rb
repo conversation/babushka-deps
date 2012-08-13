@@ -108,6 +108,8 @@ dep 'qt-dev.lib' do
   }
 end
 
+dep 'rcconf.bin'
+
 dep 'simplejson.pip'
 
 dep 'socat.bin'
