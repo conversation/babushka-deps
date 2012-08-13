@@ -12,24 +12,7 @@ dep 'bundler.gem' do
   provides 'bundle'
 end
 
-# Actually headers, but 'lib' will do the trick for now.
-dep 'curl.lib' do
-  installs 'libcurl4-openssl-dev'
-end
-
-dep 'libxml.lib' do
-  installs { via :apt, 'libxml2-dev' }
-end
-
-dep 'memcached.bin'
-
-dep 'libxslt.lib' do
-  installs { via :apt, 'libxslt1-dev' }
-end
-
-dep 'imagemagick.bin' do
-  provides %w[compare animate convert composite conjure import identify stream display montage mogrify]
-end
+dep 'carbon.pip'
 
 dep 'coffeescript.src', :version do
   version.default!('1.3.3')
@@ -41,6 +24,36 @@ dep 'coffeescript.src', :version do
   build { shell "bin/cake build" }
   install { shell "bin/cake install", :sudo => Babushka::SrcHelper.should_sudo? }
 end
+
+dep 'curl.lib' do
+  installs 'libcurl4-openssl-dev'
+end
+
+dep 'django.pip'
+
+dep 'django-tagging.pip'
+
+dep 'graphite-web.pip' do
+  requires %w[carbon.pip whisper.pip django.pip django-tagging.pip uwsgi.pip simplejson.pip]
+end
+
+dep 'imagemagick.bin' do
+  provides %w[compare animate convert composite conjure import identify stream display montage mogrify]
+end
+
+dep 'libxml.lib' do
+  installs { via :apt, 'libxml2-dev' }
+end
+
+dep 'libxslt.lib' do
+  installs { via :apt, 'libxslt1-dev' }
+end
+
+dep 'meld3.pip' do
+  provides []
+end
+
+dep 'memcached.bin'
 
 dep 'nodejs.bin', :version do
   requires {
@@ -67,19 +80,6 @@ dep 'npm.bin', :version do
   }
 end
 
-dep 'pv.bin'
-
-dep 'socat.bin'
-
-dep 'supervisor.bin' do
-  requires 'meld3.pip'
-  provides 'supervisord', 'supervisorctl'
-end
-
-dep 'meld3.pip' do
-  provides []
-end
-
 dep 'phantomjs' do
   requires {
     on :linux, 'phantomjs.src'
@@ -96,33 +96,25 @@ dep 'phantomjs.src' do
   requires 'qt-dev.lib'
 end
 
+dep 'pv.bin'
+
 dep 'qt-dev.lib' do
   installs {
     on :apt, 'libqt4-dev', 'libqtwebkit-dev', 'qt4-qmake'
   }
 end
 
-dep 'postgresql-contrib.lib' do
-  installs {
-    via :apt, 'postgresql-contrib'
-    otherwise []
-  }
+dep 'simplejson.pip'
+
+dep 'socat.bin'
+
+dep 'supervisor.bin' do
+  requires 'meld3.pip'
+  provides 'supervisord', 'supervisorctl'
 end
 
 dep 'tidy.bin'
 
-dep 'graphite-web.pip' do
-  requires %w[carbon.pip whisper.pip django.pip django-tagging.pip uwsgi.pip simplejson.pip]
-end
-
-dep 'carbon.pip'
-
-dep 'whisper.pip'
-
-dep 'django.pip'
-
-dep 'django-tagging.pip'
-
 dep 'uwsgi.pip'
 
-dep 'simplejson.pip'
+dep 'whisper.pip'
