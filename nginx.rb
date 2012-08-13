@@ -126,13 +126,15 @@ dep 'nginx.src', :nginx_prefix, :version do
 
   source "http://nginx.org/download/nginx-#{version}.tar.gz"
 
-  configure_args L{ [
-    "--with-ipv6",
-    "--with-pcre",
-    "--with-http_ssl_module",
-    "--with-http_gzip_static_module",
-    "--with-ld-opt='#{shell('pcre-config --libs')}'"
-  ] }
+  configure_args L{
+    [
+      "--with-ipv6",
+      "--with-pcre",
+      "--with-http_ssl_module",
+      "--with-http_gzip_static_module",
+      "--with-ld-opt='#{shell('pcre-config --libs')}'"
+    ].join(' ')
+  }
 
   prefix nginx_prefix
   provides nginx_prefix / 'sbin/nginx'
