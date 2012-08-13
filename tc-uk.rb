@@ -3,7 +3,7 @@ end
 
 dep 'theconversation.org.uk app', :env, :domain, :app_user, :app_root, :key do
   requires [
-    'benhoskings:vhost enabled.nginx'.with(
+    'vhost enabled.nginx'.with(
       :type => 'static',
       :domain => domain,
       :path => app_root,

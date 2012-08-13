@@ -13,7 +13,7 @@ dep 'ssl certificate', :env, :domain, :cert_name do
   end
 end
 
-dep 'ssl cert in place', :nginx_prefix, :domain, :cert_name, :cert_source, :template => 'benhoskings:nginx' do
+dep 'ssl cert in place', :nginx_prefix, :domain, :cert_name, :cert_source, :template => 'nginx' do
   nginx_prefix.default!('/opt/nginx')
   cert_source.default('~/current/config/certs')
   met? {

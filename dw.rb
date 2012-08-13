@@ -19,7 +19,7 @@ end
 dep 'dw.theconversation.edu.au packages' do
   requires [
     'curl.lib',
-    'benhoskings:running.nginx',
+    'running.nginx',
     'dw.theconversation.edu.au common packages'
   ]
 end

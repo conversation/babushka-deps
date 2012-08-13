@@ -55,7 +55,7 @@ end
 dep 'theconversation.edu.au packages' do
   requires [
     'curl.lib',
-    'benhoskings:running.nginx',
+    'running.nginx',
     'supervisor.bin',
     'memcached.bin', # for fragment caching
     'theconversation.edu.au common packages',
