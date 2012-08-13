@@ -80,6 +80,10 @@ dep 'npm.bin', :version do
   }
 end
 
+dep 'pcre.lib' do
+  installs 'libpcre3-dev'
+end
+
 dep 'phantomjs' do
   requires {
     on :linux, 'phantomjs.src'
@@ -108,6 +112,13 @@ dep 'simplejson.pip'
 
 dep 'socat.bin'
 
+dep 'ssl.lib' do
+  installs {
+    via :apt, 'libssl-dev'
+    via :yum, 'openssl-devel'
+  }
+end
+
 dep 'supervisor.bin' do
   requires 'meld3.pip'
   provides 'supervisord', 'supervisorctl'
@@ -118,3 +129,10 @@ dep 'tidy.bin'
 dep 'uwsgi.pip'
 
 dep 'whisper.pip'
+
+dep 'zlib.lib' do
+  installs {
+    via :apt, 'zlib1g-dev'
+    via :yum, 'zlib-devel'
+  }
+end
