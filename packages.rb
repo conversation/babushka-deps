@@ -108,7 +108,9 @@ dep 'qt-dev.lib' do
   }
 end
 
-dep 'rcconf.bin'
+dep 'rcconf.bin' do
+  requires 'whiptail.bin'
+end
 
 dep 'simplejson.pip'
 
@@ -129,6 +131,8 @@ end
 dep 'tidy.bin'
 
 dep 'uwsgi.pip'
+
+dep 'whiptail.bin'
 
 dep 'whisper.pip'
 
