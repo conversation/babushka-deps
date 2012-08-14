@@ -10,8 +10,6 @@ env DAEMON=<%= nginx_bin %>
 env PID=<%= nginx_pid %>
 
 expect fork
-respawn
-respawn limit 10 5
 
 pre-start script
   $DAEMON -t
