@@ -25,7 +25,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     ),
 
     # Replace the default config with our own.
-    'vhost enabled'.with(
+    'vhost enabled.nginx'.with(
       :app_name => 'tc',
       :env => env,
       :domain => domain,
