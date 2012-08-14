@@ -1,17 +1,15 @@
 
-dep 'sharejs.supervisor', :username, :tc_username, :env, :db_name do
+dep 'sharejs.upstart', :username, :tc_username, :env, :db_name do
   requires 'sharejs app'.with(username, tc_username, db_name)
 
   username.default!(shell('whoami'))
   db_name.default!("tc_#{env}")
 
   command "coffee app.coffee"
-  environment %Q{NODE_ENV="#{env}"}
-  user username
-  directory "/srv/http/#{user}/current"
-  restart 'always'
-
-  start_delay 10
+  environment %Q{NODE_ENV=#{env.to_s.inspect}}
+  setuid username
+  chdir "/srv/http/#{username}/current"
+  respawn 'true'
 
   met? {
     ((shell("curl -I localhost:9000") || '').val_for('X-Refspec') || '').length > 0

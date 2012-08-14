@@ -4,7 +4,7 @@ dep 'sharejs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
   requires [
     'benhoskings:user setup'.with(:key => key),
 
-    "sharejs.supervisor".with(app_user, 'theconversation.edu.au', env, "tc_#{env}")
+    "sharejs.upstart".with(app_user, 'theconversation.edu.au', env, "tc_#{env}")
   ]
 end
 
