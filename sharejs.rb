@@ -12,7 +12,7 @@ dep 'sharejs.upstart', :username, :tc_username, :env, :db_name do
   respawn 'true'
 
   met? {
-    ((shell("curl -I localhost:9000") || '').val_for('X-Refspec') || '').length > 0
+    (shell("curl -I localhost:9000", &:stdout).val_for('X-Refspec') || '').length > 0
   }
 end
 
