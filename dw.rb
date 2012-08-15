@@ -18,6 +18,7 @@ end
 
 dep 'dw.theconversation.edu.au packages' do
   requires [
+    'postgres',
     'curl.lib',
     'running.nginx',
     'dw.theconversation.edu.au common packages'

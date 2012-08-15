@@ -54,6 +54,7 @@ end
 
 dep 'theconversation.edu.au packages' do
   requires [
+    'postgres',
     'curl.lib',
     'running.nginx',
     'memcached.bin', # for fragment caching

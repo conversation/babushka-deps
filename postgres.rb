@@ -65,6 +65,10 @@ dep 'postgres extension', :username, :db_name, :extension do
   }
 end
 
+dep 'postgres' do
+  requires 'postgres config'
+end
+
 dep 'postgres config' do
   requires 'postgres.bin'
   def psql cmd

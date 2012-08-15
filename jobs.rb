@@ -21,6 +21,7 @@ end
 
 dep 'jobs.theconversation.edu.au packages' do
   requires [
+    'postgres',
     'curl.lib',
     'running.nginx',
     'jobs.theconversation.edu.au common packages'
