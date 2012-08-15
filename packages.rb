@@ -49,10 +49,6 @@ dep 'libxslt.lib' do
   installs { via :apt, 'libxslt1-dev' }
 end
 
-dep 'meld3.pip' do
-  provides []
-end
-
 dep 'memcached.bin'
 
 dep 'nodejs.bin', :version do
@@ -121,11 +117,6 @@ dep 'ssl.lib' do
     via :apt, 'libssl-dev'
     via :yum, 'openssl-devel'
   }
-end
-
-dep 'supervisor.bin' do
-  requires 'meld3.pip'
-  provides 'supervisord', 'supervisorctl'
 end
 
 dep 'tidy.bin'

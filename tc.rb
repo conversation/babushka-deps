@@ -56,7 +56,6 @@ dep 'theconversation.edu.au packages' do
   requires [
     'curl.lib',
     'running.nginx',
-    'supervisor.bin',
     'memcached.bin', # for fragment caching
     'theconversation.edu.au common packages',
     'socat.bin' # for DB tunnelling
