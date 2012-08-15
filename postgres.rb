@@ -65,6 +65,36 @@ dep 'postgres extension', :username, :db_name, :extension do
   }
 end
 
+dep 'postgres config' do
+  requires 'postgres.bin'
+  def psql cmd
+    shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
+  end
+  def current_settings
+    Hash[
+      psql('SELECT name,setting FROM pg_settings').split("\n").map {|l|
+        l.split('|', 2).map(&:strip)
+      }
+    ]
+  end
+  def expected_settings
+    # Some settings that we customise, and hence use to test whether
+    # our config has been applied.
+    {
+      'superuser_reserved_connections' => '2',
+      'work_mem' => '32768',
+      'ssl_ciphers' => 'HIGH:!kEDH:@STRENGTH'
+    }
+  end
+  met? {
+    current_settings.slice(*expected_settings.keys) == expected_settings
+  }
+  meet {
+    render_erb "postgres/postgresql.conf", :to => "/etc/postgresql/9.1/main/postgresql.conf"
+    shell "/etc/init.d/postgresql restart", :as => 'postgres'
+  }
+end
+
 dep 'postgres.bin', :version do
   version.default('9.1')
   requires {
