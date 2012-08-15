@@ -37,9 +37,9 @@ end
 
 dep 'counter.theconversation.edu.au packages' do
   requires [
+    'counter.theconversation.edu.au common packages',
     'curl.lib',
     'running.nginx',
-    'postgres.bin',
     'geoip.bin', # for geoip-c
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
@@ -51,6 +51,13 @@ end
 
 dep 'counter.theconversation.edu.au dev' do
   requires [
+    'counter.theconversation.edu.au common packages',
     'geoip database'.with(:app_root => '.')
+  ]
+end
+
+dep 'counter.theconversation.edu.au common packages' do
+  requires [
+    'postgres.bin'
   ]
 end
