@@ -12,7 +12,11 @@ dep 'db restored', :env, :app_user, :db_name, :app_root, :backup_path do
   }
 
   meet {
-    shell("gzip -dc #{backup_path} | sudo -u postgres psql #{db_name}")
+    log_shell(
+      "Loading the database backup into #{db_name}",
+      "gzip -dc #{backup_path} | sudo -u postgres psql #{db_name}",
+      :spinner => true
+    )
   }
 end
 
