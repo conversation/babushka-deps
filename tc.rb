@@ -14,7 +14,12 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     'delayed job'.with(env, app_user),
     'postgres extension'.with(app_user, db_name, 'pg_trgm'),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
-    'restore db'.with(env, app_user, db_name, app_root),
+    'db restored'.with(
+      :env => env,
+      :app_user => app_user,
+      :db_name => db_name,
+      :app_root => app_root
+    ),
 
     'benhoskings:rails app'.with(
       :env => env,
