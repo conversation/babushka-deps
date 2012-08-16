@@ -9,6 +9,6 @@ dep 'restore db', :env, :app_user, :db_name, :app_root do
   }
 
   meet {
-    shell({"RAILS_ENV" => env}, "bundle exec rake db:restore", :cd => app_root)
+    shell("RAILS_ENV=#{env} bundle exec rake db:restore", :cd => app_root, :as => 'postgres')
   }
 end
