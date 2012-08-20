@@ -72,6 +72,13 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     }
   end
 
+  def failable_remote_babushka dep_spec, args = {}
+    remote_babushka(dep_spec, args)
+  rescue Babushka::UnmeetableDep => ex
+    log "That remote run was marked as failable; moving on."
+    false
+  end
+
   requires_when_unmet 'public key in place'.with(host, keys)
   requires_when_unmet 'babushka bootstrapped'.with(host)
   requires_when_unmet 'git remote'.with(env, app_user, host)
