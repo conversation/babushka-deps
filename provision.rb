@@ -121,6 +121,8 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   meet {
     as('root') {
       # run this separately to ensure everything is running in UTF-8 mode
+      failable_remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
+      # The first run fails because a re-login is required.
       remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
 
       # Run this separately since it changes the ruby binary we're running against.
