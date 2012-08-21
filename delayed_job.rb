@@ -8,6 +8,6 @@ dep 'delayed_job.upstart', :env, :user do
   setuid user
   chdir "/srv/http/#{user}/current"
   met? {
-    !shell("ps aux").split("\n").grep(/rake jobs:work RAILS_ENV=#{env}$/).empty?
+    shell?("ps aux | grep 'rake jobs:work'")
   }
 end
