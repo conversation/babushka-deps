@@ -52,9 +52,6 @@ end
 dep 'memcached.bin'
 
 dep 'nodejs.bin', :version do
-  requires {
-    on :apt, 'our apt source'
-  }
   version.default!('0.6.10')
   met? {
     in_path? "node ~> #{version}"
@@ -66,10 +63,7 @@ dep 'nodejs.bin', :version do
 end
 
 dep 'npm.bin', :version do
-  requires {
-    on :apt, 'our apt source', 'nodejs.bin'
-    otherwise 'nodejs.bin'
-  }
+  requires 'nodejs.bin'
   version.default!('1.1.0')
   met? {
     in_path? "npm ~> #{version}"

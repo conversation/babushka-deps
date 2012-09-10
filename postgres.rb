@@ -101,10 +101,7 @@ end
 
 dep 'postgres.bin', :version do
   version.default('9.1')
-  requires {
-    on :apt, 'benhoskings:set.locale', 'our apt source'
-    on :brew, 'benhoskings:set.locale'
-  }
+  requires 'benhoskings:set.locale'
   installs {
     via :apt, ["postgresql-#{owner.version}", "libpq-dev"]
     via :brew, "postgresql"
