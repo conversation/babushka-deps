@@ -89,7 +89,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   check_path.default!('/health')
 
   met? {
-    cmd = raw_shell("curl -v -H 'Host: #{domain}' http://#{host}#{check_path}")
+    cmd = raw_shell("curl --connect-timeout 2 -v -H 'Host: #{domain}' http://#{host}#{check_path}")
 
     if !cmd.ok?
       log "Couldn't connect to http://#{host}."
