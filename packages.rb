@@ -16,7 +16,7 @@ dep 'carbon.pip'
 
 dep 'coffeescript.src', :version do
   version.default!('1.3.3')
-  requires 'nodejs.bin'
+  requires 'core:nodejs.bin'
   source "http://github.com/jashkenas/coffee-script/tarball/#{version}"
   provides "coffee ~> #{version}"
 
@@ -50,25 +50,6 @@ dep 'libxslt.lib' do
 end
 
 dep 'memcached.bin'
-
-dep 'nodejs.bin', :version do
-  version.default!('0.6.10')
-  met? {
-    in_path? "node ~> #{version}"
-  }
-  installs {
-    via :apt, 'nodejs'
-    via :brew, 'node'
-  }
-end
-
-dep 'npm.bin', :version do
-  requires 'nodejs.bin'
-  version.default!('1.1.0')
-  met? {
-    in_path? "npm ~> #{version}"
-  }
-end
 
 dep 'pcre.lib' do
   installs 'libpcre3-dev'
