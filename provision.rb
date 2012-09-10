@@ -172,6 +172,7 @@ dep 'system provisioned', :env, :app_user, :key do
   requires [
     'benhoskings:utc',
     'conversation:localhost hosts entry',
+    'conversation:apt sources',
     'benhoskings:system'.with(:host_name => "#{env}-#{Time.now.strftime('%Y-%m-%d')}"),
     'benhoskings:user setup'.with(:key => key),
     'benhoskings:lamp stack removed',
