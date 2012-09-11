@@ -5,7 +5,7 @@ meta :postfix do
 
   def restart_postfix
     if postfix_running?
-      log_shell "restarting postfix", "/etc/init.d/postfix restart", :sudo => true
+      log_shell "restarting postfix", "/etc/init.d/postfix restart"
     end
   end
 
@@ -27,7 +27,7 @@ dep 'running.postfix' do
   }
 
   meet :on => :linux do
-    sudo '/etc/init.d/postfix start'
+    shell '/etc/init.d/postfix start'
   end
   meet :on => :osx do
     log_error "launchctl should have already started postfix. Check /var/log/system.log for errors."
@@ -44,7 +44,7 @@ dep 'configured.postfix' do
     Babushka::Renderable.new(postfix_conf).from?(dependency.load_path.parent / "postfix/main.cf.erb")
   }
   meet {
-    render_erb 'postfix/main.cf.erb', :to => postfix_conf, :sudo => true
+    render_erb 'postfix/main.cf.erb', :to => postfix_conf
   }
 
   after { restart_postfix }

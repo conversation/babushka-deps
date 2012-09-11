@@ -137,8 +137,6 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
 
       remote_babushka 'conversation:app env vars set', :env => env
 
-      remote_babushka 'conversation:running.postfix'
-
       # Set up the app user on the server to accept pushes to ~/current.
       remote_babushka 'benhoskings:web repo'
 
@@ -174,6 +172,7 @@ dep 'system provisioned', :env, :app_user, :key do
     'conversation:localhost hosts entry',
     'conversation:apt sources',
     'benhoskings:apt packages removed'.with(/apache|mysql|php/i),
+    'conversation:running.postfix',
     'benhoskings:system'.with(:host_name => "#{env}-#{Time.now.strftime('%Y-%m-%d')}"),
     'benhoskings:user setup'.with(:key => key),
     "#{app_user} packages",
