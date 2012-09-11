@@ -85,7 +85,7 @@ dep 'postgres config', :version do
     # Some settings that we customise, and hence use to test whether
     # our config has been applied.
     {
-      'listen_addresses' => 'localhost',
+      'listen_addresses' => '',
       'superuser_reserved_connections' => '2',
       'work_mem' => '32768'
     }
