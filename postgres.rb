@@ -94,7 +94,7 @@ dep 'postgres config', :version do
     current_settings.slice(*expected_settings.keys) == expected_settings
   }
   meet {
-    render_erb "postgres/postgresql.conf", :to => "/etc/postgresql/#{version}/main/postgresql.conf"
+    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{version}/main/postgresql.conf"
     shell "/etc/init.d/postgresql restart", :as => 'postgres'
   }
 end
