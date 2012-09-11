@@ -8,7 +8,7 @@ dep 'backup.tc-dev.net app'
 
 dep 'backup.tc-dev.net packages' do
   requires [
-    'postgres',
+    'postgres'.with('9.2'),
     'socat.bin' # for DB tunnelling
   ]
 end

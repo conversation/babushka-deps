@@ -65,12 +65,12 @@ dep 'postgres extension', :username, :db_name, :extension do
   }
 end
 
-dep 'postgres' do
-  requires 'postgres config'
+dep 'postgres', :version do
+  requires 'postgres config'.with(version)
 end
 
-dep 'postgres config' do
-  requires 'postgres.bin'
+dep 'postgres config', :version do
+  requires 'postgres.bin'.with(version)
   def psql cmd
     shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
   end
@@ -94,7 +94,7 @@ dep 'postgres config' do
     current_settings.slice(*expected_settings.keys) == expected_settings
   }
   meet {
-    render_erb "postgres/postgresql.conf", :to => "/etc/postgresql/9.1/main/postgresql.conf"
+    render_erb "postgres/postgresql.conf", :to => "/etc/postgresql/#{version}/main/postgresql.conf"
     shell "/etc/init.d/postgresql restart", :as => 'postgres'
   }
 end
