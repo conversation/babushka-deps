@@ -10,8 +10,7 @@ max_connections = 100
 superuser_reserved_connections = 2
 unix_socket_directory = '/var/run/postgresql'
 
-ssl = on
-ssl_ciphers = 'HIGH:!kEDH:@STRENGTH' # Exclude ephemeral DH for performance.
+ssl = off
 
 shared_buffers = 24MB
 temp_buffers = 8MB

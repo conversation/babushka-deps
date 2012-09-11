@@ -86,8 +86,7 @@ dep 'postgres config', :version do
     # our config has been applied.
     {
       'superuser_reserved_connections' => '2',
-      'work_mem' => '32768',
-      'ssl_ciphers' => 'HIGH:!kEDH:@STRENGTH'
+      'work_mem' => '32768'
     }
   end
   met? {
