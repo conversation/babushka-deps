@@ -145,9 +145,6 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
 
       # Now that the code is in place, provision the app.
       remote_babushka "conversation:app provisioned", :env => env, :domain => domain, :app_user => app_user, :app_root => app_root, :key => keys
-
-      # Lastly, boot the app.
-      remote_babushka "benhoskings:unicorn running", :app_root => "~/current", :env => env
     }
 
     as('root') {
@@ -173,6 +170,9 @@ end
 
 dep 'app provisioned', :env, :domain, :app_user, :app_root, :key do
   requires [
-    "#{app_user} app".with(env, domain, app_user, app_root, key)
+    "#{app_user} app".with(env, domain, app_user, app_root, key),
+
+    # Lastly, boot the app.
+    "benhoskings:unicorn running".with(:app_root => "~/current", :env => env)
   ]
 end
