@@ -120,12 +120,11 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
 
   meet {
     as('root') {
-      # run this separately to ensure everything is running in UTF-8 mode
+      # First, UTF-8 everything. (A new shell is required to test this, hence 2 runs.)
       failable_remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
-      # The first run fails because a re-login is required.
       remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
 
-      # Run this separately since it changes the ruby binary we're running against.
+      # Build ruby separately, because it changes the ruby binary for subsequent deps.
       remote_babushka 'benhoskings:ruby.src', :version => '1.9.3', :patchlevel => 'p194'
 
       # All the system-wide config for this app, like packages and user accounts.
@@ -133,21 +132,26 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     }
 
     as(app_user) {
+      # Shell config, etc.
       remote_babushka 'benhoskings:user setup', :key => keys
 
+      # Set RACK_ENV and friends.
       remote_babushka 'conversation:app env vars set', :env => env
 
-      # Set up the app user on the server to accept pushes to ~/current.
+      # Configure the ~/current repo to accept deploys.
       remote_babushka 'benhoskings:web repo'
+    }
 
-      # Locally, push code to ~/current on the server.
-      Dep('benhoskings:pushed.push').meet(ref, env)
+    # The initial deploy.
+    Dep('benhoskings:pushed.push').meet(ref, env)
 
+    as(app_user) {
       # Now that the code is in place, provision the app.
       remote_babushka "conversation:app provisioned", :env => env, :domain => domain, :app_user => app_user, :app_root => app_root, :key => keys
     }
 
     as('root') {
+      # Lastly, revoke sudo to lock the box down per-user.
       remote_babushka "benhoskings:passwordless sudo removed"
     }
   }
