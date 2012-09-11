@@ -111,10 +111,3 @@ dep 'postgres.bin', :version do
   }
   provides "psql ~> #{version}.0"
 end
-
-dep 'postgresql-contrib.lib' do
-  installs {
-    via :apt, 'postgresql-contrib'
-    otherwise []
-  }
-end
