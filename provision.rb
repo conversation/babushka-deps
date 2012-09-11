@@ -132,14 +132,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     }
 
     as(app_user) {
-      # Shell config, etc.
-      remote_babushka 'benhoskings:user setup', :key => keys
-
-      # Set RACK_ENV and friends.
-      remote_babushka 'conversation:app env vars set', :env => env
-
-      # Configure the ~/current repo to accept deploys.
-      remote_babushka 'benhoskings:web repo'
+      remote_babushka 'conversation:deploy user setup', :env => env, :keys => keys
     }
 
     # The initial deploy.
