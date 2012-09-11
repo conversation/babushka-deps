@@ -36,7 +36,7 @@ dep 'jobs.theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
     'postgres.bin',
-    'postgresql-contrib.lib', # for search
+    'postgresql-contrib.lib', # for pg_trgm, for search
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
     'imagemagick.bin', # for paperclip
