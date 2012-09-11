@@ -60,7 +60,7 @@ end
 
 dep 'theconversation.edu.au packages' do
   requires [
-    'postgres'.with('9.2'),
+    'postgres'.with('9.1'),
     'curl.lib',
     'running.nginx',
     'memcached.bin', # for fragment caching

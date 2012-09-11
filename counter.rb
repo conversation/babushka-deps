@@ -1,6 +1,6 @@
 dep 'counter.theconversation.edu.au system', :app_user, :key do
   requires [
-    'postgres'.with('9.2'),
+    'postgres'.with('9.1'),
     'benhoskings:user setup for provisioning'.with("dw.theconversation.edu.au", key) # For DW loads from psql on the counter machine
   ]
 end
