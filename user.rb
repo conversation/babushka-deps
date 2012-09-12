@@ -1,8 +1,5 @@
-dep 'deploy user setup', :env, :keys do
+dep 'deploy user setup', :env do
   requires [
-    # Shell config, etc.
-    'benhoskings:user setup'.with(:key => keys),
-
     # Add a corresponding DB user.
     'benhoskings:postgres access',
 

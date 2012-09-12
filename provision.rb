@@ -132,7 +132,11 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     }
 
     as(app_user) {
-      remote_babushka 'conversation:deploy user setup', :env => env, :keys => keys
+      # This has to run on a separate login from 'deploy user setup', which requires zsh to already be active.
+      remote_babushka 'benhoskings:user setup', :key => keys
+
+      # Set up the app user for deploys: db user, env vars, and ~/current.
+      remote_babushka 'conversation:deploy user setup', :env => env
     }
 
     # The initial deploy.
