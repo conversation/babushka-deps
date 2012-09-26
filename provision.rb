@@ -161,9 +161,9 @@ dep 'system provisioned', :env, :app_user, :key do
     'conversation:apt sources',
     'benhoskings:apt packages removed'.with(/apache|mysql|php/i),
     'benhoskings:system'.with(:host_name => "#{env}-#{Time.now.strftime('%Y-%m-%d')}"),
-    'benhoskings:user setup'.with(:key => key),
     'conversation:running.postfix',
     "#{app_user} packages",
+    'benhoskings:user setup'.with(:key => key),
     "#{app_user} system".with(app_user, key),
     'benhoskings:user setup for provisioning'.with(app_user, key)
   ]
