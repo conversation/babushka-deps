@@ -13,7 +13,7 @@ dep 'sharejs.theconversation.edu.au packages' do
     'postgres'.with('9.1'),
     'curl.lib',
     'running.nginx',
-    'theconversation.edu.au common packages'
+    'sharejs.theconversation.edu.au common packages'
   ]
 end
 
