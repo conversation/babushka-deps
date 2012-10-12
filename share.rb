@@ -10,7 +10,7 @@ end
 
 dep 'sharejs.theconversation.edu.au packages' do
   requires [
-    'postgres'.with('9.1'),
+    'postgres'.with('9.2'),
     'curl.lib',
     'running.nginx',
     'sharejs.theconversation.edu.au common packages'

@@ -100,10 +100,10 @@ dep 'postgres config', :version do
 end
 
 dep 'postgres.bin', :version do
-  version.default('9.1')
+  version.default('9.2')
   requires 'benhoskings:set.locale'
   requires_when_unmet {
-    on :lucid, 'ppa'.with('ppa:pitti/postgresql')
+    on :apt, 'ppa'.with('ppa:pitti/postgresql')
   }
   installs {
     via :apt, ["postgresql-#{owner.version}", "libpq-dev"]
