@@ -79,10 +79,6 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     false
   end
 
-  requires_when_unmet 'public key in place'.with(host, keys)
-  requires_when_unmet 'babushka bootstrapped'.with(host)
-  requires_when_unmet 'git remote'.with(env, app_user, host)
-
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   domain.default!(app_user) if env == 'production'
   app_root.default!('~/current')
@@ -117,6 +113,10 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   prepare {
     unmeetable! "OK, bailing." if @should_confirm && !confirm("Sure you want to provision #{domain} on #{host}?")
   }
+
+  requires_when_unmet 'public key in place'.with(host, keys)
+  requires_when_unmet 'babushka bootstrapped'.with(host)
+  requires_when_unmet 'git remote'.with(env, app_user, host)
 
   meet {
     as('root') {
