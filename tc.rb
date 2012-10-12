@@ -13,7 +13,6 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
   requires [
     'geoip database'.with(:app_root => app_root),
     'delayed job'.with(env, app_user),
-    'postgres extension'.with(app_user, db_name, 'pg_trgm'),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
     'db restored'.with(
       :env => env,
@@ -82,7 +81,6 @@ dep 'theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
     'postgres.bin',
-    'postgresql-contrib.lib', # for pg_trgm, for search
     'geoip.bin', # for geoip-c
     'aspell dictionary.lib',
     'coffeescript.src', # for barista
