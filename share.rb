@@ -29,7 +29,7 @@ dep 'sharejs.theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
     'postgres.bin',
-    "core:npm",
+    "npm",
     "coffeescript.src"
   ]
 end
