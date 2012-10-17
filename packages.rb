@@ -26,7 +26,10 @@ dep 'coffeescript.src', :version do
 end
 
 dep 'curl.lib' do
-  installs 'libcurl4-openssl-dev'
+  installs {
+    on :osx, [] # Not required (or available) on OS X.
+    otherwise 'libcurl4-openssl-dev'
+  }
 end
 
 dep 'django.pip'
