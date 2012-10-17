@@ -60,7 +60,6 @@ end
 dep 'theconversation.edu.au packages' do
   requires [
     'postgres'.with('9.2'),
-    'curl.lib',
     'running.nginx',
     'memcached.bin', # for fragment caching
     'theconversation.edu.au common packages',
@@ -80,6 +79,7 @@ end
 dep 'theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
+    'curl.lib',
     'postgres.bin',
     'geoip.bin', # for geoip-c
     'aspell dictionary.lib',
