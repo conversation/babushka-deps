@@ -72,13 +72,6 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
     }
   end
 
-  def failable_remote_babushka dep_spec, args = {}
-    remote_babushka(dep_spec, args)
-  rescue Babushka::UnmeetableDep => ex
-    log "That remote run was marked as failable; moving on."
-    false
-  end
-
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   domain.default!(app_user) if env == 'production'
   app_root.default!('~/current')
