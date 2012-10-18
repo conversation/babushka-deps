@@ -40,7 +40,7 @@ dep 'jenkins target', :path, :app_user do
   }
   meet {
     path.p.mkdir
-    shell "chown -R #{app_user} #{path}"
+    shell "chown -R #{app_user}:#{app_user} #{path}"
   }
 end
 
