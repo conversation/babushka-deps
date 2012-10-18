@@ -12,7 +12,8 @@ dep 'ci provisioned', :app_user, :ssh_key do
     'conversation:theconversation.edu.au common packages',
     'conversation:counter.theconversation.edu.au common packages',
     'conversation:ci packages',
-    'benhoskings:postgres access'
+    'benhoskings:postgres access',
+    'conversation:jenkins target'.with(:app_user => app_user)
   ]
 end
 
@@ -22,4 +23,15 @@ end
 
 dep 'openjdk-6-jdk', :template => 'bin' do
   provides 'java', 'javac'
+end
+
+dep 'jenkins target', :path, :app_user do
+  path.default!('/opt/jenkins')
+  met? {
+    path.p.directory? && shell?("touch #{path}", :as => app_user)
+  }
+  meet {
+    path.p.mkdir
+    shell "chown -R #{app_user} #{path}"
+  }
 end
