@@ -17,6 +17,7 @@ dep 'ci provisioned', :app_user, :public_key, :private_key do
     'benhoskings:lax host key checking',
     'conversation:apt sources',
     'conversation:theconversation.edu.au common packages',
+    'conversation:sharejs.theconversation.edu.au common packages',
     'conversation:counter.theconversation.edu.au common packages',
     'conversation:ci packages',
     'benhoskings:postgres access'.with(:username => app_user, :flags => '-sdrw'),
