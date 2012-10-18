@@ -17,7 +17,7 @@ dep 'ci provisioned', :app_user, :ssh_key do
     'conversation:theconversation.edu.au common packages',
     'conversation:counter.theconversation.edu.au common packages',
     'conversation:ci packages',
-    'benhoskings:postgres access',
+    'benhoskings:postgres access'.with(:username => app_user, :flags => '-sdrw'),
     'conversation:jenkins target'.with(:app_user => app_user)
   ]
 end
