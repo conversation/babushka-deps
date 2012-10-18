@@ -41,9 +41,6 @@ dep 'counter.theconversation.edu.au packages' do
     'counter.theconversation.edu.au common packages',
     'curl.lib',
     'running.nginx',
-    'geoip.bin', # for geoip-c
-    'libxml.lib', # for nokogiri
-    'libxslt.lib', # for nokogiri
     'socat.bin' # for DB tunnelling
   ]
 end
@@ -59,6 +56,9 @@ end
 
 dep 'counter.theconversation.edu.au common packages' do
   requires [
-    'postgres.bin'
+    'postgres.bin',
+    'geoip.bin', # for geoip-c
+    'libxml.lib', # for nokogiri
+    'libxslt.lib', # for nokogiri
   ]
 end
