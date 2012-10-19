@@ -28,7 +28,8 @@ end
 dep 'ci packages' do
   requires [
     'openjdk-6-jdk',
-    'selenium runtime'
+    'selenium runtime',
+    'phantomjs'
   ]
 end
 
@@ -73,4 +74,16 @@ dep 'selenium runtime', :template => 'lib' do
     'firefox',
     'libqt4-dev'
   ]
+end
+
+dep 'phantomjs' do
+  met? {
+    in_path? 'phantomjs'
+  }
+  meet {
+    Babushka::Resource.extract "http://phantomjs.googlecode.com/files/phantomjs-1.5.0-linux-x86_64-dynamic.tar.gz" do |archive|
+      shell "cp -r . /usr/local/phantomjs"
+      shell "ln -fs /usr/local/phantomjs/bin/phantomjs /usr/local/bin"
+    end
+  }
 end
