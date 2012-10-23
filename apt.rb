@@ -9,6 +9,7 @@ dep 'apt sources' do
   }
   meet {
     render_erb "apt/sources.list.erb", :to => "/etc/apt/sources.list"
+    shell "rm -f /etc/apt/sources.list.d/babushka.list"
     shell "apt-get update"
   }
 end
