@@ -32,7 +32,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys, :check_path, :expected_content do
+dep 'host provisioned', :host, :host_name, :ref, :env, :app_user, :domain, :app_root, :keys, :check_path, :expected_content do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -128,7 +128,7 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
       remote_babushka 'benhoskings:ruby.src', :version => '1.9.3', :patchlevel => 'p194'
 
       # All the system-wide config for this app, like packages and user accounts.
-      remote_babushka "conversation:system provisioned", :env => env, :app_user => app_user, :key => keys
+      remote_babushka "conversation:system provisioned", :host_name => host_name, :env => env, :app_user => app_user, :key => keys
     }
 
     as(app_user) {
@@ -154,13 +154,13 @@ dep 'host provisioned', :host, :ref, :env, :app_user, :domain, :app_root, :keys,
   }
 end
 
-dep 'system provisioned', :env, :app_user, :key do
+dep 'system provisioned', :host_name, :env, :app_user, :key do
   requires [
     'benhoskings:utc',
     'conversation:localhost hosts entry',
     'conversation:apt sources',
     'benhoskings:apt packages removed'.with(/apache|mysql|php/i),
-    'benhoskings:system'.with(:host_name => "#{env}-#{Time.now.strftime('%Y-%m-%d')}"),
+    'benhoskings:system'.with(:host_name => host_name),
     'conversation:running.postfix',
     "#{app_user} packages",
     'benhoskings:user setup'.with(:key => key),
