@@ -10,6 +10,6 @@ dep 'apt sources' do
   meet {
     render_erb "apt/sources.list.erb", :to => "/etc/apt/sources.list"
     shell "rm -f /etc/apt/sources.list.d/babushka.list"
-    shell "apt-get update"
+    Babushka::AptHelper.update_pkg_lists "Updating apt lists with our new config"
   }
 end
