@@ -7,8 +7,13 @@ dep 'postgres master', :version, :local_user, :key do
   ]
 end
 
-dep 'postgres standby', :version, :local_user, :local_port, :remote_user, :remote_host do
+dep 'postgres standby', :env, :version, :local_user, :local_port, :remote_user, :remote_host do
+  env.default(ENV['RACK_ENV'])
   local_port.default!(5433)
+  remote_host.default({
+    'production' => 'theconversation.edu.au',
+    'staging' => 'staging.tc-dev.net'
+  }[env])
 
   requires [
     'postgres socket tunnel.upstart'.with(local_user, local_port, remote_user, remote_host),
