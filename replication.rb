@@ -24,7 +24,7 @@ end
 dep 'postgres recovery config', :version, :local_port, :remote_user do
   requires 'postgres.bin'.with(version)
   def psql cmd
-    shell?("psql postgres -c 'SELECT 1'") &&
+    shell?("psql postgres -c 'SELECT 1'", :as => 'postgres') &&
     shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
   end
   met? {
