@@ -1,3 +1,12 @@
+dep 'postgres master', :version, :local_user, :key do
+  local_user.default!('standby')
+
+  requires [
+    'benhoskings:postgres access'.with(local_user, '-SDR --replication'),
+    'benhoskings:passwordless ssh logins'.with(local_user, key)
+  ]
+end
+
 dep 'postgres standby', :version, :local_user, :local_port, :remote_user, :remote_host do
   local_port.default!(5433)
 
