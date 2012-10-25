@@ -31,7 +31,7 @@ end
 
 dep 'dw.theconversation.edu.au common packages' do
   requires [
-    'postgres.bin',
+    'postgres.bin'.with('9.2'),
     'socat.bin' # for DB tunnelling
   ]
 end

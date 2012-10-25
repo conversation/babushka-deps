@@ -80,7 +80,7 @@ dep 'theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
     'curl.lib',
-    'postgres.bin',
+    'postgres.bin'.with('9.2'),
     'geoip.bin', # for geoip-c
     'aspell dictionary.lib',
     'coffeescript.src', # for barista

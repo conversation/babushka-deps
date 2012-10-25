@@ -21,7 +21,7 @@ end
 
 dep 'jobs.theconversation.edu.au packages' do
   requires [
-    'postgres'.with('9.1'),
+    'postgres'.with('9.2'),
     'curl.lib',
     'running.nginx',
     'jobs.theconversation.edu.au common packages'
@@ -35,7 +35,7 @@ end
 dep 'jobs.theconversation.edu.au common packages' do
   requires [
     'bundler.gem',
-    'postgres.bin',
+    'postgres.bin'.with('9.2'),
     'postgresql-contrib.lib', # for pg_trgm, for search
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri

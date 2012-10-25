@@ -56,7 +56,7 @@ end
 
 dep 'counter.theconversation.edu.au common packages' do
   requires [
-    'postgres.bin',
+    'postgres.bin'.with('9.2'),
     'geoip.bin', # for geoip-c
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
