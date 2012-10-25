@@ -37,7 +37,9 @@ default_text_search_config = 'pg_catalog.english'
 wal_level = hot_standby
 max_wal_senders = 4
 wal_keep_segments = 32
+replication_timeout = 60s
 
 # These settings only apply to the standby.
 hot_standby = on
 max_standby_streaming_delay = 120s
+wal_receiver_status_interval = 10s
