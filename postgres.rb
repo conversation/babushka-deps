@@ -66,7 +66,10 @@ dep 'postgres extension', :username, :db_name, :extension do
 end
 
 dep 'postgres', :version do
-  requires 'postgres config'.with(version)
+  requires [
+    'postgres config'.with(version),
+    'postgres auth config'.with(version)
+  ]
 end
 
 dep 'postgres config', :version do
@@ -98,6 +101,24 @@ dep 'postgres config', :version do
   meet {
     render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{version}/main/postgresql.conf"
     log_shell "Restarting postgres", "/etc/init.d/postgresql restart", :as => 'postgres'
+  }
+end
+
+dep 'postgres auth config', :version do
+  requires 'postgres.bin'.with(version)
+
+  def erb_template
+    "postgres/pg_hba.conf.erb"
+  end
+  def target
+    "/etc/postgresql/#{version}/main/pg_hba.conf"
+  end
+
+  met? {
+    Babushka::Renderable.new(target).from?(dependency.load_path.parent / erb_template)
+  }
+  meet {
+    render_erb erb_template, :to => target, :sudo => true
   }
 end
 
