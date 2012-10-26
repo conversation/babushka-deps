@@ -25,7 +25,6 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
       :env => env,
       :domain => domain,
       :username => app_user,
-      :enable_https => 'yes',
       :data_required => 'yes'
     ),
 
@@ -37,9 +36,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
       :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
       :path => app_root,
       :proxy_host => 'localhost',
-      :proxy_port => 9000,
-      :enable_https => 'yes',
-      :force_https => 'no'
+      :proxy_port => 9000
     ),
 
     # 'http basic logins.nginx'.with(

@@ -26,8 +26,8 @@ meta :nginx do
   end
 end
 
-dep 'vhost enabled.nginx', :app_name, :env, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https do
-  requires 'vhost configured.nginx'.with(app_name, env, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix, enable_http, enable_https, force_https)
+dep 'vhost enabled.nginx', :app_name, :env, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix do
+  requires 'vhost configured.nginx'.with(app_name, env, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix)
   met? { vhost_link.exists? }
   meet {
     sudo "mkdir -p #{nginx_prefix / 'conf/vhosts/on'}"
@@ -36,16 +36,14 @@ dep 'vhost enabled.nginx', :app_name, :env, :domain, :domain_aliases, :path, :li
   after { restart_nginx }
 end
 
-dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix, :enable_http, :enable_https, :force_https do
+dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix do
   env.default!('production')
   domain_aliases.default('').ask('Domains to alias (no need to specify www. aliases)')
   listen_host.default!('[::]')
   listen_port.default!('80')
   proxy_host.default('localhost')
   proxy_port.default('8000')
-  enable_http.default!('yes')
-  enable_https.default('no')
-  force_https.default('no')
+
   def www_aliases
     "#{domain} #{domain_aliases}".split(/\s+/).reject {|d|
       d[/^\*\./] || d[/^www\./]

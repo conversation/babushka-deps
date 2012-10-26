@@ -14,7 +14,6 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
       :env => env,
       :domain => domain,
       :username => app_user,
-      :enable_https => 'yes',
       :data_required => 'no'
     ),
 
@@ -22,9 +21,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
     'vhost enabled.nginx'.with(
       :app_name => 'counter',
       :domain => domain,
-      :path => app_root,
-      :enable_https => 'yes',
-      :force_https => 'no'
+      :path => app_root
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.

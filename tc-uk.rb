@@ -6,9 +6,7 @@ dep 'theconversation.org.uk app', :env, :domain, :app_user, :app_root, :key do
     'vhost enabled.nginx'.with(
       :type => 'static',
       :domain => domain,
-      :path => app_root,
-      :enable_https => 'no',
-      :force_https => 'no'
+      :path => app_root
     )
   ]
 end

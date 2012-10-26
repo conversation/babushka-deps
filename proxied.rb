@@ -4,7 +4,6 @@ dep 'proxied app', :env, :app_name, :domain, :port do
     :domain => domain,
     :type => 'proxy',
     :proxy_host => 'localhost',
-    :proxy_port => port,
-    :enable_https => 'no'
+    :proxy_port => port
   )
 end
