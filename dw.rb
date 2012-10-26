@@ -1,9 +1,10 @@
 dep 'dw.theconversation.edu.au system', :app_user, :key
 
-dep 'dw.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
+dep 'dw.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'benhoskings:rack app'.with(
       :env => env,
+      :listen_host => host,
       :domain => domain,
       :username => app_user,
       :path => app_root

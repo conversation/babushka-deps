@@ -12,6 +12,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
 
     'benhoskings:rails app'.with(
       :env => env,
+      :listen_host => host,
       :domain => domain,
       :username => app_user,
       :path => app_root,
@@ -22,6 +23,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
     'vhost enabled.nginx'.with(
       :app_name => 'counter',
       :env => env,
+      :listen_host => host,
       :domain => domain,
       :path => app_root
     ),

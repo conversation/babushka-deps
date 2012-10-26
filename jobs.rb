@@ -11,6 +11,7 @@ dep 'jobs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key
     'ssl certificate'.with(env, domain, 'jobs.theconversation.edu.au'),
     'benhoskings:rails app'.with(
       :env => env,
+      :listen_host => host,
       :domain => domain,
       :username => app_user,
       :path => app_root,

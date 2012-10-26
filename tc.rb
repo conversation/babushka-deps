@@ -5,7 +5,7 @@ dep 'theconversation.edu.au system', :app_user, :key do
   ]
 end
 
-dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
+dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name
     YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
   end
@@ -23,6 +23,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
 
     'benhoskings:rails app'.with(
       :env => env,
+      :listen_host => host,
       :domain => domain,
       :username => app_user,
       :path => app_root,
@@ -33,6 +34,7 @@ dep 'theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
     'vhost enabled.nginx'.with(
       :app_name => 'tc',
       :env => env,
+      :listen_host => host,
       :domain => domain,
       :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
       :path => app_root,
