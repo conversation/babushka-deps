@@ -14,6 +14,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
       :env => env,
       :domain => domain,
       :username => app_user,
+      :path => app_root,
       :data_required => 'no'
     ),
 

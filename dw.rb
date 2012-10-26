@@ -5,7 +5,8 @@ dep 'dw.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key d
     'benhoskings:rack app'.with(
       :env => env,
       :domain => domain,
-      :username => app_user
+      :username => app_user,
+      :path => app_root
     ),
 
     'benhoskings:existing postgres db'.with(
