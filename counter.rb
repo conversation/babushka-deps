@@ -21,6 +21,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
     # Replace the default config with our own.
     'vhost enabled.nginx'.with(
       :app_name => 'counter',
+      :env => env,
       :domain => domain,
       :path => app_root
     ),
