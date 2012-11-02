@@ -42,11 +42,12 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
       :proxy_port => 9000
     ),
 
-    'benhoskings:http basic logins.nginx'.with(
-      :username => 'tc',
-      :pass => 'c0nversation',
-      :domain => domain
-    ),
+    ## fails the biuld when left in...
+    # 'benhoskings:http basic logins.nginx'.with(
+    #   :username => 'tc',
+    #   :pass => 'c0nversation',
+    #   :domain => domain
+    # ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
     'read-only db access'.with(
