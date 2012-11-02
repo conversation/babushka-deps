@@ -104,9 +104,6 @@ dep 'startup script.nginx', :nginx_prefix do
 end
 
 dep 'configured.nginx', :nginx_prefix do
-  def nginx_conf
-    nginx_prefix / "conf/nginx.conf"
-  end
   nginx_prefix.default!('/opt/nginx') # This is required because nginx.src might be cached.
   requires [
     'nginx.src'.with(:nginx_prefix => nginx_prefix),
