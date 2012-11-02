@@ -17,7 +17,7 @@ dep 'carbon.pip'
 dep 'coffeescript.src', :version do
   version.default!('1.3.3')
   requires 'core:nodejs.bin'
-  source "http://github.com/jashkenas/coffee-script/tarball/#{version}"
+  source "https://nodeload.github.com/jashkenas/coffee-script/tarball/#{version}"
   provides "coffee ~> #{version}"
 
   configure { true }
