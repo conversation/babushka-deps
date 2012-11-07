@@ -11,7 +11,6 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
   end
 
   requires [
-    'geoip database'.with(:app_root => app_root),
     'delayed job'.with(env, app_user),
     'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
     'db restored'.with(
@@ -72,8 +71,7 @@ dep 'theconversation.edu.au dev' do
   requires [
     'theconversation.edu.au common packages',
     'pv.bin', # for db:production:pull (and it's awesome anyway)
-    'phantomjs', # for js testing
-    'geoip database'.with(:app_root => '.')
+    'phantomjs' # for js testing
   ]
 end
 
