@@ -17,7 +17,7 @@ dep 'geoip database', :source, :app_root do
   }
   meet {
     Babushka::Resource.get source do |download_path|
-      shell "mkdir -p #{local_path}"
+      shell "mkdir -p #{local_path.parent}"
       shell "gzip -dc #{download_path} > #{local_path}"
     end
   }
