@@ -1,18 +1,3 @@
-dep 'ssl certificate', :env, :domain, :cert_name do
-  if env == 'production'
-    requires 'ssl cert in place'.with(:domain => domain, :cert_name => cert_name)
-  else
-    requires 'benhoskings:self signed cert.nginx'.with(
-      :country => 'AU',
-      :state => 'VIC',
-      :city => 'Melbourne',
-      :organisation => 'The Conversation',
-      :domain => domain,
-      :email => 'dev@theconversation.edu.au'
-    )
-  end
-end
-
 dep 'ssl cert in place', :nginx_prefix, :domain, :cert_name, :cert_source, :template => 'nginx' do
   nginx_prefix.default!('/opt/nginx')
   cert_source.default('~/current/config/certs')

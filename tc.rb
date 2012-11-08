@@ -12,7 +12,7 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
 
   requires [
     'delayed job'.with(env, app_user),
-    'ssl certificate'.with(env, domain, 'theconversation.edu.au'),
+    'ssl cert in place'.with(:domain => domain, :cert_name => 'theconversation.edu.au'),
     'db restored'.with(
       :env => env,
       :app_user => app_user,
