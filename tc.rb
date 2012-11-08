@@ -20,7 +20,7 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
       :app_root => app_root
     ),
 
-    'benhoskings:rails app'.with(
+    'rails app'.with(
       :env => env,
       :listen_host => host,
       :domain => domain,

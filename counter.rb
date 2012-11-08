@@ -10,7 +10,7 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
     'geoip database'.with(:app_root => app_root),
     'ssl cert in place'.with(:domain => domain, :cert_name => '*.theconversation.edu.au'),
 
-    'benhoskings:rails app'.with(
+    'rails app'.with(
       :env => env,
       :listen_host => host,
       :domain => domain,
