@@ -1,6 +1,6 @@
 dep 'sharejs.theconversation.edu.au system', :app_user, :key
 
-dep 'sharejs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
+dep 'sharejs.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'benhoskings:user setup'.with(:key => key),
 
