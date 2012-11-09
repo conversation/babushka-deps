@@ -21,24 +21,16 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
     ),
 
     'rails app'.with(
-      :env => env,
-      :listen_host => host,
-      :domain => domain,
-      :username => app_user,
-      :path => app_root,
-      :data_required => 'yes'
-    ),
-
-    # Replace the default config with our own.
-    'vhost enabled.nginx'.with(
       :app_name => 'tc',
       :env => env,
       :listen_host => host,
       :domain => domain,
       :domain_aliases => 'theconversation.com theconversation.org.au conversation.edu.au',
+      :username => app_user,
       :path => app_root,
       :proxy_host => 'localhost',
-      :proxy_port => 9000
+      :proxy_port => 9000,
+      :data_required => 'yes'
     ),
 
     ## fails the biuld when left in...

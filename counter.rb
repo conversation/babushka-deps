@@ -11,21 +11,13 @@ dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :
     'ssl cert in place'.with(:domain => domain, :cert_name => '*.theconversation.edu.au'),
 
     'rails app'.with(
+      :app_name => 'counter',
       :env => env,
       :listen_host => host,
       :domain => domain,
       :username => app_user,
       :path => app_root,
       :data_required => 'no'
-    ),
-
-    # Replace the default config with our own.
-    'vhost enabled.nginx'.with(
-      :app_name => 'counter',
-      :env => env,
-      :listen_host => host,
-      :domain => domain,
-      :path => app_root
     ),
 
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
