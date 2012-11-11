@@ -125,7 +125,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_user, :domain, :app_
       remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
 
       # Build ruby separately, because it changes the ruby binary for subsequent deps.
-      remote_babushka 'benhoskings:ruby.src', :version => '1.9.3', :patchlevel => 'p286'
+      remote_babushka 'benhoskings:ruby.src', :version => '1.9.3', :patchlevel => 'p327'
 
       # All the system-wide config for this app, like packages and user accounts.
       remote_babushka "conversation:system provisioned", :host_name => host_name, :env => env, :app_user => app_user, :key => keys
