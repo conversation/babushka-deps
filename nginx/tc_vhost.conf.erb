@@ -31,15 +31,11 @@ server {
     break;
   }
 
-  <% if env == 'staging' %>
-  auth_basic "Restricted";
-  auth_basic_user_file htpasswd;
-  <% end %>
+  # auth_basic "Restricted";
+  # auth_basic_user_file htpasswd;
 
   location /sharejs/ {
-    <% if env == 'staging' %>
-    auth_basic off;
-    <% end %>
+    # auth_basic off;
 
     proxy_pass            http://<%= proxy_host %>:<%= proxy_port %>/;
     proxy_redirect        off;

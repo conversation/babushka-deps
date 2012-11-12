@@ -33,13 +33,6 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
       :data_required => 'yes'
     ),
 
-    ## fails the biuld when left in...
-    # 'benhoskings:http basic logins.nginx'.with(
-    #   :username => 'tc',
-    #   :pass => 'c0nversation',
-    #   :domain => domain
-    # ),
-
     # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
     'read-only db access'.with(
       :db_name => db_name,
