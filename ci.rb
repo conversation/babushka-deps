@@ -5,7 +5,7 @@ dep 'ci prepared', :app_user, :public_key, :private_key do
     'conversation:key installed'.with(:username => app_user, :public_key => public_key, :private_key => private_key),
 
     'benhoskings:set.locale'.with(:locale_name => 'en_AU'),
-    'benhoskings:ruby.src'.with(:version => '1.9.3', :patchlevel => 'p286'),
+    'benhoskings:ruby.src'.with(:version => '1.9.3', :patchlevel => 'p327'),
   ]
 end
 
