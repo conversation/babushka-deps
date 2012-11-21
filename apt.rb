@@ -3,7 +3,7 @@ dep 'our apt source' do
   requires 'gpg key'.with('B6D8A3F9')
 end
 
-dep 'apt sources' do
+dep 'apt sources', :for => :ubuntu do
   met? {
     Babushka::Renderable.new("/etc/apt/sources.list").from?(dependency.load_path.parent / "apt/sources.list.erb")
   }
