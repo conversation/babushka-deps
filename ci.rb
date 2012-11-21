@@ -12,7 +12,6 @@ end
 dep 'ci provisioned', :app_user, :public_key, :private_key do
   requires [
     'ci prepared'.with(app_user, public_key, private_key),
-    'benhoskings:utc',
     'conversation:localhost hosts entry',
     'benhoskings:lax host key checking',
     'conversation:apt sources',
