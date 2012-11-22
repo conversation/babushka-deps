@@ -15,6 +15,7 @@ dep 'jobs.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_roo
       :domain => domain,
       :username => app_user,
       :path => app_root,
+      :enable_https => 'yes',
       :data_required => 'yes'
     )
   ]
