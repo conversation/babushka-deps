@@ -1,6 +1,6 @@
 dep 'jobs.theconversation.edu.au system', :app_user, :key
 
-dep 'jobs.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
+dep 'jobs.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name
     YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
   end

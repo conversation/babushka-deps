@@ -5,7 +5,7 @@ dep 'counter.theconversation.edu.au system', :app_user, :key do
   ]
 end
 
-dep 'counter.theconversation.edu.au app', :env, :domain, :app_user, :app_root, :key do
+dep 'counter.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'geoip database'.with(:app_root => app_root),
     'ssl cert in place'.with(:domain => domain, :cert_name => '*.theconversation.edu.au'),
