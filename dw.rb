@@ -19,7 +19,7 @@ end
 
 dep 'dw.theconversation.edu.au packages' do
   requires [
-    'postgres'.with('9.2'),
+    'postgres'.with('9.1'),
     'curl.lib',
     'running.nginx',
     'dw.theconversation.edu.au common packages'
@@ -32,7 +32,7 @@ end
 
 dep 'dw.theconversation.edu.au common packages' do
   requires [
-    'postgres.bin'.with('9.2'),
+    'postgres.bin'.with('9.1'),
     'socat.bin' # for DB tunnelling
   ]
 end
