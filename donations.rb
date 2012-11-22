@@ -24,7 +24,7 @@ dep 'donate.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_r
       :domain => domain,
       :username => app_user,
       :path => app_root,
-      :data_required => 'yes'
+      :data_required => 'no'
     )
   ]
 end
