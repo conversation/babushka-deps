@@ -60,3 +60,34 @@ dep 'postgres socket tunnel.upstart', :local_user, :local_port, :remote_user, :r
     shell("lsof #{local_socket}").val_for('socat').ends_with?(local_socket)
   }
 end
+
+dep 'postgres replication monitoring', :version, :test_user do
+
+  requires 'postgres.bin'.with(version)
+
+  met? {
+    shell? 'psql postgres -c "SELECT replication_status()"', :as => test_user
+  }
+  meet {
+    shell 'psql postgres', :as => 'postgres', :input => %q{
+      BEGIN;
+
+      CREATE TYPE replication_tuple AS (
+        started_at timestamp with time zone,
+        master_position text,
+        standby_position text
+      );
+
+      CREATE FUNCTION replication_status() RETURNS replication_tuple AS
+        'SELECT backend_start, pg_current_xlog_location(), replay_location FROM pg_stat_replication'
+      LANGUAGE SQL SECURITY DEFINER
+      -- Put pg_temp last so its objects can't shadow those used in the function.
+      SET search_path = admin, pg_temp;
+
+      REVOKE ALL ON FUNCTION replication_status() FROM PUBLIC;
+      GRANT EXECUTE ON FUNCTION replication_status() TO PUBLIC;
+
+      COMMIT;
+    }
+  }
+end
