@@ -38,7 +38,9 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
       :db_name => db_name,
       :username => 'dw.theconversation.edu.au',
       :check_table => 'content'
-    )
+    ),
+
+    'postgres replication monitoring'.with(:test_user => app_user)
   ]
 end
 
