@@ -75,11 +75,18 @@ dep 'postgres replication monitoring', :version, :test_user do
       CREATE TYPE replication_tuple AS (
         started_at timestamp with time zone,
         master_position text,
-        standby_position text
+        standby_position text,
+        standby_lag numeric
       );
 
       CREATE FUNCTION replication_status() RETURNS replication_tuple AS
-        'SELECT backend_start, pg_current_xlog_location(), replay_location FROM pg_stat_replication'
+        'SELECT
+          backend_start,
+          pg_current_xlog_location(),
+          replay_location,
+          pg_xlog_location_diff(pg_current_xlog_location(), replay_location)
+        FROM
+          pg_stat_replication'
       LANGUAGE SQL SECURITY DEFINER
       -- Put pg_temp last so its objects can't shadow those used in the function.
       SET search_path = admin, pg_temp;
