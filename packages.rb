@@ -18,7 +18,7 @@ dep 'coffeescript.src', :version do
   version.default!('1.3.3')
   requires 'core:nodejs.bin'
   source "https://github.com/jashkenas/coffee-script/archive/#{version}.tar.gz"
-  provides "coffee ~> #{version}"
+  provides "coffee >= #{version}"
 
   configure { true }
   build { shell "bin/cake build" }
