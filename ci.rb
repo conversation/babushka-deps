@@ -75,12 +75,13 @@ dep 'selenium runtime', :template => 'lib' do
   ]
 end
 
-dep 'phantomjs' do
+dep 'phantomjs', :version do
+  version.default!('1.7.0')
   met? {
-    in_path? 'phantomjs'
+    in_path? "phantomjs >= #{version}"
   }
   meet {
-    Babushka::Resource.extract "https://phantomjs.googlecode.com/files/phantomjs-1.7.0-linux-x86_64.tar.bz2" do |archive|
+    Babushka::Resource.extract "https://phantomjs.googlecode.com/files/phantomjs-#{version}-linux-x86_64.tar.bz2" do |archive|
       shell "cp -r . /usr/local/phantomjs"
       shell "ln -fs /usr/local/phantomjs/bin/phantomjs /usr/local/bin"
     end
