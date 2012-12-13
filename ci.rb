@@ -80,7 +80,7 @@ dep 'phantomjs' do
     in_path? 'phantomjs'
   }
   meet {
-    Babushka::Resource.extract "http://phantomjs.googlecode.com/files/phantomjs-1.5.0-linux-x86_64-dynamic.tar.gz" do |archive|
+    Babushka::Resource.extract "https://phantomjs.googlecode.com/files/phantomjs-1.7.0-linux-x86_64.tar.bz2" do |archive|
       shell "cp -r . /usr/local/phantomjs"
       shell "ln -fs /usr/local/phantomjs/bin/phantomjs /usr/local/bin"
     end
