@@ -27,7 +27,7 @@ end
 dep 'ci packages' do
   requires [
     'openjdk-6-jdk',
-    'selenium runtime',
+    # 'selenium runtime',
     'phantomjs'
   ]
 end
