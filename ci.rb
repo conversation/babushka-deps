@@ -77,11 +77,20 @@ end
 
 dep 'phantomjs', :version do
   version.default!('1.7.0')
+  def phantomjs_uri
+    if Babushka.host.linux?
+      "https://phantomjs.googlecode.com/files/phantomjs-#{version}-linux-x86_64.tar.bz2"
+    elsif Babushka.host.osx?
+      "https://phantomjs.googlecode.com/files/phantomjs-#{version}-macosx.zip"
+    else
+      unmeetable! "Not sure where to download a phantomjs binary for #{Babushka.base.host}."
+    end
+  end
   met? {
     in_path? "phantomjs >= #{version}"
   }
   meet {
-    Babushka::Resource.extract "https://phantomjs.googlecode.com/files/phantomjs-#{version}-linux-x86_64.tar.bz2" do |archive|
+    Babushka::Resource.extract phantomjs_uri do |archive|
       shell "cp -r . /usr/local/phantomjs"
       shell "ln -fs /usr/local/phantomjs/bin/phantomjs /usr/local/bin"
     end
