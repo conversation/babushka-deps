@@ -53,12 +53,15 @@ end
 
 dep 'jenkins target', :path, :app_user do
   path.default!('/opt/jenkins')
+  def app_group
+    shell("groups '#{app_user}'").split(' ').first
+  end
   met? {
     path.p.directory? && shell?("touch #{path}", :as => app_user)
   }
   meet {
     path.p.mkdir
-    shell "chown -R #{app_user}:#{app_user} #{path}"
+    shell "chown -R #{app_user}:#{app_group} #{path}"
   }
 end
 
