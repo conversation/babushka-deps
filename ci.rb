@@ -48,6 +48,9 @@ dep 'key installed', :username, :public_key, :private_key do
     (ssh_dir / 'ci_host.pub').write(public_key)
     (ssh_dir / 'ci_host').write(private_key)
     (ssh_dir / 'config').append "IdentityFile ~/.ssh/ci_host\n"
+
+    shell "chmod 600 '#{(ssh_dir / 'ci_host')}'"
+    sudo "chown -R #{username} '#{ssh_dir}'" unless username == shell('whoami')
   }
 end
 
