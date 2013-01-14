@@ -18,6 +18,7 @@ dep 'ci provisioned', :app_user, :public_key, :private_key do
     'conversation:theconversation.edu.au common packages',
     'conversation:sharejs.theconversation.edu.au common packages',
     'conversation:counter.theconversation.edu.au common packages',
+    'benhoskings:apt packages removed'.with(/resolvconf|ubuntu\-minimal/i),
     'conversation:ci packages',
     'benhoskings:postgres access'.with(:username => app_user, :flags => '-sdrw'),
     'conversation:jenkins target'.with(:app_user => app_user)
