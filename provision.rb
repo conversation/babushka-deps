@@ -74,7 +74,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_user, :domain, :app_
 
   def failable_remote_babushka dep_spec, args = {}
     remote_babushka(dep_spec, args)
-  rescue Babushka::UnmeetableDep => ex
+  rescue Babushka::UnmeetableDep
     log "That remote run was marked as failable; moving on."
     false
   end
