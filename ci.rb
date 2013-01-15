@@ -29,7 +29,7 @@ dep 'ci packages' do
   requires [
     'openjdk-6-jdk',
     'selenium runtime',
-    'phantomjs'
+    'phantomjs'.with('1.8.1')
   ]
 end
 
