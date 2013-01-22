@@ -8,14 +8,7 @@ dep 'donate.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_r
   requires [
     'delayed job'.with(env, app_user),
 
-    'benhoskings:self signed cert.nginx'.with(
-      :country => 'AU',
-      :state => 'VIC',
-      :city => 'Melbourne',
-      :organisation => 'The Conversation',
-      :domain => domain,
-      :email => 'dev@theconversation.edu.au'
-    ),
+    'ssl cert in place'.with(:domain => domain, :cert_name => 'donate.theconversation.edu.au'),
 
     'rails app'.with(
       :app_name => 'donate',
