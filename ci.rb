@@ -28,7 +28,6 @@ end
 dep 'ci packages' do
   requires [
     'openjdk-6-jdk',
-    'selenium runtime',
     'phantomjs'.with('1.8.1')
   ]
 end
@@ -67,19 +66,6 @@ dep 'jenkins target', :path, :app_user do
     path.p.mkdir
     shell "chown -R #{app_user}:#{app_group} #{path}"
   }
-end
-
-dep 'selenium runtime', :template => 'lib' do
-  installs [
-    'xvfb',
-    'xserver-xorg-core',
-    'xfonts-100dpi',
-    'xfonts-75dpi',
-    'xfonts-scalable',
-    'xfonts-cyrillic',
-    'firefox',
-    'libqt4-dev'
-  ]
 end
 
 dep 'phantomjs', :version do
