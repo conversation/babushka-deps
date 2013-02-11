@@ -31,6 +31,9 @@ server {
     break;
   }
 
+  # auth_basic "Restricted";
+  # auth_basic_user_file htpasswd;
+
   # POSTs are intended for the app, not cached pages. We use '=' to let @app set the response code.
   error_page 405 = @app;
   # Respond with the maintenance page whenever the status is 503.
