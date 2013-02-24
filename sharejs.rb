@@ -23,7 +23,7 @@ dep 'sharejs app', :username, :tc_username, :db_name do
     'sharejs tables exist'.with(username, db_name),
     'read-only schema access'.with(tc_username, username, db_name, 'sharejs', 'sharejs.article_draft_snapshots'),
     'read-only db access'.with(db_name, 'sharejs', tc_username, 'sharejs.article_draft_snapshots'),
-    'npm packages installed',
+    'npm packages installed'.with('~/current'),
   ]
 end
 
@@ -47,7 +47,7 @@ dep 'sharejs tables exist', :username, :db_name do
   SQL
 end
 
-dep 'npm packages installed', :template => "benhoskings:task" do
+dep 'npm packages installed', :path, :template => "benhoskings:task" do
   # No apparent equivalent for bundle check command
-  run { shell %Q{npm install}, :cd => "~/current" }
+  run { shell %Q{npm install}, :cd => path }
 end
