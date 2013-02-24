@@ -1,3 +1,7 @@
+
+# Several deps load YAML, e.g. database configs.
+require 'yaml'
+
 dep 'no known_hosts conflicts', :host do
   met? {
     "~/.ssh/known_hosts".p.grep(/\b#{Regexp.escape(host)}\b/).blank?.tap {|result|
