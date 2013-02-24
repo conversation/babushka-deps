@@ -47,7 +47,13 @@ dep 'sharejs tables exist', :username, :db_name do
   SQL
 end
 
-dep 'npm packages installed', :path, :template => "benhoskings:task" do
-  # No apparent equivalent for bundle check command
-  run { shell %Q{npm install}, :cd => path }
+dep 'npm packages installed', :path do
+  met? {
+    output = raw_shell('npm ls', :cd => path)
+    # Older `npm` versions exit 0 on failure.
+    output.ok? && output.stdout['UNMET DEPENDENCY'].nil?
+  }
+  meet {
+    shell('npm install', :cd => path)
+  }
 end
