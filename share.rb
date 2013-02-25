@@ -20,8 +20,7 @@ end
 dep 'sharejs.theconversation.edu.au dev' do
   requires [
     'sharejs.theconversation.edu.au common packages',
-    'phantomjs', # for js testing
-    'geoip database'.with(:app_root => '.')
+    'phantomjs' # for js testing
   ]
 end
 
