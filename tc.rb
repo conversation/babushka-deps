@@ -58,8 +58,20 @@ dep 'theconversation.edu.au dev' do
   requires [
     'theconversation.edu.au common packages',
     'pv.bin', # for db:production:pull (and it's awesome anyway)
-    'phantomjs' # for js testing
+    'phantomjs', # for js testing
+    'submodules cloned',
+    'npm packages installed'.with('vendor/sharejs')
   ]
+end
+
+dep 'submodules cloned' do
+  met? {
+    # Initalised and current submodules are listed with a leading ' '.
+    shell('git submodule status').split("\n").all? {|l| l[/^ /] }
+  }
+  meet {
+    shell('git submodule update --init')
+  }
 end
 
 dep 'theconversation.edu.au common packages' do
