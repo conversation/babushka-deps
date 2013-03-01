@@ -12,6 +12,7 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
 
   requires [
     'delayed job'.with(env, app_user),
+    'geoip database'.with(:app_root => app_root),
     'ssl cert in place'.with(:domain => domain, :cert_name => 'theconversation.edu.au'),
     'db restored'.with(
       :env => env,
@@ -59,6 +60,7 @@ dep 'theconversation.edu.au dev' do
     'theconversation.edu.au common packages',
     'pv.bin', # for db:production:pull (and it's awesome anyway)
     'phantomjs', # for js testing
+    'geoip database'.with(:app_root => '.'),
     'submodules cloned',
     'npm packages installed'.with('vendor/sharejs')
   ]
