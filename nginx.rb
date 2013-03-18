@@ -59,6 +59,15 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, 
     ).uniq
   end
 
+  def up_to_date? source_name, dest
+    source = dependency.load_path.parent / source_name
+    if !source.p.exists?
+      true # If the source config doesn't exist, this is optional (i.e. a .common conf).
+    else
+      Babushka::Renderable.new(dest).from?(source)
+    end
+  end
+
   path.default("~#{domain}/current".p) if shell?('id', domain)
   nginx_prefix.default!('/opt/nginx')
 
@@ -66,11 +75,13 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, 
   requires 'benhoskings:unicorn configured'.with(path)
 
   met? {
-    Babushka::Renderable.new(vhost_conf).from?(dependency.load_path.parent / "nginx/#{app_name}_vhost.conf.erb")
+    up_to_date?("nginx/#{app_name}_vhost.conf.erb", vhost_conf) &&
+    up_to_date?("nginx/#{app_name}_vhost.common.erb", vhost_common)
   }
   meet {
     sudo "mkdir -p #{nginx_prefix / 'conf/vhosts'}"
     render_erb "nginx/#{app_name}_vhost.conf.erb", :to => vhost_conf, :sudo => true
+    render_erb "nginx/#{app_name}_vhost.common.erb", :to => vhost_common, :sudo => true if (dependency.load_path.parent / "nginx/#{app_name}_vhost.common.erb").p.exists?
   }
 end
 
