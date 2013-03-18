@@ -1,0 +1,59 @@
+charset utf-8;
+
+server_name <%= server_names.join(' ') %>;
+root <%= path / 'public' %>;
+
+# auth_basic "Restricted";
+# auth_basic_user_file htpasswd;
+
+location ~ ^/assets/ {
+  expires max;
+  gzip_static on;
+  add_header Cache-Control public;
+  add_header Last-Modified "";
+  add_header ETag "";
+  break;
+}
+
+location /sharejs/ {
+  # auth_basic off;
+
+  proxy_pass            http://<%= proxy_host %>:<%= proxy_port %>/;
+  proxy_redirect        off;
+
+  proxy_set_header      Host            $host;
+  proxy_set_header      X-Real-IP       $remote_addr;
+  proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+
+  client_max_body_size  10m;
+  proxy_buffers         4 32k;
+}
+
+# POSTs are intended for the app, not cached pages. We use '=' to let @app set the response code.
+error_page 405 = @app;
+
+# Respond with the maintenance page whenever the status is 503.
+error_page 503 /system/maintenance.html;
+
+# Serve cached pages if they exist; otherwise, punt the request to the app.
+try_files $uri/index.html $uri.html $uri @app;
+
+location @app {
+  # If the maintenance page exists, then respond with HTTP 503 (which will
+  # serve the maintenace page; see error_page above).
+  if (-f $document_root/system/maintenance.html) {
+    return 503;
+  }
+
+  proxy_pass           http://<%= upstream_name %>;
+  proxy_redirect       off;
+
+  proxy_buffer_size    64k;
+  proxy_buffers        32 16k;
+  client_max_body_size 128m;
+
+  proxy_set_header     Host              $host;
+  proxy_set_header     X-Real-IP         $remote_addr;
+  proxy_set_header     X-Forwarded-For   $proxy_add_x_forwarded_for;
+  proxy_set_header     X-Forwarded-Proto $scheme;
+}
