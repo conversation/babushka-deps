@@ -7,11 +7,6 @@ upstream <%= upstream_name %> {
 server {
   listen <%= listen_host %>:<%= listen_port %>;
 
-  # Redirect to the canonical domain.
-  if ($host !~ ^<%= domain.to_s.gsub('.', '\.') %>$) {
-    rewrite ^(.*)$ http://<%= domain %>$1 permanent;
-  }
-
   # Redirect authed users to https. (The app does this too; we redirect
   # cached pages here to avoid having to do it on the frontend.)
   if ($http_cookie ~ 'user_tracer_engage') {
@@ -28,11 +23,6 @@ server {
   ssl_certificate_key  certs/<%= domain %>.key;
   ssl_session_timeout  5m;
   ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
-
-  # Redirect to the canonical domain.
-  if ($host !~ ^<%= domain.to_s.gsub('.', '\.') %>$) {
-    rewrite ^(.*)$ https://<%= domain %>$1 permanent;
-  }
 
   include vhosts/<%= domain %>.common;
 }
