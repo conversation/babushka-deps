@@ -12,6 +12,12 @@ server {
     rewrite ^(.*)$ http://<%= domain %>$1 permanent;
   }
 
+  # Redirect authed users to https. (The app does this too; we redirect
+  # cached pages here to avoid having to do it on the frontend.)
+  if ($http_cookie ~ 'user_tracer_engage') {
+    rewrite ^(.*)$ https://$host$1 redirect;
+  }
+
   include vhosts/<%= domain %>.common;
 }
 
