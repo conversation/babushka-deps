@@ -6,6 +6,7 @@ upstream <%= upstream_name %> {
 
 server {
   listen <%= listen_host %>:<%= listen_port %>;
+  server_name <%= server_names.join(' ') %>;
 
   # Redirect authed users to https. (The app does this too; we redirect
   # cached pages here to avoid having to do it on the frontend.)
@@ -18,6 +19,7 @@ server {
 
 server {
   listen <%= listen_host %>:443 ssl;
+  server_name <%= server_names.join(' ') %>;
 
   ssl_certificate      certs/<%= domain %>.crt;
   ssl_certificate_key  certs/<%= domain %>.key;
