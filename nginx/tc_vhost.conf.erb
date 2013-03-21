@@ -28,3 +28,17 @@ server {
 
   include vhosts/<%= domain %>.common;
 }
+
+<% if env == 'production' %>
+server {
+  listen <%= listen_host_dot_com %>:443 ssl;
+  server_name <%= domain_dot_com %>;
+
+  ssl_certificate      certs/<%= domain_dot_com %>.crt;
+  ssl_certificate_key  certs/<%= domain_dot_com %>.key;
+  ssl_session_timeout  5m;
+  ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
+
+  include vhosts/<%= domain %>.common;
+}
+<% end %>

@@ -44,6 +44,14 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, 
   proxy_host.default('localhost')
   proxy_port.default('8000')
 
+  # TODO: Hardcode this temporarily, until the migration is complete.
+  def listen_host_dot_com
+    'TODO: IP'
+  end
+  def domain_dot_com
+    'theconversation.com'
+  end
+
   def www_aliases
     "#{domain} #{domain_aliases}".split(/\s+/).reject {|d|
       d[/^\*\./] || d[/^www\./]
