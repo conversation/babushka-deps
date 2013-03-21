@@ -46,7 +46,10 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, 
 
   # TODO: Hardcode this temporarily, until the migration is complete.
   def listen_host_dot_com
-    'TODO: IP'
+    {
+      '74.50.63.170' => '74.50.63.173',
+      '31.193.141.103' => '91.186.19.133'
+    }[listen_host.to_s]
   end
   def domain_dot_com
     'theconversation.com'
