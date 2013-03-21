@@ -6,6 +6,18 @@ upstream <%= upstream_name %> {
 
 server {
   listen <%= listen_host %>:<%= listen_port %>;
+  server_name www.<%= domain %>;
+  return 301 http://<%= domain %>$request_uri;
+}
+
+server {
+  listen <%= listen_host_dot_com %>:<%= listen_port %>;
+  server_name www.<%= domain_dot_com %>;
+  return 301 http://<%= domain_dot_com %>$request_uri;
+}
+
+server {
+  listen <%= listen_host %>:<%= listen_port %>;
   server_name <%= server_names.join(' ') %>;
 
   # Redirect authed users to https. (The app does this too; we redirect
