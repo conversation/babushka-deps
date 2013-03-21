@@ -43,6 +43,12 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
 
     'postgres replication monitoring'.with(:test_user => app_user)
   ]
+
+  setup {
+    if env == 'production'
+      requires 'ssl cert in place'.with(:domain => 'theconversation.com', :cert_name => 'theconversation.com')
+    end
+  }
 end
 
 dep 'theconversation.edu.au packages' do
