@@ -18,7 +18,7 @@ server {
 
 server {
   listen <%= listen_host %>:<%= listen_port %>;
-  server_name <%= server_names.join(' ') %>;
+  server_name <%= domain %>;
 
   # Redirect authed users to https. (The app does this too; we redirect
   # cached pages here to avoid having to do it on the frontend.)
@@ -31,7 +31,7 @@ server {
 
 server {
   listen <%= listen_host %>:443 ssl;
-  server_name <%= server_names.join(' ') %>;
+  server_name <%= domain %>;
 
   ssl_certificate      certs/<%= domain %>.crt;
   ssl_certificate_key  certs/<%= domain %>.key;
@@ -42,6 +42,19 @@ server {
 }
 
 <% if env == 'production' %>
+server {
+  listen <%= listen_host_dot_com %>:<%= listen_port %>;
+  server_name <%= domain_dot_com %>;
+
+  # Redirect authed users to https. (The app does this too; we redirect
+  # cached pages here to avoid having to do it on the frontend.)
+  if ($http_cookie ~ 'user_tracer_engage') {
+    rewrite ^(.*)$ https://$host$1 redirect;
+  }
+
+  include vhosts/<%= domain %>.common;
+}
+
 server {
   listen <%= listen_host_dot_com %>:443 ssl;
   server_name <%= domain_dot_com %>;
