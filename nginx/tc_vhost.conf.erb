@@ -16,6 +16,24 @@ server {
   return 301 http://<%= domain_dot_com %>$request_uri;
 }
 
+#server {
+#  listen <%= listen_host %>:<%= listen_port %>;
+#  listen <%= listen_host %>:443 ssl;
+#  server_name <%= domain %>;
+#
+#  ssl_certificate      certs/<%= domain %>.crt;
+#  ssl_certificate_key  certs/<%= domain %>.key;
+#  ssl_session_timeout  5m;
+#  ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
+#
+#  location = / {
+#    return 301 $scheme://<%= domain_dot_com %>/au;
+#  }
+#  location / {
+#    return 301 $scheme://<%= domain_dot_com %>$request_uri;
+#  }
+#}
+
 server {
   listen <%= listen_host %>:<%= listen_port %>;
   server_name <%= domain %>;
