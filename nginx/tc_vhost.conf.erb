@@ -89,10 +89,10 @@ server {
   server_name <%= domain_uk %>;
 
   location = / {
-    return 301 $scheme://<%= domain_uk %>/uk;
+    return 301 $scheme://<%= domain_dot_com %>/uk;
   }
   location / {
-    return 301 $scheme://<%= domain_uk %>$request_uri;
+    return 301 $scheme://<%= domain_dot_com %>$request_uri;
   }
 }
 <% end %>
