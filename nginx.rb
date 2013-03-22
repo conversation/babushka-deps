@@ -55,6 +55,11 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, 
     'theconversation.com'
   end
 
+  def listen_host_uk; listen_host_dot_com; end
+  def domain_uk
+    'theconversation.org.uk'
+  end
+
   def www_aliases
     "#{domain} #{domain_aliases}".split(/\s+/).reject {|d|
       d[/^\*\./] || d[/^www\./]
