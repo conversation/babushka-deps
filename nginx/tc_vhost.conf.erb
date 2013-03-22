@@ -22,35 +22,23 @@ server {
   return 301 http://<%= domain_uk %>$request_uri;
 }
 
-#server {
-#  listen <%= listen_host %>:<%= listen_port %>;
-#  listen <%= listen_host %>:443 ssl;
-#  server_name <%= domain %>;
-#
-#  ssl_certificate      certs/<%= domain %>.crt;
-#  ssl_certificate_key  certs/<%= domain %>.key;
-#  ssl_session_timeout  5m;
-#  ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
-#
-#  location = / {
-#    return 301 $scheme://<%= domain_dot_com %>/au;
-#  }
-#  location / {
-#    return 301 $scheme://<%= domain_dot_com %>$request_uri;
-#  }
-#}
-
 server {
+  # TODO: Turn on SSL when loggged in user traffic lessens.
   listen <%= listen_host %>:<%= listen_port %>;
   server_name <%= domain %>;
 
-  # Redirect authed users to https. (The app does this too; we redirect
-  # cached pages here to avoid having to do it on the frontend.)
+  # TODO: For now, we'll preserve logged in users on AU site.
   if ($http_cookie ~ 'user_tracer_engage') {
-    rewrite ^(.*)$ https://$host$1 redirect;
+    return 302 https://$host$request_uri;
   }
 
-  include vhosts/<%= domain %>.common;
+  # Otherwise, all traffic is redirected to .com
+  location = / {
+    return 301 $scheme://<%= domain_dot_com %>/au;
+  }
+  location / {
+    return 301 $scheme://<%= domain_dot_com %>$request_uri;
+  }
 }
 
 server {
@@ -61,6 +49,11 @@ server {
   ssl_certificate_key  certs/<%= domain %>.key;
   ssl_session_timeout  5m;
   ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
+
+  # TODO: Unauthentiated users go to .com
+  if ($http_cookie !~ 'user_tracer_engage') {
+    return 302 $scheme://<%= domain_dot_com %>$request_uri;
+  }
 
   include vhosts/<%= domain %>.common;
 }
