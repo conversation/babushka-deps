@@ -36,7 +36,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'host provisioned', :host, :host_name, :ref, :env, :app_user, :domain, :app_root, :keys, :check_path, :expected_content do
+dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -132,7 +132,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_user, :domain, :app_
       remote_babushka 'benhoskings:ruby.src', :version => '1.9.3', :patchlevel => 'p374'
 
       # All the system-wide config for this app, like packages and user accounts.
-      remote_babushka "conversation:system provisioned", :host_name => host_name, :env => env, :app_user => app_user, :key => keys
+      remote_babushka "conversation:system provisioned", :host_name => host_name, :env => env, :app_name => app_name, :app_user => app_user, :key => keys
     }
 
     as(app_user) {
@@ -148,7 +148,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_user, :domain, :app_
 
     as(app_user) {
       # Now that the code is in place, provision the app.
-      remote_babushka "conversation:app provisioned", :env => env, :host => host, :domain => domain, :app_user => app_user, :app_root => app_root, :key => keys
+      remote_babushka "conversation:app provisioned", :env => env, :host => host, :domain => domain, :app_name => app_name, :app_user => app_user, :app_root => app_root, :key => keys
     }
 
     as('root') {
@@ -158,7 +158,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_user, :domain, :app_
   }
 end
 
-dep 'system provisioned', :host_name, :env, :app_user, :key do
+dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
   requires [
     'benhoskings:utc',
     'conversation:localhost hosts entry',
@@ -166,16 +166,16 @@ dep 'system provisioned', :host_name, :env, :app_user, :key do
     'benhoskings:apt packages removed'.with(/apache|mysql|php/i),
     'benhoskings:system'.with(:host_name => host_name),
     'conversation:running.postfix',
-    "#{app_user} packages",
+    "#{app_name} packages",
     'benhoskings:user setup'.with(:key => key),
-    "#{app_user} system".with(app_user, key),
+    "#{app_name} system".with(app_user, key),
     'benhoskings:user setup for provisioning'.with(app_user, key)
   ]
 end
 
-dep 'app provisioned', :env, :host, :domain, :app_user, :app_root, :key do
+dep 'app provisioned', :env, :host, :domain, :app_name, :app_user, :app_root, :key do
   requires [
-    "#{app_user} app".with(env, host, domain, app_user, app_root, key),
+    "#{app_name} app".with(env, host, domain, app_user, app_root, key),
 
     # Lastly, boot the app.
     "benhoskings:unicorn running".with(:app_root => "~/current", :env => env)
