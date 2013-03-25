@@ -1,6 +1,6 @@
-dep 'sharejs.theconversation.edu.au system', :app_user, :key
+dep 'sharejs system', :app_user, :key
 
-dep 'sharejs.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
+dep 'sharejs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'benhoskings:user setup'.with(:key => key),
 
@@ -8,23 +8,23 @@ dep 'sharejs.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_
   ]
 end
 
-dep 'sharejs.theconversation.edu.au packages' do
+dep 'sharejs packages' do
   requires [
     'postgres'.with('9.2'),
     'curl.lib',
     'running.nginx',
-    'sharejs.theconversation.edu.au common packages'
+    'sharejs common packages'
   ]
 end
 
-dep 'sharejs.theconversation.edu.au dev' do
+dep 'sharejs dev' do
   requires [
-    'sharejs.theconversation.edu.au common packages',
+    'sharejs common packages',
     'phantomjs' # for js testing
   ]
 end
 
-dep 'sharejs.theconversation.edu.au common packages' do
+dep 'sharejs common packages' do
   requires [
     'bundler.gem',
     'postgres.bin'.with('9.2'),

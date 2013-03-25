@@ -1,11 +1,11 @@
-dep 'counter.theconversation.edu.au system', :app_user, :key do
+dep 'counter system', :app_user, :key do
   requires [
     'postgres'.with('9.2'),
     'benhoskings:user setup for provisioning'.with("dw.theconversation.edu.au", key) # For DW loads from psql on the counter machine
   ]
 end
 
-dep 'counter.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
+dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'geoip database'.with(:app_root => app_root),
     'ssl cert in place'.with(:domain => domain, :cert_name => '*.theconversation.edu.au'),
@@ -29,9 +29,9 @@ dep 'counter.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_
   ]
 end
 
-dep 'counter.theconversation.edu.au packages' do
+dep 'counter packages' do
   requires [
-    'counter.theconversation.edu.au common packages',
+    'counter common packages',
     'curl.lib',
     'running.nginx',
     'socat.bin' # for DB tunnelling
@@ -40,14 +40,14 @@ end
 
 
 
-dep 'counter.theconversation.edu.au dev' do
+dep 'counter dev' do
   requires [
-    'counter.theconversation.edu.au common packages',
+    'counter common packages',
     'geoip database'.with(:app_root => '.')
   ]
 end
 
-dep 'counter.theconversation.edu.au common packages' do
+dep 'counter common packages' do
   requires [
     'postgres.bin'.with('9.2'),
     'geoip.bin', # for geoip-c

@@ -1,11 +1,11 @@
-dep 'theconversation.edu.au system', :app_user, :key do
+dep 'tc system', :app_user, :key do
   requires [
     'benhoskings:user setup for provisioning'.with("dw.theconversation.edu.au", key), # For DW loads from psql on the counter machine
     'benhoskings:postgres access'.with(:username => "sharejs.theconversation.edu.au") # For proper DB permissions when the data is restored
   ]
 end
 
-dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
+dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name
     YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
   end
@@ -51,19 +51,19 @@ dep 'theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :k
   }
 end
 
-dep 'theconversation.edu.au packages' do
+dep 'tc packages' do
   requires [
     'postgres'.with('9.2'),
     'running.nginx',
     'memcached.bin', # for fragment caching
-    'theconversation.edu.au common packages',
+    'tc common packages',
     'socat.bin' # for DB tunnelling
   ]
 end
 
-dep 'theconversation.edu.au dev' do
+dep 'tc dev' do
   requires [
-    'theconversation.edu.au common packages',
+    'tc common packages',
     'pv.bin', # for db:production:pull (and it's awesome anyway)
     'phantomjs', # for js testing
     'geoip database'.with(:app_root => '.'),
@@ -82,7 +82,7 @@ dep 'submodules cloned' do
   }
 end
 
-dep 'theconversation.edu.au common packages' do
+dep 'tc common packages' do
   requires [
     'bundler.gem',
     'curl.lib',

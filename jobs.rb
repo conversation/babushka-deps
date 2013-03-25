@@ -1,6 +1,6 @@
-dep 'jobs.theconversation.edu.au system', :app_user, :key
+dep 'jobs system', :app_user, :key
 
-dep 'jobs.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
+dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name
     YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
   end
@@ -21,20 +21,20 @@ dep 'jobs.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_roo
   ]
 end
 
-dep 'jobs.theconversation.edu.au packages' do
+dep 'jobs packages' do
   requires [
     'postgres'.with('9.1'),
     'curl.lib',
     'running.nginx',
-    'jobs.theconversation.edu.au common packages'
+    'jobs common packages'
   ]
 end
 
-dep 'jobs.theconversation.edu.au dev' do
-  requires 'jobs.theconversation.edu.au common packages'
+dep 'jobs dev' do
+  requires 'jobs common packages'
 end
 
-dep 'jobs.theconversation.edu.au common packages' do
+dep 'jobs common packages' do
   requires [
     'bundler.gem',
     'postgres.bin'.with('9.1'),

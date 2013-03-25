@@ -1,6 +1,6 @@
-dep 'donate.theconversation.edu.au system', :app_user, :key
+dep 'donations system', :app_user, :key
 
-dep 'donate.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
+dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name
     YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
   end
@@ -22,20 +22,20 @@ dep 'donate.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_r
   ]
 end
 
-dep 'donate.theconversation.edu.au packages' do
+dep 'donations packages' do
   requires [
     'postgres'.with('9.2'),
     'curl.lib',
     'running.nginx',
-    'donate.theconversation.edu.au common packages'
+    'donations common packages'
   ]
 end
 
-dep 'donate.theconversation.edu.au dev' do
-  requires 'donate.theconversation.edu.au common packages'
+dep 'donations dev' do
+  requires 'donations common packages'
 end
 
-dep 'donate.theconversation.edu.au common packages' do
+dep 'donations common packages' do
   requires [
     'bundler.gem',
     'postgres.bin'.with('9.2'),

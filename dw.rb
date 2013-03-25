@@ -1,6 +1,6 @@
-dep 'dw.theconversation.edu.au system', :app_user, :key
+dep 'dw system', :app_user, :key
 
-dep 'dw.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root, :key do
+dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'benhoskings:rack app'.with(
       :env => env,
@@ -17,20 +17,20 @@ dep 'dw.theconversation.edu.au app', :env, :host, :domain, :app_user, :app_root,
   ]
 end
 
-dep 'dw.theconversation.edu.au packages' do
+dep 'dw packages' do
   requires [
     'postgres'.with('9.2'),
     'curl.lib',
     'running.nginx',
-    'dw.theconversation.edu.au common packages'
+    'dw common packages'
   ]
 end
 
-dep 'dw.theconversation.edu.au dev' do
-  requires 'dw.theconversation.edu.au common packages'
+dep 'dw dev' do
+  requires 'dw common packages'
 end
 
-dep 'dw.theconversation.edu.au common packages' do
+dep 'dw common packages' do
   requires [
     'postgres.bin'.with('9.2'),
     'socat.bin' # for DB tunnelling
