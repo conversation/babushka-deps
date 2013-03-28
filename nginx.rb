@@ -44,21 +44,16 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, 
   proxy_host.default('localhost')
   proxy_port.default('8000')
 
-  # TODO: Hardcode this temporarily, until the migration is complete.
-  def listen_host_dot_com
+  # TODO: Only required until we move to a single-IP nginx config.
+  def listen_host_au
     {
-      '74.50.63.170' => '74.50.63.173',
-      '31.193.141.103' => '91.186.19.133'
+      '74.50.63.173' => '74.50.63.170',
+      '91.186.19.133' => '31.193.141.103'
     }[listen_host.to_s]
   end
-  def domain_dot_com
-    'theconversation.com'
-  end
-
-  def listen_host_uk; listen_host_dot_com; end
-  def domain_uk
-    'theconversation.org.uk'
-  end
+  def listen_host_uk; listen_host; end
+  def domain_au; 'theconversation.edu.au' end
+  def domain_uk; 'theconversation.org.uk' end
 
   def www_aliases
     "#{domain} #{domain_aliases}".split(/\s+/).reject {|d|

@@ -1,35 +1,33 @@
+# The unicorn appserver.
 upstream <%= upstream_name %> {
   # fail_timeout=0 means we always retry the unicorn master, since it's
   # responsible for restarting workers when they fail.
   server unix:<%= unicorn_socket %> fail_timeout=0;
 }
 
-# AU www. redirect
+# Canonical www. redirect
 server {
   listen <%= listen_host %>:<%= listen_port %>;
   server_name www.<%= domain %>;
   return 301 http://<%= domain %>$request_uri;
 }
 
-<% if env == 'production' %>
-# Canonical www. redirect
-server {
-  listen <%= listen_host_dot_com %>:<%= listen_port %>;
-  server_name www.<%= domain_dot_com %>;
-  return 301 http://<%= domain_dot_com %>$request_uri;
-}
-
-# UK www. redirect
-server {
-  listen <%= listen_host_uk %>:<%= listen_port %>;
-  server_name www.<%= domain_uk %>;
-  return 301 http://<%= domain_uk %>$request_uri;
-}
-<% end %>
-
-# AU -> canonical redirect
+# Canonical http:// vhost
 server {
   listen <%= listen_host %>:<%= listen_port %>;
+  server_name <%= domain %>;
+
+  # Redirect authed users to https. (The app does this too; we redirect
+  # cached pages here to avoid having to do it on the frontend.)
+  if ($http_cookie ~ 'user_tracer_engage') {
+    return 301 https://<%= domain %>$request_uri;
+  }
+
+  include vhosts/<%= domain %>.common;
+}
+
+# Canonical https:// vhost
+server {
   listen <%= listen_host %>:443 ssl;
   server_name <%= domain %>;
 
@@ -38,42 +36,41 @@ server {
   ssl_session_timeout  5m;
   ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
 
-  <% if env == 'production' %>
-  location = / {
-    return 301 $scheme://<%= domain_dot_com %>/au;
-  }
-  location / {
-    return 301 $scheme://<%= domain_dot_com %>$request_uri;
-  }
-  <% end %>
+  include vhosts/<%= domain %>.common;
 }
 
 <% if env == 'production' %>
-# Canonical http:// vhost
+# AU www. redirect
 server {
-  listen <%= listen_host_dot_com %>:<%= listen_port %>;
-  server_name <%= domain_dot_com %>;
-
-  # Redirect authed users to https. (The app does this too; we redirect
-  # cached pages here to avoid having to do it on the frontend.)
-  if ($http_cookie ~ 'user_tracer_engage') {
-    rewrite ^(.*)$ https://$host$1 redirect;
-  }
-
-  include vhosts/<%= domain %>.common;
+  listen <%= listen_host_au %>:<%= listen_port %>;
+  server_name www.<%= domain_au %>;
+  return 301 http://<%= domain_au %>$request_uri;
 }
 
-# Canonical https:// vhost
+# UK www. redirect
 server {
-  listen <%= listen_host_dot_com %>:443 ssl;
-  server_name <%= domain_dot_com %>;
+  listen <%= listen_host_uk %>:<%= listen_port %>;
+  server_name www.<%= domain_uk %>;
+  return 301 http://<%= domain_uk %>$request_uri;
+}
 
-  ssl_certificate      certs/<%= domain_dot_com %>.crt;
-  ssl_certificate_key  certs/<%= domain_dot_com %>.key;
+# AU -> canonical redirect
+server {
+  listen <%= listen_host_au %>:<%= listen_port %>;
+  listen <%= listen_host_au %>:443 ssl;
+  server_name <%= domain_au %>;
+
+  ssl_certificate      certs/<%= domain_au %>.crt;
+  ssl_certificate_key  certs/<%= domain_au %>.key;
   ssl_session_timeout  5m;
   ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
 
-  include vhosts/<%= domain %>.common;
+  location = / {
+    return 301 $scheme://<%= domain %>/au;
+  }
+  location / {
+    return 301 $scheme://<%= domain %>$request_uri;
+  }
 }
 
 # UK -> canonical redirect
@@ -82,10 +79,10 @@ server {
   server_name <%= domain_uk %>;
 
   location = / {
-    return 301 $scheme://<%= domain_dot_com %>/uk;
+    return 301 $scheme://<%= domain %>/uk;
   }
   location / {
-    return 301 $scheme://<%= domain_dot_com %>$request_uri;
+    return 301 $scheme://<%= domain %>$request_uri;
   }
 }
 <% end %>
