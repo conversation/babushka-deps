@@ -24,6 +24,21 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :app_root => app_root
     ),
 
+    'db access'.with(
+      :grant => 'ALL PRIVILEGES',
+      :db_name => db_name,
+      :schema => 'public',
+      :username => app_user,
+      :check_table => 'content'
+    ),
+    'db access'.with(
+      :grant => 'SELECT',
+      :db_name => db_name,
+      :schema => 'sharejs',
+      :username => app_user,
+      :check_table => 'sharejs.article_draft_snapshots'
+    ),
+
     'rails app'.with(
       :app_name => 'tc',
       :env => env,
