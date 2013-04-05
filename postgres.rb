@@ -123,16 +123,19 @@ dep 'postgres auth config', :version do
 end
 
 dep 'postgres.bin', :version do
-  version.default('9.2')
+  def version_group
+    version.to_s.scan(/^\d\.\d/).first
+  end
+  version.default('9.2.4')
   requires 'benhoskings:set.locale'
   requires_when_unmet {
     on :apt, 'ppa'.with('ppa:pitti/postgresql')
   }
   installs {
-    via :apt, ["postgresql-#{owner.version}", "libpq-dev"]
+    via :apt, ["postgresql-#{owner.version_group}", "libpq-dev"]
     via :brew, "postgresql"
   }
-  provides "psql ~> #{version}.0"
+  provides "psql ~> #{version}"
 end
 
 dep 'postgresql-contrib.lib' do

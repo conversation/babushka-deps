@@ -23,7 +23,7 @@ end
 
 dep 'jobs packages' do
   requires [
-    'postgres'.with('9.1'),
+    'postgres'.with('9.1.9'),
     'curl.lib',
     'running.nginx',
     'jobs common packages'
@@ -37,7 +37,7 @@ end
 dep 'jobs common packages' do
   requires [
     'bundler.gem',
-    'postgres.bin'.with('9.1'),
+    'postgres.bin'.with('9.1.9'),
     'postgresql-contrib.lib', # for pg_trgm, for search
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
