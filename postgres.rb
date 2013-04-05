@@ -10,6 +10,8 @@ dep 'schema access', :username, :owner_name, :db_name, :schema_name, :check_tabl
   }
 end
 
+# Bug: this dep only checks for SELECT access, so if you're adding other privileges
+# you need to start from none at all.
 dep 'db access', :grant, :db_name, :schema, :username, :check_table do
   grant.default!('SELECT')
   schema.default!('public')
