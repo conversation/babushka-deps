@@ -38,7 +38,7 @@ end
 dep 'donations common packages' do
   requires [
     'bundler.gem',
-    'postgres.bin'.with('9.2'),
+    'postgres.bin',
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
     'coffeescript.src' # for barista

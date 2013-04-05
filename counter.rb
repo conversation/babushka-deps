@@ -49,7 +49,7 @@ end
 
 dep 'counter common packages' do
   requires [
-    'postgres.bin'.with('9.2'),
+    'postgres.bin',
     'geoip.bin', # for geoip-c
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri

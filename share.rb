@@ -27,7 +27,7 @@ end
 dep 'sharejs common packages' do
   requires [
     'bundler.gem',
-    'postgres.bin'.with('9.2'),
+    'postgres.bin',
     "npm",
     "coffeescript.src"
   ]

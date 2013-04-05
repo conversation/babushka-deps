@@ -19,7 +19,7 @@ end
 
 dep 'dw packages' do
   requires [
-    'postgres'.with('9.2'),
+    'postgres',
     'curl.lib',
     'running.nginx',
     'dw common packages'
@@ -32,7 +32,7 @@ end
 
 dep 'dw common packages' do
   requires [
-    'postgres.bin'.with('9.2'),
+    'postgres.bin',
     'socat.bin' # for DB tunnelling
   ]
 end

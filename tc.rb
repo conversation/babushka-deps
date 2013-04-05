@@ -86,7 +86,7 @@ dep 'tc common packages' do
   requires [
     'bundler.gem',
     'curl.lib',
-    'postgres.bin'.with('9.2'),
+    'postgres.bin',
     'geoip.bin', # for geoip-c
     'aspell dictionary.lib',
     'coffeescript.src', # for barista
