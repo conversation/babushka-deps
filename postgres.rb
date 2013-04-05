@@ -17,8 +17,14 @@ dep 'db access', :grant, :db_name, :schema, :username, :check_table do
   schema.default!('public')
   check_table.default!('users')
   requires 'benhoskings:postgres access'.with(:username => username)
-  met? { shell? %Q{psql #{db_name} -c 'SELECT * FROM #{check_table} LIMIT 1'}, :as => username }
-  meet { sudo %Q{psql #{db_name} -c 'GRANT #{grant} ON ALL TABLES IN SCHEMA "#{schema}" TO "#{username}"'}, :as => 'postgres' }
+  met? {
+    shell? %Q{psql #{db_name} -c 'SELECT * FROM #{check_table} LIMIT 1'}, :as => username
+  }
+  meet {
+    %w[TABLES SEQUENCES].each {|objects|
+      sudo %Q{psql #{db_name} -c 'GRANT #{grant} ON ALL #{objects} IN SCHEMA "#{schema}" TO "#{username}"'}, :as => 'postgres'
+    }
+  }
 end
 
 dep 'table exists', :username, :db_name, :table_name, :table_schema do
