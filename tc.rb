@@ -31,6 +31,14 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :username => app_user,
       :check_table => 'content'
     ),
+
+    'schema access'.with(
+      :username => app_user,
+      :owner_name => 'sharejs.theconversation.edu.au',
+      :db_name => db_name,
+      :schema_name => 'sharejs',
+      :check_table => 'sharejs.article_draft_snapshots'
+    ),
     'db access'.with(
       :grant => 'SELECT',
       :db_name => db_name,

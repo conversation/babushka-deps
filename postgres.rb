@@ -1,4 +1,4 @@
-dep 'read-only schema access', :username, :owner_name, :db_name, :schema_name, :check_table do
+dep 'schema access', :username, :owner_name, :db_name, :schema_name, :check_table do
   requires 'schema exists'.with(owner_name, db_name, schema_name)
   met? {
     cmd = raw_shell("psql #{db_name} -t -c 'SELECT * FROM #{check_table} LIMIT 1'", :as => username)
