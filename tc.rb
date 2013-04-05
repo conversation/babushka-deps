@@ -1,7 +1,10 @@
 dep 'tc system', :app_user, :key do
   requires [
     'benhoskings:user setup for provisioning'.with("dw.theconversation.edu.au", key), # For DW loads from psql on the counter machine
-    'benhoskings:postgres access'.with(:username => "sharejs.theconversation.edu.au") # For proper DB permissions when the data is restored
+    'benhoskings:postgres access'.with(:username => "sharejs.theconversation.edu.au"), # For proper DB permissions when the data is restored
+
+    # Temporary: for migrating the app username to theconversation.com.
+    'benhoskings:postgres access'.with(:username => "theconversation.edu.au")
   ]
 end
 
