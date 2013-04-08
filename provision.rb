@@ -36,7 +36,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content do
+dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content do
 
   def as user, &block
     previous_user, @user = @user, user
@@ -87,6 +87,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   domain.default!(app_user) if env == 'production'
   app_root.default!('~/current')
   check_path.default!('/health')
+  expected_content_path.default!('/')
 
   met? {
     cmd = raw_shell("curl --connect-timeout 2 -v -H 'Host: #{domain}' http://#{host}#{check_path}")
@@ -102,13 +103,14 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
       else
         log_ok "#{domain}#{check_path} responded with 200 OK."
 
-        check_output = shell("curl -v -H 'Host: #{domain}' http://#{host}")
+        check_uri = "http://#{host}#{expected_content_path}"
+        check_output = shell("curl -v -H 'Host: #{domain}' #{check_uri}")
 
         if !check_output[/#{Regexp.escape(expected_content)}/]
           @should_confirm = true
-          log_warn "#{domain} on #{host} doesn't contain '#{expected_content}'."
+          log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
         else
-          log_ok "#{domain} on #{host} contains '#{expected_content}'."
+          log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
         end
       end
     end
