@@ -141,7 +141,11 @@ dep 'postgres.bin', :version do
     on :apt, 'ppa'.with('ppa:pitti/postgresql')
   }
   installs {
-    via :apt, ["postgresql-#{owner.version_group}", "libpq-dev"]
+    via :apt, [
+      "postgresql-#{owner.version_group}",
+      "postgresql-client-#{owner.version_group}",
+      "libpq-dev"
+    ]
     via :brew, "postgresql"
   }
   provides "psql ~> #{version}"
