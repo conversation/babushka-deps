@@ -2,9 +2,6 @@ dep 'tc system', :app_user, :key do
   requires [
     'benhoskings:user setup for provisioning'.with("dw.theconversation.edu.au", key), # For DW loads from psql on the counter machine
     'benhoskings:postgres access'.with(:username => "sharejs.theconversation.edu.au"), # For proper DB permissions when the data is restored
-
-    # Temporary: for migrating the app username to theconversation.com.
-    'benhoskings:postgres access'.with(:username => "theconversation.edu.au")
   ]
 end
 
@@ -23,8 +20,6 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :db_name => db_name,
       :app_root => app_root
     ),
-
-    'tc db access for user'.with(db_name, app_user),
 
     'rails app'.with(
       :app_name => 'tc',
@@ -54,33 +49,6 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       requires 'ssl cert in place'.with(:domain => 'theconversation.com', :cert_name => 'theconversation.com')
     end
   }
-end
-
-dep 'tc db access for user', :db_name, :app_user do
-  requires [
-    'db access'.with(
-      :grant => 'ALL PRIVILEGES',
-      :db_name => db_name,
-      :schema => 'public',
-      :username => app_user,
-      :check_table => 'content'
-    ),
-
-    'schema access'.with(
-      :username => app_user,
-      :owner_name => 'sharejs.theconversation.edu.au',
-      :db_name => db_name,
-      :schema_name => 'sharejs',
-      :check_table => 'sharejs.article_draft_snapshots'
-    ),
-    'db access'.with(
-      :grant => 'SELECT',
-      :db_name => db_name,
-      :schema => 'sharejs',
-      :username => app_user,
-      :check_table => 'sharejs.article_draft_snapshots'
-    )
-  ]
 end
 
 dep 'tc packages' do
