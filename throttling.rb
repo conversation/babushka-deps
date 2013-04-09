@@ -2,7 +2,8 @@ dep 'throttling' do
   requires [
     'nginx-badbots.conf',
     'nginx-noscript.conf',
-    'nginx-catchall.conf'
+    'nginx-catchall.conf',
+    'user-signup.conf',
   ]
 end
 
@@ -31,6 +32,18 @@ dep 'nginx-noscript.conf' do
 end
 
 dep 'nginx-catchall.conf' do
+  requires 'local fail2ban config'
+  met? {
+    Babushka::Renderable.new("/etc/fail2ban/filter.d/#{name}").from?(
+      dependency.load_path.parent / "throttling/#{name}"
+    )
+  }
+  meet {
+    render_erb "throttling/#{name}", :to => "/etc/fail2ban/filter.d/#{name}"
+  }
+end
+
+dep 'user-signup.conf' do
   requires 'local fail2ban config'
   met? {
     Babushka::Renderable.new("/etc/fail2ban/filter.d/#{name}").from?(
