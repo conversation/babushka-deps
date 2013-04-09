@@ -83,6 +83,9 @@ end
 
 dep 'postgres config', :version do
   requires 'postgres.bin'.with(version)
+  def minor_version
+    version.to_s.scan(/^\d\.\d/).first
+  end
   def psql cmd
     shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
   end
@@ -108,7 +111,7 @@ dep 'postgres config', :version do
     current_settings.slice(*expected_settings.keys) == expected_settings
   }
   meet {
-    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{version}/main/postgresql.conf"
+    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{minor_version}/main/postgresql.conf"
     log_shell "Restarting postgres", "/etc/init.d/postgresql restart", :as => 'postgres'
   }
 end
@@ -116,11 +119,14 @@ end
 dep 'postgres auth config', :version do
   requires 'postgres.bin'.with(version)
 
+  def minor_version
+    version.to_s.scan(/^\d\.\d/).first
+  end
   def erb_template
     "postgres/pg_hba.conf.erb"
   end
   def target
-    "/etc/postgresql/#{version}/main/pg_hba.conf"
+    "/etc/postgresql/#{minor_version}/main/pg_hba.conf"
   end
 
   met? {
