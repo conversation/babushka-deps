@@ -132,7 +132,7 @@ dep 'postgres auth config', :version do
 end
 
 dep 'postgres.bin', :version do
-  def version_group
+  def minor_version
     version.to_s.scan(/^\d\.\d/).first
   end
   version.default('9.2.4')
@@ -142,8 +142,8 @@ dep 'postgres.bin', :version do
   }
   installs {
     via :apt, [
-      "postgresql-#{owner.version_group}",
-      "postgresql-client-#{owner.version_group}",
+      "postgresql-#{owner.minor_version}",
+      "postgresql-client-#{owner.minor_version}",
       "libpq-dev"
     ]
     via :brew, "postgresql"
