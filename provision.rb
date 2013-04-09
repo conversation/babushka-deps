@@ -111,6 +111,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
           log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
         else
           log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
+          @run || log_warn("The app seems to be up; babushkaing anyway. (How bad could it be?)")
         end
       end
     end
@@ -157,6 +158,8 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
       # Lastly, revoke sudo to lock the box down per-user.
       remote_babushka "benhoskings:passwordless sudo removed"
     }
+
+    @run = true
   }
 end
 
