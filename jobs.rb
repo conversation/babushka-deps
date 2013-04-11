@@ -1,4 +1,4 @@
-dep 'jobs system', :app_user, :key
+dep 'jobs system', :app_user, :key, :env
 
 dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name
