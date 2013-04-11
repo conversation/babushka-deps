@@ -40,18 +40,13 @@ server {
 }
 
 <% if env == 'production' %>
+
+<% if listen_host_au %>
 # AU www. redirect
 server {
   listen <%= listen_host_au %>:<%= listen_port %>;
   server_name www.<%= domain_au %>;
   return 301 http://<%= domain_au %>$request_uri;
-}
-
-# UK www. redirect
-server {
-  listen <%= listen_host_uk %>:<%= listen_port %>;
-  server_name www.<%= domain_uk %>;
-  return 301 http://<%= domain_uk %>$request_uri;
 }
 
 # AU -> canonical redirect
@@ -71,6 +66,14 @@ server {
   location / {
     return 301 $scheme://<%= domain %>$request_uri;
   }
+}
+<% end %>
+
+# UK www. redirect
+server {
+  listen <%= listen_host_uk %>:<%= listen_port %>;
+  server_name www.<%= domain_uk %>;
+  return 301 http://<%= domain_uk %>$request_uri;
 }
 
 # UK -> canonical redirect
