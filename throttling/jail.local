@@ -18,13 +18,6 @@ port    = http,https
 filter  = nginx-noscript
 logpath = /opt/nginx/logs/access.log
 
-[nginx-catchall]
-enabled = true
-port    = http,https
-filter  = nginx-catchall
-logpath = /opt/nginx/logs/access.log
-maxretry = 10
-
 [tc-too-many-signups]
 enabled = true
 port    = http,https

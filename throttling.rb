@@ -2,7 +2,6 @@ dep 'throttling' do
   requires [
     'fail2ban filter'.with('nginx-badbots'),
     'fail2ban filter'.with('nginx-noscript'),
-    'fail2ban filter'.with('nginx-catchall'),
     'fail2ban filter'.with('user-signup'),
   ]
 end
