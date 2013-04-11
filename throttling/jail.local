@@ -32,4 +32,4 @@ filter  = user-signup
 logpath = /srv/http/theconversation.com/log/production.concise.log
 maxretry = 10
 findtime = 600
-bantime = 21600
+# bantime = 21600
