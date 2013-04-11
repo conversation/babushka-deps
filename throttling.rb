@@ -18,6 +18,7 @@ dep 'fail2ban filter', :filter_name, :env do
   }
   meet {
     render_erb "throttling/#{filter_file}", :to => "/etc/fail2ban/filter.d/#{filter_file}"
+    shell "/etc/init.d/fail2ban restart"
   }
 end
 
