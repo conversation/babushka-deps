@@ -1,7 +1,7 @@
 [DEFAULT]
 destemail = dev@theconversation.edu.au
+bantime  = 600
 maxretry = 3
-bantime  = 10
 
 # Send an email including logging when a ban is triggered.
 action = %(action_mwl)s
@@ -23,6 +23,5 @@ enabled = true
 port    = http,https
 filter  = user-signup
 logpath = /srv/http/theconversation.com/current/log/<%= env %>.concise.log
-maxretry = 10
-findtime = 600
-# bantime = 21600
+findtime = 300
+bantime = 3600
