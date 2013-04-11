@@ -173,7 +173,7 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
     'conversation:running.postfix',
     "#{app_name} packages",
     'benhoskings:user setup'.with(:key => key),
-    "#{app_name} system".with(app_user, key),
+    "#{app_name} system".with(app_user, key, env),
     'benhoskings:user setup for provisioning'.with(app_user, key)
   ]
 end

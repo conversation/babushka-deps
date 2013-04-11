@@ -1,56 +1,35 @@
-dep 'throttling' do
+dep 'throttling', :env do
   requires [
-    'nginx-badbots.conf',
-    'nginx-noscript.conf',
-    'nginx-catchall.conf'
+    'fail2ban filter'.with('nginx-badbots', env),
+    'fail2ban filter'.with('nginx-noscript', env),
+    'fail2ban filter'.with('user-signup', env),
   ]
 end
 
-dep 'nginx-badbots.conf' do
-  requires 'local fail2ban config'
+dep 'fail2ban filter', :filter_name, :env do
+  def filter_file
+    "#{filter_name}.conf"
+  end
+  requires 'local fail2ban config'.with(env)
   met? {
-    Babushka::Renderable.new("/etc/fail2ban/filter.d/#{name}").from?(
-      dependency.load_path.parent / "throttling/#{name}"
+    Babushka::Renderable.new("/etc/fail2ban/filter.d/#{filter_file}").from?(
+      dependency.load_path.parent / "throttling/#{filter_file}"
     )
   }
   meet {
-    render_erb "throttling/#{name}", :to => "/etc/fail2ban/filter.d/#{name}"
+    render_erb "throttling/#{filter_file}", :to => "/etc/fail2ban/filter.d/#{filter_file}"
   }
 end
 
-dep 'nginx-noscript.conf' do
-  requires 'local fail2ban config'
-  met? {
-    Babushka::Renderable.new("/etc/fail2ban/filter.d/#{name}").from?(
-      dependency.load_path.parent / "throttling/#{name}"
-    )
-  }
-  meet {
-    render_erb "throttling/#{name}", :to => "/etc/fail2ban/filter.d/#{name}"
-  }
-end
-
-dep 'nginx-catchall.conf' do
-  requires 'local fail2ban config'
-  met? {
-    Babushka::Renderable.new("/etc/fail2ban/filter.d/#{name}").from?(
-      dependency.load_path.parent / "throttling/#{name}"
-    )
-  }
-  meet {
-    render_erb "throttling/#{name}", :to => "/etc/fail2ban/filter.d/#{name}"
-  }
-end
-
-dep 'local fail2ban config' do
+dep 'local fail2ban config', :env do
   requires 'fail2ban.bin'
   met? {
     Babushka::Renderable.new("/etc/fail2ban/jail.local").from?(
-      dependency.load_path.parent / "throttling/jail.local"
+      dependency.load_path.parent / "throttling/jail.local.erb"
     )
   }
   meet {
-    render_erb "throttling/jail.local", :to => "/etc/fail2ban/jail.local"
+    render_erb "throttling/jail.local.erb", :to => "/etc/fail2ban/jail.local"
   }
 end
 

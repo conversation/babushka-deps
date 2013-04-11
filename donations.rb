@@ -1,4 +1,4 @@
-dep 'donations system', :app_user, :key
+dep 'donations system', :app_user, :key, :env
 
 dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name

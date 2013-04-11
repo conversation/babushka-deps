@@ -1,7 +1,10 @@
 [DEFAULT]
 destemail = dev@theconversation.edu.au
+bantime  = 600
 maxretry = 3
-bantime  = 10
+
+# Send an email including logging when a ban is triggered.
+action = %(action_mwl)s
 
 [nginx-badbots]
 enabled = true
@@ -15,9 +18,10 @@ port    = http,https
 filter  = nginx-noscript
 logpath = /opt/nginx/logs/access.log
 
-[nginx-catchall]
+[tc-too-many-signups]
 enabled = true
 port    = http,https
-filter  = nginx-catchall
-logpath = /opt/nginx/logs/access.log
-maxretry = 10
+filter  = user-signup
+logpath = /srv/http/theconversation.com/current/log/<%= env %>.concise.log
+findtime = 300
+bantime = 3600
