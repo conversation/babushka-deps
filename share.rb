@@ -1,4 +1,4 @@
-dep 'sharejs system', :app_user, :key
+dep 'sharejs system', :app_user, :key, :env
 
 dep 'sharejs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [

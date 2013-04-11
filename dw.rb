@@ -1,4 +1,4 @@
-dep 'dw system', :app_user, :key
+dep 'dw system', :app_user, :key, :env
 
 dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [

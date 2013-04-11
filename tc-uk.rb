@@ -1,4 +1,4 @@
-dep 'theconversation.org.uk system', :app_user, :key do
+dep 'theconversation.org.uk system', :app_user, :key, :env do
 end
 
 dep 'theconversation.org.uk app', :env, :host, :domain, :app_user, :app_root, :key do
