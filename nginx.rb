@@ -47,6 +47,7 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, 
   # TODO: Only required until we move to a single-IP nginx config.
   def listen_host_au
     {
+      # .com IP => .edu.au IP
       '74.50.63.173' => '74.50.63.170',
       '91.186.19.133' => '31.193.141.103'
     }[listen_host.to_s]
