@@ -31,6 +31,7 @@ dep 'local fail2ban config', :env do
   }
   meet {
     render_erb "throttling/jail.local.erb", :to => "/etc/fail2ban/jail.local"
+    shell "/etc/init.d/fail2ban restart"
   }
 end
 
