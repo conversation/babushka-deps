@@ -27,5 +27,6 @@ dep 'memcached configured' do
   meet {
     render_erb "memcached/memcached.conf.erb", :to => "/etc/memcached.conf"
     log_shell "Restarting memcached", "/etc/init.d/memcached restart"
+    sleep 1 # Wait a moment for memcached to start.
   }
 end
