@@ -1,0 +1,18 @@
+# Run memcached as a daemon.
+-d
+
+# Run as the 'memcache' user.
+-u memcache
+
+# Log memcached's output to /var/log/memcached.
+logfile /var/log/memcached.log
+
+# Listen only on localhost, so we don't need to firewall the memcached port.
+-l 127.0.0.1
+
+# Listen on port 11211 (the default).
+-p 11211
+
+# Start with a cap of 1GB of memory. Note that the daemon will grow to this
+# size, but does not allocate it all to start with.
+-m 1024

@@ -59,6 +59,8 @@ end
 
 dep 'memcached.bin'
 
+dep 'nc.bin'
+
 dep 'pcre.lib' do
   installs 'libpcre3-dev'
 end
