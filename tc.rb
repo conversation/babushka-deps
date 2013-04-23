@@ -56,7 +56,7 @@ dep 'tc packages' do
   requires [
     'postgres'.with('9.2'),
     'running.nginx',
-    'memcached.bin', # for fragment caching
+    'memcached', # for fragment caching
     'tc common packages',
     'socat.bin' # for DB tunnelling
   ]
