@@ -11,7 +11,7 @@ dep 'memcached configured' do
     Hash[
       shell('nc 127.0.0.1 11211', :input => "stats\n").split("\n").
         collapse(/^STAT /).
-        map {|l| l.split(/\W/, 2) }
+        map {|l| l.strip.split(/\W/, 2) }
     ]
   end
   def expected_settings
