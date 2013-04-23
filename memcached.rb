@@ -18,7 +18,7 @@ dep 'memcached configured' do
     # Some settings that we customise, and hence use to test whether
     # our config has been applied.
     {
-      'limit_maxbytes' => 1024**3
+      'limit_maxbytes' => '1073741824' # 1GB
     }
   end
   met? {
