@@ -1,6 +1,6 @@
 [DEFAULT]
 destemail = dev@theconversation.edu.au
-bantime  = 600
+bantime = 86400
 maxretry = 3
 
 [nginx-badbots]
@@ -21,4 +21,3 @@ port    = http,https
 filter  = user-signup
 logpath = /srv/http/theconversation.com/current/log/<%= env %>.concise.log
 findtime = 300
-bantime = 86400
