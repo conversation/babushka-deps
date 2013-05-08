@@ -27,7 +27,7 @@ end
 
 dep 'curl.lib' do
   installs {
-    on :osx, [] # Not required (or available) on OS X.
+    on :osx, [] # It's provided by the system.
     otherwise 'libcurl4-openssl-dev'
   }
 end
@@ -42,6 +42,14 @@ end
 
 dep 'imagemagick.bin' do
   provides %w[compare animate convert composite conjure import identify stream display montage mogrify]
+end
+
+dep 'libssl headers.managed' do
+  installs {
+    via :apt, 'libssl-dev'
+    via :yum, 'openssl-devel'
+  }
+  provides []
 end
 
 dep 'libxml.lib' do
@@ -83,6 +91,14 @@ end
 
 dep 'pv.bin'
 
+dep 'readline headers.managed' do
+  installs {
+    on :lenny, 'libreadline5-dev'
+    via :apt, 'libreadline6-dev'
+  }
+  provides []
+end
+
 dep 'qt-dev.lib' do
   installs {
     on :apt, 'libqt4-dev', 'libqtwebkit-dev', 'qt4-qmake'
@@ -111,6 +127,14 @@ dep 'uwsgi.pip'
 dep 'whiptail.bin'
 
 dep 'whisper.pip'
+
+dep 'yaml headers.managed' do
+  installs {
+    via :brew, 'libyaml'
+    via :apt, 'libyaml-dev'
+  }
+  provides []
+end
 
 dep 'zlib.lib' do
   installs {
