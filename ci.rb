@@ -13,7 +13,7 @@ dep 'ci provisioned', :app_user, :public_key, :private_key do
   requires [
     'ci prepared'.with(app_user, public_key, private_key),
     'localhost hosts entry',
-    'benhoskings:lax host key checking',
+    'lax host key checking',
     'apt sources',
     'tc common packages',
     'sharejs common packages',
