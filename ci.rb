@@ -1,7 +1,7 @@
 dep 'ci prepared', :app_user, :public_key, :private_key do
   requires [
-    'benhoskings:passwordless ssh logins'.with(:username => 'root', :key => public_key),
-    'benhoskings:passwordless ssh logins'.with(:username => app_user, :key => public_key),
+    'passwordless ssh logins'.with(:username => 'root', :key => public_key),
+    'passwordless ssh logins'.with(:username => app_user, :key => public_key),
     'conversation:key installed'.with(:username => app_user, :public_key => public_key, :private_key => private_key),
 
     'benhoskings:set.locale'.with(:locale_name => 'en_AU'),
