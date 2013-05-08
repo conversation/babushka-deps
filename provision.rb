@@ -169,7 +169,7 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
     'localhost hosts entry',
     'apt sources',
     'apt packages removed'.with([/apache/i, /mysql/i, /php/i]),
-    'benhoskings:system'.with(:host_name => host_name),
+    'system'.with(:host_name => host_name),
     'running.postfix',
     "#{app_name} packages",
     'user setup'.with(:key => key),

@@ -44,9 +44,15 @@ dep 'graphite-web.pip' do
   requires %w[carbon.pip whisper.pip django.pip django-tagging.pip uwsgi.pip simplejson.pip]
 end
 
+dep 'htop.bin'
+
 dep 'imagemagick.bin' do
   provides %w[compare animate convert composite conjure import identify stream display montage mogrify]
 end
+
+dep 'iotop.bin'
+
+dep 'jnettop.bin'
 
 dep 'libssl headers.managed' do
   installs {
@@ -71,9 +77,13 @@ end
 
 dep 'logrotate.managed'
 
+dep 'lsof.bin'
+
 dep 'memcached.bin'
 
 dep 'nc.bin'
+
+dep 'nmap.bin'
 
 dep 'pcre.lib' do
   installs 'libpcre3-dev'
@@ -124,6 +134,12 @@ dep 'simplejson.pip'
 
 dep 'socat.bin'
 
+dep 'sshd.bin' do
+  installs {
+    via :apt, 'openssh-server'
+  }
+end
+
 dep 'ssl.lib' do
   installs {
     via :apt, 'libssl-dev'
@@ -133,7 +149,15 @@ end
 
 dep 'tidy.bin'
 
+dep 'tmux.bin'
+
+dep 'traceroute.bin'
+
+dep 'tree.bin'
+
 dep 'uwsgi.pip'
+
+dep 'vim.bin'
 
 dep 'whiptail.bin'
 
