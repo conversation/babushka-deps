@@ -130,7 +130,7 @@ dep 'configured.nginx', :nginx_prefix do
   nginx_prefix.default!('/opt/nginx') # This is required because nginx.src might be cached.
   requires [
     'nginx.src'.with(:nginx_prefix => nginx_prefix),
-    'benhoskings:www user and group',
+    'www user and group',
     'benhoskings:nginx.logrotate'
   ]
   met? {
