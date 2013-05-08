@@ -10,13 +10,19 @@ dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
 
     'ssl cert in place'.with(:domain => domain, :cert_name => 'donate.theconversation.edu.au'),
 
-    'rails app'.with(
+    'rack app'.with(
       :app_name => 'donate',
       :env => env,
       :listen_host => host,
       :domain => domain,
       :username => app_user,
-      :path => app_root,
+      :path => app_root
+    ),
+
+    'db'.with(
+      :env => env,
+      :username => app_user,
+      :root => app_root,
       :data_required => 'no'
     )
   ]

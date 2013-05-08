@@ -14,6 +14,8 @@ dep 'db', :username, :root, :env, :data_required, :require_db_deps do
     db_config['adapter'].sub('postgresql', 'postgres')
   end
 
+  require_db_deps.default!('yes')
+
   requires 'app bundled'.with(root, env)
 
   if require_db_deps[/^y/]
