@@ -128,8 +128,8 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   meet {
     as('root') {
       # First, UTF-8 everything. (A new shell is required to test this, hence 2 runs.)
-      failable_remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
-      remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
+      failable_remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
+      remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
 
       # Build ruby separately, because it changes the ruby binary for subsequent deps.
       remote_babushka 'benhoskings:ruby.src', :version => '1.9.3', :patchlevel => 'p374'

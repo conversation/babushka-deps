@@ -142,7 +142,7 @@ dep 'postgres.bin', :version do
     version.to_s.scan(/^\d\.\d/).first
   end
   version.default('9.2.4')
-  requires 'benhoskings:set.locale'
+  requires 'set.locale'
   requires_when_unmet {
     on :apt, 'ppa'.with('ppa:pitti/postgresql')
   }
