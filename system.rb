@@ -55,6 +55,9 @@ dep 'localhost hosts entry' do
 end
 
 dep 'lax host key checking' do
+  def ssh_conf_path file
+    "/etc#{'/ssh' if Babushka.host.linux?}/#{file}_config"
+  end
   met? {
     ssh_conf_path(:ssh).p.grep(/^StrictHostKeyChecking[ \t]+no/)
   }

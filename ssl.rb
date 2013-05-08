@@ -18,6 +18,9 @@ dep 'public key' do
 end
 
 dep 'secured ssh logins' do
+  def ssh_conf_path file
+    "/etc#{'/ssh' if Babushka.host.linux?}/#{file}_config"
+  end
   requires 'sshd.bin'
   met? {
     output = raw_shell('ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no nonexistentuser@localhost').stderr
