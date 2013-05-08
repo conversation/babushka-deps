@@ -2,7 +2,7 @@ dep 'cleanup' do
   requires [
     'unwanted packages removed',
     'orphaned dirs deleted',
-    'benhoskings:babushka caches removed'
+    'babushka caches removed'
   ]
 end
 
