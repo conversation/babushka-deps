@@ -35,7 +35,7 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :data_required => 'yes'
     ),
 
-    # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
+    # The data warehouse importer needs read access to the tc DB.
     'db access'.with(
       :db_name => db_name,
       :username => 'dw.theconversation.edu.au',

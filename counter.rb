@@ -20,7 +20,7 @@ dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
       :data_required => 'no'
     ),
 
-    # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
+    # The data warehouse importer needs read access to the counter DB.
     'db access'.with(
       :db_name => YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database'],
       :username => 'dw.theconversation.edu.au',
@@ -37,8 +37,6 @@ dep 'counter packages' do
     'socat.bin' # for DB tunnelling
   ]
 end
-
-
 
 dep 'counter dev' do
   requires [
