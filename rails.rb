@@ -16,7 +16,7 @@ end
 
 dep 'webapp', :app_name, :env, :domain, :domain_aliases, :username, :path, :listen_host, :listen_port, :proxy_host, :proxy_port, :nginx_prefix do
   username.default!(domain)
-  requires 'benhoskings:user exists'.with(username, '/srv/http')
+  requires 'user exists'.with(username, '/srv/http')
   requires 'vhost enabled.nginx'.with(app_name, env, domain, domain_aliases, path, listen_host, listen_port, proxy_host, proxy_port, nginx_prefix)
   requires 'running.nginx'
 end

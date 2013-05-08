@@ -33,3 +33,16 @@ dep 'passwordless ssh logins', :username, :key do
     shell "chmod 600 #{(ssh_dir / 'authorized_keys')}", :sudo => sudo?
   }
 end
+
+dep 'user exists', :username, :home_dir_base do
+  home_dir_base.default(username['.'] ? '/srv/http' : '/home')
+
+  met? {
+    '/etc/passwd'.p.grep(/^#{username}:/)
+  }
+  meet {
+    sudo "mkdir -p #{home_dir_base}" and
+    sudo "useradd -m -s /bin/bash -b #{home_dir_base} -G admin #{username}" and
+    sudo "chmod 701 #{home_dir_base / username}"
+  }
+end
