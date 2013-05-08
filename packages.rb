@@ -36,6 +36,10 @@ dep 'django.pip'
 
 dep 'django-tagging.pip'
 
+dep 'git-smart.gem' do
+  provides %w[git-smart-log git-smart-merge git-smart-pull]
+end
+
 dep 'graphite-web.pip' do
   requires %w[carbon.pip whisper.pip django.pip django-tagging.pip uwsgi.pip simplejson.pip]
 end

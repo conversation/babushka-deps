@@ -11,3 +11,8 @@ dep 'ssl cert in place', :nginx_prefix, :domain, :cert_name, :cert_source, :temp
     restart_nginx
   }
 end
+
+dep 'public key' do
+  met? { '~/.ssh/id_dsa.pub'.p.grep(/^ssh-dss/) }
+  meet { log shell("ssh-keygen -t dsa -f ~/.ssh/id_dsa -N ''") }
+end

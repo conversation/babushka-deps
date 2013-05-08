@@ -1,3 +1,13 @@
+dep 'user setup', :username, :key do
+  username.default(shell('whoami'))
+  requires [
+    'dot files'.with(:username => username),
+    'passwordless ssh logins'.with(username, key),
+    'public key',
+    'zsh'.with(username)
+  ]
+end
+
 dep 'user setup for provisioning', :username, :key do
   requires [
     'user exists'.with(:username => username),
@@ -39,6 +49,19 @@ dep 'passwordless ssh logins', :username, :key do
     sudo "chown -R #{username}:#{group} '#{ssh_dir}'" unless ssh_dir.owner == username
     sudo "chown -R #{username}:#{group} '#{ssh_dir / 'authorized_keys'}'" unless (ssh_dir / 'authorized_keys').owner == username
     shell "chmod 600 #{(ssh_dir / 'authorized_keys')}", :sudo => sudo?
+  }
+end
+
+dep 'dot files', :username, :github_user, :repo do
+  username.default!(shell('whoami'))
+  github_user.default('benhoskings')
+  repo.default('dot-files')
+  requires 'user exists'.with(:username => username), 'git', 'curl.bin', 'git-smart.gem'
+  met? {
+    "~#{username}/.dot-files/.git".p.exists?
+  }
+  meet {
+    shell %Q{curl -L "http://github.com/#{github_user}/#{repo}/raw/master/clone_and_link.sh" | bash}, :as => username
   }
 end
 
