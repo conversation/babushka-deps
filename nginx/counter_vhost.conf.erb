@@ -25,6 +25,15 @@ server {
 
   root <%= path / 'public' %>;
 
+  location ~ ^/assets/ {
+    expires max;
+    gzip_static on;
+    add_header Cache-Control public;
+    add_header Last-Modified "";
+    add_header ETag "";
+    break;
+  }
+
   # POSTs are intended for the app, not cached pages. We use '=' to let @app set the response code.
   error_page 405 = @app;
 
