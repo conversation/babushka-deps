@@ -183,6 +183,6 @@ dep 'app provisioned', :env, :host, :domain, :app_name, :app_user, :app_root, :k
     "#{app_name} app".with(env, host, domain, app_user, app_root, key),
 
     # Lastly, boot the app.
-    "benhoskings:unicorn running".with(:app_root => "~/current", :env => env)
+    "unicorn running".with(:app_root => "~/current", :env => env)
   ]
 end
