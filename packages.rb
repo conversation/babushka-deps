@@ -79,6 +79,11 @@ dep 'pcre.lib' do
   installs 'libpcre3-dev'
 end
 
+dep 'pg.gem' do
+  requires 'postgres.bin'
+  provides []
+end
+
 dep 'phantomjs' do
   requires {
     on :linux, 'phantomjs.src'

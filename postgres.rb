@@ -137,6 +137,22 @@ dep 'postgres auth config', :version do
   }
 end
 
+dep 'existing data', :username, :db_name do
+  requires 'existing postgres db'.with(username, db_name)
+  met? {
+    shell("psql #{db_name} -c '\\d'").scan(/\((\d+) rows?\)/).flatten.first.tap {|rows|
+      if rows && rows.to_i > 0
+        log "There are already #{rows} tables."
+      else
+        unmeetable! <<-MSG
+The '#{db_name}' database is empty. Load a database dump with:
+$ cat #{db_name}.psql | ssh #{username}@#{shell('hostname -f')} 'psql #{db_name}'
+        MSG
+      end
+    }
+  }
+end
+
 dep 'existing postgres db', :username, :db_name do
   requires 'postgres access'.with(:username => username)
   met? {
