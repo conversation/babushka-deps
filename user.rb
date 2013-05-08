@@ -1,3 +1,11 @@
+dep 'user setup for provisioning', :username, :key do
+  requires [
+    'user exists'.with(:username => username),
+    'passwordless ssh logins'.with(username, key),
+    'passwordless sudo'.with(username)
+  ]
+end
+
 dep 'deploy user setup', :env do
   requires [
     # Add a corresponding DB user.

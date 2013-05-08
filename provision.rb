@@ -156,7 +156,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
 
     as('root') {
       # Lastly, revoke sudo to lock the box down per-user.
-      remote_babushka "benhoskings:passwordless sudo removed"
+      remote_babushka "conversation:passwordless sudo removed"
     }
 
     @run = true
@@ -174,7 +174,7 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
     "#{app_name} packages",
     'benhoskings:user setup'.with(:key => key),
     "#{app_name} system".with(app_user, key, env),
-    'benhoskings:user setup for provisioning'.with(app_user, key)
+    'user setup for provisioning'.with(app_user, key)
   ]
 end
 
