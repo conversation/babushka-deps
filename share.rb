@@ -4,7 +4,7 @@ dep 'sharejs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'user setup'.with(:key => key),
 
-    "sharejs.upstart".with(app_user, 'theconversation.edu.au', env, "tc_#{env}")
+    "sharejs.upstart".with(app_user, 'theconversation.com', env, "tc_#{env}")
   ]
 end
 

@@ -17,7 +17,7 @@ dep 'sharejs.upstart', :username, :tc_username, :env, :db_name do
 end
 
 dep 'sharejs setup', :username, :tc_username, :db_name do
-  tc_username.default!('theconversation.edu.au')
+  tc_username.default!('theconversation.com')
   requires [
     'schema ownership'.with(username, db_name, "sharejs"),
     'sharejs tables exist'.with(username, db_name),
