@@ -1,13 +1,10 @@
 dep 'cleanup' do
   requires [
+    'apt packages removed'.with(%w[postfix apt-xapian-index python-xapian update-inetd cvs ghostscript libcups2 libcupsimage2]),
     'unwanted packages removed',
     'orphaned dirs deleted',
     'babushka caches removed'
   ]
-end
-
-dep 'unwanted packages removed', :template => 'benhoskings:apt_packages_removed', :for => :apt do
-  removes %w[postfix apt-xapian-index python-xapian update-inetd cvs ghostscript libcups2 libcupsimage2]
 end
 
 dep 'orphaned dirs deleted' do
