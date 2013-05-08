@@ -2,7 +2,8 @@ dep 'dw system', :app_user, :key, :env
 
 dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    'benhoskings:rack app'.with(
+    'rack app'.with(
+      :app_name => 'dw',
       :env => env,
       :listen_host => host,
       :domain => domain,
