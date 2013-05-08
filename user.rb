@@ -1,7 +1,7 @@
 dep 'deploy user setup', :env do
   requires [
     # Add a corresponding DB user.
-    'benhoskings:postgres access',
+    'postgres access',
 
     # Set RACK_ENV and friends.
     'app env vars set'.with(:env => env),

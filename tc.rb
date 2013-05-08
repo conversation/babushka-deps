@@ -2,7 +2,7 @@ dep 'tc system', :app_user, :key, :env do
   requires [
     'throttling'.with(env), # Temporarily ban misbehaving clients
     'benhoskings:user setup for provisioning'.with("dw.theconversation.edu.au", key), # For DW loads from psql on the counter machine
-    'benhoskings:postgres access'.with(:username => "sharejs.theconversation.edu.au"), # For proper DB permissions when the data is restored
+    'postgres access'.with(:username => "sharejs.theconversation.edu.au"), # For proper DB permissions when the data is restored
   ]
 end
 

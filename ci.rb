@@ -20,7 +20,7 @@ dep 'ci provisioned', :app_user, :public_key, :private_key do
     'counter common packages',
     'apt packages removed'.with(/resolvconf|ubuntu\-minimal/i),
     'ci packages',
-    'benhoskings:postgres access'.with(:username => app_user, :flags => '-sdrw'),
+    'postgres access'.with(:username => app_user, :flags => '-sdrw'),
     'jenkins target'.with(:app_user => app_user)
   ]
 end
