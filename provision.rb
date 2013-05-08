@@ -166,11 +166,11 @@ end
 dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
   requires [
     'benhoskings:utc',
-    'conversation:localhost hosts entry',
-    'conversation:apt sources',
+    'localhost hosts entry',
+    'apt sources',
     'benhoskings:apt packages removed'.with(/apache|mysql|php/i),
     'benhoskings:system'.with(:host_name => host_name),
-    'conversation:running.postfix',
+    'running.postfix',
     "#{app_name} packages",
     'benhoskings:user setup'.with(:key => key),
     "#{app_name} system".with(app_user, key, env),

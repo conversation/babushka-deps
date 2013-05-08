@@ -4,7 +4,7 @@ dep 'deploy user setup', :env do
     'benhoskings:postgres access',
 
     # Set RACK_ENV and friends.
-    'conversation:app env vars set'.with(:env => env),
+    'app env vars set'.with(:env => env),
 
     # Configure the ~/current repo to accept deploys.
     'benhoskings:web repo'
