@@ -15,3 +15,15 @@ dep 'lax host key checking' do
     shell("sed -i'' -e 's/^[# ]*StrictHostKeyChecking\\W*\\w*$/StrictHostKeyChecking no/' #{ssh_conf_path(:ssh)}")
   }
 end
+
+# It's hard to test for other timezones (EST maps to Australia/Melbourne, etc),
+# and we only need UTC right now :)
+dep 'utc' do
+  met? {
+    shell('date')[/\bUTC\b/]
+  }
+  meet {
+    sudo 'echo UTC > /etc/timezone'
+    sudo 'dpkg-reconfigure --frontend noninteractive tzdata'
+  }
+end

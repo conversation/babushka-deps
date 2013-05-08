@@ -165,7 +165,7 @@ end
 
 dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
   requires [
-    'benhoskings:utc',
+    'utc',
     'localhost hosts entry',
     'apt sources',
     'apt packages removed'.with([/apache/i, /mysql/i, /php/i]),
