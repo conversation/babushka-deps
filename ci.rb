@@ -18,7 +18,7 @@ dep 'ci provisioned', :app_user, :public_key, :private_key do
     'tc common packages',
     'sharejs common packages',
     'counter common packages',
-    'benhoskings:apt packages removed'.with(/resolvconf|ubuntu\-minimal/i),
+    'apt packages removed'.with(/resolvconf|ubuntu\-minimal/i),
     'ci packages',
     'benhoskings:postgres access'.with(:username => app_user, :flags => '-sdrw'),
     'jenkins target'.with(:app_user => app_user)

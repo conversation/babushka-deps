@@ -168,7 +168,7 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
     'benhoskings:utc',
     'localhost hosts entry',
     'apt sources',
-    'benhoskings:apt packages removed'.with(/apache|mysql|php/i),
+    'apt packages removed'.with(/apache|mysql|php/i),
     'benhoskings:system'.with(:host_name => host_name),
     'running.postfix',
     "#{app_name} packages",
