@@ -65,6 +65,8 @@ dep 'libxslt.lib' do
   installs { via :apt, 'libxslt1-dev' }
 end
 
+dep 'logrotate.managed'
+
 dep 'memcached.bin'
 
 dep 'nc.bin'

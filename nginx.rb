@@ -131,7 +131,7 @@ dep 'configured.nginx', :nginx_prefix do
   requires [
     'nginx.src'.with(:nginx_prefix => nginx_prefix),
     'www user and group',
-    'benhoskings:nginx.logrotate'
+    'nginx.logrotate'
   ]
   met? {
     Babushka::Renderable.new(nginx_conf).from?(dependency.load_path.parent / "nginx/nginx.conf.erb")
