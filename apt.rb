@@ -14,22 +14,26 @@ dep 'apt sources', :for => :ubuntu do
   }
 end
 
-dep 'apt packages removed', :match, :for => :apt do
-  def packages
+dep 'apt packages removed', :packages, :for => :apt do
+  def installed_packages
     shell("dpkg --get-selections").split("\n").select {|l|
       l[/\binstall$/]
     }.map {|l|
       l.split(/\s+/, 2).first
     }
   end
-  def to_remove match
-    packages.select {|pkg| pkg[match.current_value] }
+  def to_remove packages
+    # This is required because babushka parameters aren't enumerable yet.
+    package_list = packages.to_a
+    installed_packages.select {|installed_package|
+      package_list.any? {|p| installed_package[p] }
+    }
   end
   met? {
-    to_remove(match).empty?
+    to_remove(packages).empty?
   }
   meet {
-    to_remove(match).each {|pkg|
+    to_remove(packages).each {|pkg|
       log_shell "Removing #{pkg}", "apt-get -y remove --purge '#{pkg}'", :sudo => true
     }
   }
