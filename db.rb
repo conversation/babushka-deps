@@ -1,6 +1,6 @@
 dep 'db restored', :env, :app_user, :db_name, :app_root, :backup_path do
 
-  requires 'benhoskings:existing postgres db'.with(app_user, db_name)
+  requires 'existing postgres db'.with(app_user, db_name)
   requires_when_unmet 'db backup from cloudfiles'.with(app_root, backup_path)
 
   met? {

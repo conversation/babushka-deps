@@ -60,7 +60,7 @@ dep 'schema ownership', :username, :db_name, :schema_name do
 end
 
 dep 'postgres extension', :username, :db_name, :extension do
-  requires 'benhoskings:existing postgres db'.with(username, db_name)
+  requires 'existing postgres db'.with(username, db_name)
 
   def psql cmd
     shell("psql #{db_name} -t", :as => 'postgres', :input => cmd).strip
@@ -134,6 +134,18 @@ dep 'postgres auth config', :version do
   }
   meet {
     render_erb erb_template, :to => target, :sudo => true
+  }
+end
+
+dep 'existing postgres db', :username, :db_name do
+  requires 'postgres access'.with(:username => username)
+  met? {
+    !shell("psql -l") {|shell|
+      shell.stdout.split("\n").grep(/^\s*#{db_name}\s+\|/)
+    }.empty?
+  }
+  meet {
+    shell "createdb -O '#{username}' '#{db_name}'"
   }
 end
 
