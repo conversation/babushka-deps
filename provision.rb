@@ -36,6 +36,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
+# This is massive and needs a refactor, but it works for now.
 dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content do
 
   def as user, &block
