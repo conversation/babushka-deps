@@ -188,8 +188,7 @@ end
 
 dep 'app provisioned', :env, :host, :domain, :app_name, :app_user, :app_root, :key do
   requires [
-    "#{app_name} app".with(env, host, domain, app_user, app_root, key),
-    "unicorn.upstart".with(env, app_user)
+    "#{app_name} app".with(env, host, domain, app_user, app_root, key)
   ]
   setup {
     unmeetable! "This dep has to be run as the app user, #{app_user}." unless shell('whoami') == app_user

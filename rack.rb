@@ -11,7 +11,10 @@ end
 
 dep 'webapp', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
   username.default!(domain)
-  requires 'user exists'.with(username, '/srv/http')
-  requires 'vhost enabled.nginx'.with(app_name, env, domain, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix)
-  requires 'running.nginx'
+  requires [
+    'user exists'.with(username, '/srv/http'),
+    'vhost enabled.nginx'.with(app_name, env, domain, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix),
+    'running.nginx',
+    'unicorn.upstart'.with(env, username)
+  ]
 end
