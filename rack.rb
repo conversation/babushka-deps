@@ -4,7 +4,6 @@ dep 'rack app', :app_name, :env, :domain, :username, :path, :listen_host, :liste
   env.default(ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'production')
 
   requires 'webapp'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix)
-  requires 'benhoskings:web repo'.with(path)
   requires 'app bundled'.with(path, env)
   requires 'rack.logrotate'.with(username)
 end
