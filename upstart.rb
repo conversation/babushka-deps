@@ -13,7 +13,7 @@ meta :upstart do
       "/etc/init/#{conf_name}.conf"
     end
     meet {
-      render_erb "upstart/service.conf", :to => conf_dest, :sudo => true
+      render_erb "upstart/service.conf.erb", :to => conf_dest, :sudo => true
       sudo "initctl start #{conf_name}"
       sleep start_delay
     }
