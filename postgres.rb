@@ -181,7 +181,13 @@ dep 'postgres.bin', :version do
   version.default('9.2.4')
   requires 'set.locale'
   requires_when_unmet {
-    on :apt, 'ppa'.with('ppa:pitti/postgresql')
+    on :apt, 'keyed apt source'.with(
+      :uri => 'http://apt.postgresql.org/pub/repos/apt/',
+      :release => 'precise-pgdg',
+      :repo => 'main',
+      :key_sig => 'ACCC4CF8',
+      :key_uri => 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
+    )
   }
   installs {
     via :apt, [
