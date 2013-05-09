@@ -15,7 +15,6 @@ dep 'db', :username, :root, :env, :data_required, :require_db_deps do
   requires 'app bundled'.with(root, env)
 
   if require_db_deps[/^y/]
-    requires 'db gem'.with(db_type)
     if data_required[/^y/]
       requires "existing data".with(username, db_config['database'])
       requires "migrated db".with(username, root, env, db_config['database'], db_type, 'no')
@@ -60,11 +59,6 @@ end
 
 dep 'existing db', :username, :db_name, :db_type do
   requires "existing #{db_type} db".with(username, db_name)
-end
-
-dep 'db gem', :db do
-  db.choose(%w[postgres mysql])
-  requires db == 'postgres' ? 'pg.gem' : "#{db}.gem"
 end
 
 dep 'db restored', :env, :app_user, :db_name, :app_root, :backup_path do
