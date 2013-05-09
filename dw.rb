@@ -12,7 +12,7 @@ dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
       :path => app_root
     ),
 
-    'existing postgres db'.with(
+    'existing db'.with(
       :username => app_user,
       :db_name => "tc_dw_#{env}"
     )
