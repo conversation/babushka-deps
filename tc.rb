@@ -63,8 +63,8 @@ dep 'tc packages' do
     'postgres'.with('9.2'),
     'running.nginx',
     'memcached', # for fragment caching
-    'tc common packages',
-    'socat.bin' # for DB tunnelling
+    'socat.bin', # for DB replication tunnelling
+    'tc common packages'
   ]
 end
 
