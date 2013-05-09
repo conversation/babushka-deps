@@ -169,6 +169,6 @@ dep 'app provisioned', :env, :host, :domain, :app_name, :app_user, :app_root, :k
     "#{app_name} app".with(env, host, domain, app_user, app_root, key),
 
     # Lastly, boot the app.
-    "unicorn running".with(:app_root => "~/current", :env => env)
+    "unicorn.upstart".with(env, app_name)
   ]
 end
