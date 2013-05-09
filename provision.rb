@@ -163,20 +163,6 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   }
 end
 
-dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
-  requires [
-    'utc',
-    'localhost hosts entry',
-    'apt sources',
-    'apt packages removed'.with([/apache/i, /mysql/i, /php/i]),
-    'system'.with(:host_name => host_name),
-    "#{app_name} packages",
-    'user setup'.with(:key => key),
-    "#{app_name} system".with(app_user, key, env),
-    'user setup for provisioning'.with(app_user, key)
-  ]
-end
-
 dep 'app provisioned', :env, :host, :domain, :app_name, :app_user, :app_root, :key do
   requires [
     "#{app_name} app".with(env, host, domain, app_user, app_root, key),

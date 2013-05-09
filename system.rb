@@ -1,11 +1,19 @@
-dep 'system', :host_name, :locale_name do
+dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
   requires [
-    'core software',
     'hostname'.with(host_name),
     'secured ssh logins',
+    'utc',
+    'localhost hosts entry',
+    'apt sources',
+    'apt packages removed'.with([/apache/i, /mysql/i, /php/i]),
+    'core software',
     'lax host key checking',
     'admins can sudo',
-    'tmp cleaning grace period'
+    'tmp cleaning grace period',
+    "#{app_name} packages",
+    'user setup'.with(:key => key),
+    "#{app_name} system".with(app_user, key, env),
+    'user setup for provisioning'.with(app_user, key)
   ]
   setup {
     unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'
