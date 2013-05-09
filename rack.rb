@@ -1,4 +1,4 @@
-dep 'rack app', :app_name, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :env, :nginx_prefix, :data_required do
+dep 'rack app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix, :data_required do
   username.default!(shell('whoami'))
   path.default('~/current')
   env.default(ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'production')
