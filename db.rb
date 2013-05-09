@@ -1,8 +1,4 @@
 dep 'db', :username, :root, :env, :data_required, :require_db_deps do
-  def orm
-    (root/'Gemfile').grep('dm-rails') ? :datamapper : :activerecord
-  end
-
   def db_config
     (root / 'config/database.yml').yaml[env.to_s].tap {|config|
       unmeetable! "There's no database.yml entry for the #{env} environment." if config.nil?
@@ -24,12 +20,12 @@ dep 'db', :username, :root, :env, :data_required, :require_db_deps do
       requires "existing data".with(username, db_config['database'])
       requires "migrated db".with(username, root, env, db_config['database'], db_type, 'no')
     else
-      requires "seeded db".with(username, root, env, db_config['database'], db_type, orm)
+      requires "seeded db".with(username, root, env, db_config['database'], db_type)
     end
   end
 end
 
-dep 'seeded db', :username, :root, :env, :db_name, :db_type, :orm, :template => 'task' do
+dep 'seeded db', :username, :root, :env, :db_name, :db_type, :template => 'task' do
   requires "migrated db".with(username, root, env, db_name, db_type, 'no')
   root.default!('.')
   run {
