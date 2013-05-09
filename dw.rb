@@ -2,6 +2,11 @@ dep 'dw system', :app_user, :key, :env
 
 dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
+    'existing db'.with(
+      :username => app_user,
+      :db_name => "tc_dw_#{env}"
+    ),
+
     'rack app'.with(
       :app_name => 'dw',
       :env => env,
@@ -10,11 +15,6 @@ dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
       :domain => domain,
       :username => app_user,
       :path => app_root
-    ),
-
-    'existing db'.with(
-      :username => app_user,
-      :db_name => "tc_dw_#{env}"
     )
   ]
 end

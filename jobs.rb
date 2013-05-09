@@ -10,6 +10,13 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
     'postgres extension'.with(app_user, db_name, 'pg_trgm'),
     'ssl cert in place'.with(:domain => domain, :cert_name => 'jobs.theconversation.edu.au'),
 
+    'db'.with(
+      :env => env,
+      :username => app_user,
+      :root => app_root,
+      :data_required => 'yes'
+    ),
+
     'rack app'.with(
       :app_name => 'jobs',
       :env => env,
@@ -17,13 +24,6 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
       :domain => domain,
       :username => app_user,
       :path => app_root
-    ),
-
-    'db'.with(
-      :env => env,
-      :username => app_user,
-      :root => app_root,
-      :data_required => 'yes'
     )
   ]
 end

@@ -22,17 +22,6 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :app_root => app_root
     ),
 
-    'rack app'.with(
-      :app_name => 'tc',
-      :env => env,
-      :listen_host => host,
-      :domain => domain,
-      :username => app_user,
-      :path => app_root,
-      :proxy_host => 'localhost',
-      :proxy_port => 9000
-    ),
-
     'db'.with(
       :env => env,
       :username => app_user,
@@ -47,7 +36,18 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :check_table => 'content'
     ),
 
-    'postgres replication monitoring'.with(:test_user => app_user)
+    'postgres replication monitoring'.with(:test_user => app_user),
+
+    'rack app'.with(
+      :app_name => 'tc',
+      :env => env,
+      :listen_host => host,
+      :domain => domain,
+      :username => app_user,
+      :path => app_root,
+      :proxy_host => 'localhost',
+      :proxy_port => 9000
+    )
   ]
 
   setup {

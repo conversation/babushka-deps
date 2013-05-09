@@ -10,15 +10,6 @@ dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
     'geoip database'.with(:app_root => app_root),
     'ssl cert in place'.with(:domain => domain, :cert_name => '*.theconversation.edu.au'),
 
-    'rack app'.with(
-      :app_name => 'counter',
-      :env => env,
-      :listen_host => host,
-      :domain => domain,
-      :username => app_user,
-      :path => app_root
-    ),
-
     'db'.with(
       :env => env,
       :username => app_user,
@@ -31,6 +22,15 @@ dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
       :db_name => YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database'],
       :username => 'dw.theconversation.edu.au',
       :check_table => 'content_views'
+    ),
+
+    'rack app'.with(
+      :app_name => 'counter',
+      :env => env,
+      :listen_host => host,
+      :domain => domain,
+      :username => app_user,
+      :path => app_root
     )
   ]
 end
