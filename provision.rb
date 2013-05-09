@@ -170,7 +170,6 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
     'apt sources',
     'apt packages removed'.with([/apache/i, /mysql/i, /php/i]),
     'system'.with(:host_name => host_name),
-    'running.postfix',
     "#{app_name} packages",
     'user setup'.with(:key => key),
     "#{app_name} system".with(app_user, key, env),
