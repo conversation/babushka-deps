@@ -27,7 +27,6 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :env => env,
       :listen_host => host,
       :domain => domain,
-      :domain_aliases => 'theconversation.com',
       :username => app_user,
       :path => app_root,
       :proxy_host => 'localhost',

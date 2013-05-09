@@ -26,8 +26,8 @@ meta :nginx do
   end
 end
 
-dep 'vhost enabled.nginx', :app_name, :env, :domain, :domain_aliases, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
-  requires 'vhost configured.nginx'.with(app_name, env, domain, domain_aliases, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix)
+dep 'vhost enabled.nginx', :app_name, :env, :domain, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
+  requires 'vhost configured.nginx'.with(app_name, env, domain, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix)
   met? { vhost_link.exists? }
   meet {
     sudo "mkdir -p #{nginx_prefix / 'conf/vhosts/on'}"
@@ -36,9 +36,8 @@ dep 'vhost enabled.nginx', :app_name, :env, :domain, :domain_aliases, :path, :li
   after { restart_nginx }
 end
 
-dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
+dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
   env.default!('production')
-  domain_aliases.default('').ask('Domains to alias (no need to specify www. aliases)')
   listen_host.default!('[::]')
   listen_port.default!('80')
   enable_https.default!('yes')
@@ -56,21 +55,6 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :domain_aliases, :path, 
   def listen_host_uk; listen_host; end
   def domain_au; 'theconversation.edu.au' end
   def domain_uk; 'theconversation.org.uk' end
-
-  def www_aliases
-    "#{domain} #{domain_aliases}".split(/\s+/).reject {|d|
-      d[/^\*\./] || d[/^www\./]
-    }.map {|d|
-      "www.#{d}"
-    }
-  end
-  def server_names
-    [domain].concat(
-      domain_aliases.to_s.split(/\s+/)
-    ).concat(
-      www_aliases
-    ).uniq
-  end
 
   def up_to_date? source_name, dest
     source = dependency.load_path.parent / source_name
