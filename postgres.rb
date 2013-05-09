@@ -16,7 +16,7 @@ dep 'db access', :grant, :db_name, :schema, :username, :check_table do
   grant.default!('SELECT')
   schema.default!('public')
   check_table.default!('users')
-  requires 'benhoskings:postgres access'.with(:username => username)
+  requires 'postgres access'.with(:username => username)
   met? {
     shell? %Q{psql #{db_name} -c 'SELECT * FROM #{check_table} LIMIT 1'}, :as => username
   }
@@ -40,7 +40,7 @@ dep 'table exists', :username, :db_name, :table_name, :table_schema do
 end
 
 dep 'schema exists', :username, :db_name, :schema_name do
-  requires 'benhoskings:postgres access'.with(:username => username)
+  requires 'postgres access'.with(:username => username)
   met? {
     raw_shell("psql #{db_name} -t -c '\\dn'", :as => 'postgres').stdout.val_for(schema_name)
   }
@@ -60,7 +60,7 @@ dep 'schema ownership', :username, :db_name, :schema_name do
 end
 
 dep 'postgres extension', :username, :db_name, :extension do
-  requires 'benhoskings:existing postgres db'.with(username, db_name)
+  requires 'existing postgres db'.with(username, db_name)
 
   def psql cmd
     shell("psql #{db_name} -t", :as => 'postgres', :input => cmd).strip
@@ -137,12 +137,49 @@ dep 'postgres auth config', :version do
   }
 end
 
+dep 'existing data', :username, :db_name do
+  requires 'existing postgres db'.with(username, db_name)
+  met? {
+    shell("psql #{db_name} -c '\\d'").scan(/\((\d+) rows?\)/).flatten.first.tap {|rows|
+      if rows && rows.to_i > 0
+        log "There are already #{rows} tables."
+      else
+        unmeetable! <<-MSG
+The '#{db_name}' database is empty. Load a database dump with:
+$ cat #{db_name}.psql | ssh #{username}@#{shell('hostname -f')} 'psql #{db_name}'
+        MSG
+      end
+    }
+  }
+end
+
+dep 'existing postgres db', :username, :db_name do
+  requires 'postgres access'.with(:username => username)
+  met? {
+    !shell("psql -l") {|shell|
+      shell.stdout.split("\n").grep(/^\s*#{db_name}\s+\|/)
+    }.empty?
+  }
+  meet {
+    shell "createdb -O '#{username}' '#{db_name}'"
+  }
+end
+
+dep 'postgres access', :username, :flags do
+  requires 'postgres.bin'
+  requires 'user exists'.with(:username => username)
+  username.default(shell('whoami'))
+  flags.default!('-SdR')
+  met? { !sudo("echo '\\du' | #{which 'psql'}", :as => 'postgres').split("\n").grep(/^\W*\b#{username}\b/).empty? }
+  meet { sudo "createuser #{flags} #{username}", :as => 'postgres' }
+end
+
 dep 'postgres.bin', :version do
   def minor_version
     version.to_s.scan(/^\d\.\d/).first
   end
   version.default('9.2.4')
-  requires 'benhoskings:set.locale'
+  requires 'set.locale'
   requires_when_unmet {
     on :apt, 'ppa'.with('ppa:pitti/postgresql')
   }

@@ -9,13 +9,20 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
     'delayed job'.with(env, app_user),
     'postgres extension'.with(app_user, db_name, 'pg_trgm'),
     'ssl cert in place'.with(:domain => domain, :cert_name => 'jobs.theconversation.edu.au'),
-    'benhoskings:rails app'.with(
+
+    'rack app'.with(
+      :app_name => 'jobs',
       :env => env,
       :listen_host => host,
       :domain => domain,
       :username => app_user,
-      :path => app_root,
-      :enable_https => 'yes',
+      :path => app_root
+    ),
+
+    'db'.with(
+      :env => env,
+      :username => app_user,
+      :root => app_root,
       :data_required => 'yes'
     )
   ]

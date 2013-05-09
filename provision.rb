@@ -128,11 +128,11 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   meet {
     as('root') {
       # First, UTF-8 everything. (A new shell is required to test this, hence 2 runs.)
-      failable_remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
-      remote_babushka 'benhoskings:set.locale', :locale_name => 'en_AU'
+      failable_remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
+      remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
 
       # Build ruby separately, because it changes the ruby binary for subsequent deps.
-      remote_babushka 'benhoskings:ruby.src', :version => '1.9.3', :patchlevel => 'p374'
+      remote_babushka 'conversation:ruby.src', :version => '1.9.3', :patchlevel => 'p374'
 
       # All the system-wide config for this app, like packages and user accounts.
       remote_babushka "conversation:system provisioned", :host_name => host_name, :env => env, :app_name => app_name, :app_user => app_user, :key => keys
@@ -140,7 +140,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
 
     as(app_user) {
       # This has to run on a separate login from 'deploy user setup', which requires zsh to already be active.
-      remote_babushka 'benhoskings:user setup', :key => keys
+      remote_babushka 'conversation:user setup', :key => keys
 
       # Set up the app user for deploys: db user, env vars, and ~/current.
       remote_babushka 'conversation:deploy user setup', :env => env
@@ -156,7 +156,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
 
     as('root') {
       # Lastly, revoke sudo to lock the box down per-user.
-      remote_babushka "benhoskings:passwordless sudo removed"
+      remote_babushka "conversation:passwordless sudo removed"
     }
 
     @run = true
@@ -165,16 +165,16 @@ end
 
 dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
   requires [
-    'benhoskings:utc',
-    'conversation:localhost hosts entry',
-    'conversation:apt sources',
-    'benhoskings:apt packages removed'.with(/apache|mysql|php/i),
-    'benhoskings:system'.with(:host_name => host_name),
-    'conversation:running.postfix',
+    'utc',
+    'localhost hosts entry',
+    'apt sources',
+    'apt packages removed'.with([/apache/i, /mysql/i, /php/i]),
+    'system'.with(:host_name => host_name),
+    'running.postfix',
     "#{app_name} packages",
-    'benhoskings:user setup'.with(:key => key),
+    'user setup'.with(:key => key),
     "#{app_name} system".with(app_user, key, env),
-    'benhoskings:user setup for provisioning'.with(app_user, key)
+    'user setup for provisioning'.with(app_user, key)
   ]
 end
 
@@ -183,6 +183,6 @@ dep 'app provisioned', :env, :host, :domain, :app_name, :app_user, :app_root, :k
     "#{app_name} app".with(env, host, domain, app_user, app_root, key),
 
     # Lastly, boot the app.
-    "benhoskings:unicorn running".with(:app_root => "~/current", :env => env)
+    "unicorn running".with(:app_root => "~/current", :env => env)
   ]
 end

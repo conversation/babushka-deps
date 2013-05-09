@@ -1,8 +1,8 @@
 dep 'tc system', :app_user, :key, :env do
   requires [
     'throttling'.with(env), # Temporarily ban misbehaving clients
-    'benhoskings:user setup for provisioning'.with("dw.theconversation.edu.au", key), # For DW loads from psql on the counter machine
-    'benhoskings:postgres access'.with(:username => "sharejs.theconversation.edu.au"), # For proper DB permissions when the data is restored
+    'user setup for provisioning'.with("dw.theconversation.edu.au", key), # For DW loads from psql on the counter machine
+    'postgres access'.with(:username => "sharejs.theconversation.edu.au"), # For proper DB permissions when the data is restored
   ]
 end
 
@@ -22,7 +22,7 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :app_root => app_root
     ),
 
-    'rails app'.with(
+    'rack app'.with(
       :app_name => 'tc',
       :env => env,
       :listen_host => host,
@@ -31,11 +31,17 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :username => app_user,
       :path => app_root,
       :proxy_host => 'localhost',
-      :proxy_port => 9000,
+      :proxy_port => 9000
+    ),
+
+    'db'.with(
+      :env => env,
+      :username => app_user,
+      :root => app_root,
       :data_required => 'yes'
     ),
 
-    # For the dw.theconversation.edu.au -> backup.tc-dev.net psql/ssh connection.
+    # The data warehouse importer needs read access to the tc DB.
     'db access'.with(
       :db_name => db_name,
       :username => 'dw.theconversation.edu.au',

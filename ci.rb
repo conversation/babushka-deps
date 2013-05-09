@@ -1,27 +1,27 @@
 dep 'ci prepared', :app_user, :public_key, :private_key do
   requires [
-    'benhoskings:passwordless ssh logins'.with(:username => 'root', :key => public_key),
-    'benhoskings:passwordless ssh logins'.with(:username => app_user, :key => public_key),
-    'conversation:key installed'.with(:username => app_user, :public_key => public_key, :private_key => private_key),
+    'passwordless ssh logins'.with(:username => 'root', :key => public_key),
+    'passwordless ssh logins'.with(:username => app_user, :key => public_key),
+    'key installed'.with(:username => app_user, :public_key => public_key, :private_key => private_key),
 
-    'benhoskings:set.locale'.with(:locale_name => 'en_AU'),
-    'benhoskings:ruby.src'.with(:version => '1.9.3', :patchlevel => 'p374'),
+    'set.locale'.with(:locale_name => 'en_AU'),
+    'ruby.src'.with(:version => '1.9.3', :patchlevel => 'p374'),
   ]
 end
 
 dep 'ci provisioned', :app_user, :public_key, :private_key do
   requires [
     'ci prepared'.with(app_user, public_key, private_key),
-    'conversation:localhost hosts entry',
-    'benhoskings:lax host key checking',
-    'conversation:apt sources',
-    'conversation:tc common packages',
-    'conversation:sharejs common packages',
-    'conversation:counter common packages',
-    'benhoskings:apt packages removed'.with(/resolvconf|ubuntu\-minimal/i),
-    'conversation:ci packages',
-    'benhoskings:postgres access'.with(:username => app_user, :flags => '-sdrw'),
-    'conversation:jenkins target'.with(:app_user => app_user)
+    'localhost hosts entry',
+    'lax host key checking',
+    'apt sources',
+    'tc common packages',
+    'sharejs common packages',
+    'counter common packages',
+    'apt packages removed'.with(%w[resolvconf ubuntu-minimal]),
+    'ci packages',
+    'postgres access'.with(:username => app_user, :flags => '-sdrw'),
+    'jenkins target'.with(:app_user => app_user)
   ]
 end
 

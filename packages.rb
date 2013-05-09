@@ -27,7 +27,7 @@ end
 
 dep 'curl.lib' do
   installs {
-    on :osx, [] # Not required (or available) on OS X.
+    on :osx, [] # It's provided by the system.
     otherwise 'libcurl4-openssl-dev'
   }
 end
@@ -36,12 +36,30 @@ dep 'django.pip'
 
 dep 'django-tagging.pip'
 
+dep 'git-smart.gem' do
+  provides %w[git-smart-log git-smart-merge git-smart-pull]
+end
+
 dep 'graphite-web.pip' do
   requires %w[carbon.pip whisper.pip django.pip django-tagging.pip uwsgi.pip simplejson.pip]
 end
 
+dep 'htop.bin'
+
 dep 'imagemagick.bin' do
   provides %w[compare animate convert composite conjure import identify stream display montage mogrify]
+end
+
+dep 'iotop.bin'
+
+dep 'jnettop.bin'
+
+dep 'libssl headers.managed' do
+  installs {
+    via :apt, 'libssl-dev'
+    via :yum, 'openssl-devel'
+  }
+  provides []
 end
 
 dep 'libxml.lib' do
@@ -57,12 +75,23 @@ dep 'libxslt.lib' do
   installs { via :apt, 'libxslt1-dev' }
 end
 
+dep 'logrotate.managed'
+
+dep 'lsof.bin'
+
 dep 'memcached.bin'
 
 dep 'nc.bin'
 
+dep 'nmap.bin'
+
 dep 'pcre.lib' do
   installs 'libpcre3-dev'
+end
+
+dep 'pg.gem' do
+  requires 'postgres.bin'
+  provides []
 end
 
 dep 'phantomjs' do
@@ -83,6 +112,14 @@ end
 
 dep 'pv.bin'
 
+dep 'readline headers.managed' do
+  installs {
+    on :lenny, 'libreadline5-dev'
+    via :apt, 'libreadline6-dev'
+  }
+  provides []
+end
+
 dep 'qt-dev.lib' do
   installs {
     on :apt, 'libqt4-dev', 'libqtwebkit-dev', 'qt4-qmake'
@@ -97,6 +134,12 @@ dep 'simplejson.pip'
 
 dep 'socat.bin'
 
+dep 'sshd.bin' do
+  installs {
+    via :apt, 'openssh-server'
+  }
+end
+
 dep 'ssl.lib' do
   installs {
     via :apt, 'libssl-dev'
@@ -106,11 +149,27 @@ end
 
 dep 'tidy.bin'
 
+dep 'tmux.bin'
+
+dep 'traceroute.bin'
+
+dep 'tree.bin'
+
 dep 'uwsgi.pip'
+
+dep 'vim.bin'
 
 dep 'whiptail.bin'
 
 dep 'whisper.pip'
+
+dep 'yaml headers.managed' do
+  installs {
+    via :brew, 'libyaml'
+    via :apt, 'libyaml-dev'
+  }
+  provides []
+end
 
 dep 'zlib.lib' do
   installs {

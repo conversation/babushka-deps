@@ -13,3 +13,31 @@ dep 'apt sources', :for => :ubuntu do
     Babushka::AptHelper.update_pkg_lists "Updating apt lists with our new config"
   }
 end
+
+dep 'apt packages removed', :packages, :for => :apt do
+  def installed_packages
+    shell("dpkg --get-selections").split("\n").select {|l|
+      l[/\binstall$/]
+    }.map {|l|
+      l.split(/\s+/, 2).first
+    }
+  end
+  def to_remove packages
+    # This is required because babushka parameters aren't enumerable yet.
+    package_list = packages.to_a
+    installed_packages.select {|installed_package|
+      package_list.any? {|p| installed_package[p] }
+    }
+  end
+  met? {
+    to_remove(packages).empty?
+  }
+  meet {
+    to_remove(packages).each {|pkg|
+      log_shell "Removing #{pkg}", "apt-get -y remove --purge '#{pkg}'", :sudo => true
+    }
+  }
+  after {
+    log_shell "Autoremoving packages", "apt-get -y autoremove", :sudo => true
+  }
+end

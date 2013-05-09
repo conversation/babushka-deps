@@ -2,15 +2,17 @@ dep 'dw system', :app_user, :key, :env
 
 dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    'benhoskings:rack app'.with(
+    'rack app'.with(
+      :app_name => 'dw',
       :env => env,
       :listen_host => host,
+      :enable_https => 'no',
       :domain => domain,
       :username => app_user,
       :path => app_root
     ),
 
-    'benhoskings:existing postgres db'.with(
+    'existing postgres db'.with(
       :username => app_user,
       :db_name => "tc_dw_#{env}"
     )
