@@ -1,7 +1,10 @@
 dep 'unicorn.upstart', :env, :user do
+  def app_root
+    "/srv/http/#{user}/current"
+  end
   command "bundle exec unicorn -D -E #{env} -c config/unicorn.rb"
   setuid user
-  chdir "/srv/http/#{user}/current"
+  chdir app_root
   met? {
     if !(app_root / 'config/unicorn.rb').exists?
       log "Not starting any unicorns because there's no unicorn config."
