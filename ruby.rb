@@ -9,15 +9,12 @@ dep 'ruby.src', :version, :patchlevel do
   def version_group
     version.to_s.scan(/^\d\.\d/).first
   end
+
   version.default!('1.9.3')
   patchlevel.default!('p374')
-  requires_when_unmet [
-    'curl.lib',
-    'libssl headers.managed',
-    'readline headers.managed',
-    'yaml headers.managed',
-    'zlib.lib'
-  ]
+
+  requires_when_unmet 'curl.lib', 'readline.lib', 'ssl.lib', 'yaml.lib', 'zlib.lib'
+
   source "ftp://ftp.ruby-lang.org/pub/ruby/#{version_group}/ruby-#{version}-#{patchlevel}.tar.gz"
   provides "ruby == #{version}#{patchlevel}", 'gem', 'irb'
   configure_args '--disable-install-doc',

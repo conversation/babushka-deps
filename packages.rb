@@ -54,14 +54,6 @@ dep 'iotop.bin'
 
 dep 'jnettop.bin'
 
-dep 'libssl headers.managed' do
-  installs {
-    via :apt, 'libssl-dev'
-    via :yum, 'openssl-devel'
-  }
-  provides []
-end
-
 dep 'libxml.lib' do
   installs {
     # The latest libxml2 on 12.04 doesn't have a corresponding libxml2-dev.
@@ -75,7 +67,7 @@ dep 'libxslt.lib' do
   installs { via :apt, 'libxslt1-dev' }
 end
 
-dep 'logrotate.managed'
+dep 'logrotate.bin'
 
 dep 'lsof.bin'
 
@@ -112,12 +104,11 @@ end
 
 dep 'pv.bin'
 
-dep 'readline headers.managed' do
+dep 'readline.lib' do
   installs {
     on :lenny, 'libreadline5-dev'
     via :apt, 'libreadline6-dev'
   }
-  provides []
 end
 
 dep 'qt-dev.lib' do
@@ -163,12 +154,11 @@ dep 'whiptail.bin'
 
 dep 'whisper.pip'
 
-dep 'yaml headers.managed' do
+dep 'yaml.lib' do
   installs {
     via :brew, 'libyaml'
     via :apt, 'libyaml-dev'
   }
-  provides []
 end
 
 dep 'zlib.lib' do

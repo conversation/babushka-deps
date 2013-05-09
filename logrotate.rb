@@ -2,7 +2,7 @@ meta :logrotate do
   accepts_value_for :renders
   accepts_value_for :as
   template {
-    requires 'logrotate.managed'
+    requires 'logrotate.bin'
     def conf_dest
       %w[
         /usr/local/etc/logrotate.d
