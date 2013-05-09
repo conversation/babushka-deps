@@ -3,7 +3,7 @@ dep 'delayed job', :env, :user do
 end
 
 dep 'delayed_job.upstart', :env, :user do
-  respawn 'true'
+  respawn 'yes'
   command "bundle exec rake jobs:work RAILS_ENV=#{env}"
   setuid user
   chdir "/srv/http/#{user}/current"

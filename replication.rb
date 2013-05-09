@@ -56,7 +56,7 @@ dep 'postgres socket tunnel.upstart', :local_user, :local_port, :remote_user, :r
   command %Q{socat UNIX-LISTEN:#{local_socket},fork EXEC:'ssh -C #{remote_user}@#{remote_host} "socat STDIO UNIX-CONNECT:#{remote_socket}"'}
   setuid local_user
   chdir "~#{local_user}".p
-  respawn 'true'
+  respawn 'yes'
 
   met? {
     local_socket.p.exists? &&

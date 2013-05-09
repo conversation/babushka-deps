@@ -9,7 +9,7 @@ dep 'sharejs.upstart', :username, :tc_username, :env, :db_name do
   environment %Q{NODE_ENV=#{env.to_s.inspect}}
   setuid username
   chdir "/srv/http/#{username}/current"
-  respawn 'true'
+  respawn 'yes'
 
   met? {
     (shell("curl -I localhost:9000", &:stdout).val_for('X-Refspec') || '')[/\w{7,}/]

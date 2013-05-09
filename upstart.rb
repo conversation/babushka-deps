@@ -1,5 +1,5 @@
 meta :upstart do
-  accepts_value_for :respawn
+  accepts_value_for :respawn # Restart the process when it exits.
   accepts_value_for :command
   accepts_list_for :environment
   accepts_value_for :chdir
