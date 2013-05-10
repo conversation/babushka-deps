@@ -1,6 +1,4 @@
 dep 'ruby 1.9.bin', :version, :patchlevel do
-  version.default!('1.9.3')
-  patchlevel.default!('p327')
   installs 'ruby1.9.1-full'
   provides "ruby >= #{version}#{patchlevel}", 'gem', 'irb'
 end
@@ -9,9 +7,6 @@ dep 'ruby.src', :version, :patchlevel do
   def version_group
     version.to_s.scan(/^\d\.\d/).first
   end
-
-  version.default!('1.9.3')
-  patchlevel.default!('p374')
 
   requires_when_unmet 'curl.lib', 'readline.lib', 'ssl.lib', 'yaml.lib', 'zlib.lib'
 
