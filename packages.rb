@@ -81,22 +81,6 @@ dep 'pcre.lib' do
   installs 'libpcre3-dev'
 end
 
-dep 'phantomjs' do
-  requires {
-    on :linux, 'phantomjs.src'
-    on :osx, 'phantomjs.bin'
-  }
-end
-
-dep 'phantomjs.bin'
-
-dep 'phantomjs.src' do
-  source 'http://phantomjs.googlecode.com/files/phantomjs-1.4.1-source.tar.gz'
-  configure { shell 'qmake-qt4' }
-  install { sudo 'cp bin/phantomjs /usr/local/bin/' }
-  requires 'qt-dev.lib'
-end
-
 dep 'pv.bin'
 
 dep 'readline.lib' do
