@@ -19,6 +19,9 @@ dep 'ruby.src', :version, :patchlevel do
     log_shell "build", "make -j#{Babushka.host.cpus}"
   }
   postinstall {
+    # The rubygems that ships with 2.0.0p0 has trouble building gems with native extensions.
+    shell "gem update --system 2.0.3"
+
     # The ruby <1.9.3 installer skips bin/* when the build path contains a dot-dir.
     shell "cp bin/* #{prefix / 'bin'}", :sudo => Babushka::SrcHelper.should_sudo?
   }
