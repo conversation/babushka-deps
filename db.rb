@@ -42,7 +42,7 @@ dep 'schema loaded', :username, :root, :schema_path, :db_name do
   requires 'existing db'.with(username, db_name)
   met? {
     shell(
-      %Q{psql #{db_name} -t -c "SELECT count(*) FROM pg_tables WHERE schemaname = 'public'"}
+      %Q{psql #{db_name} -t -c "SELECT count(*) FROM pg_tables WHERE schemaname NOT IN ('pg_catalog','information_schema')"}
     ).to_i.tap {|tables|
       log "There are #{tables} tables in #{db_name}."
     } > 0
