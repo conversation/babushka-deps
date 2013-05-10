@@ -69,7 +69,6 @@ dep 'jenkins target', :path, :app_user do
 end
 
 dep 'phantomjs', :version do
-  version.default!('1.7.0')
   def phantomjs_uri
     if Babushka.host.linux?
       "https://phantomjs.googlecode.com/files/phantomjs-#{version}-linux-x86_64.tar.bz2"
