@@ -28,7 +28,7 @@ end
 dep 'ci packages' do
   requires [
     'openjdk-6-jdk',
-    'phantomjs'.with('1.8.1')
+    'phantomjs'.with('1.8.2')
   ]
 end
 
