@@ -1,7 +1,7 @@
 dep 'rails app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
   requires [
     'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix),
-    'assets precompiled'.with(env)
+    'assets precompiled'.with(env, path)
   ]
 end
 
@@ -20,8 +20,8 @@ dep 'rack app', :app_name, :env, :domain, :username, :path, :listen_host, :liste
   ]
 end
 
-dep 'assets precompiled', :env, :template => 'task' do
+dep 'assets precompiled', :env, :path, :template => 'task' do
   run {
-    shell "bundle exec rake assets:precompile:primary RAILS_GROUPS=assets RAILS_ENV=#{env}"
+    shell "bundle exec rake assets:precompile:primary RAILS_GROUPS=assets RAILS_ENV=#{env}", :cd => path
   }
 end
