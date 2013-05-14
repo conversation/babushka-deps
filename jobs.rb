@@ -17,7 +17,7 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
       :data_required => 'yes'
     ),
 
-    'rack app'.with(
+    'rails app'.with(
       :app_name => 'jobs',
       :env => env,
       :listen_host => host,

@@ -17,7 +17,7 @@ dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
       :data_required => 'no'
     ),
 
-    'rack app'.with(
+    'rails app'.with(
       :app_name => 'donate',
       :env => env,
       :listen_host => host,

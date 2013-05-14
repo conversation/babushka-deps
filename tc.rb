@@ -38,7 +38,7 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
 
     'postgres replication monitoring'.with(:test_user => app_user),
 
-    'rack app'.with(
+    'rails app'.with(
       :app_name => 'tc',
       :env => env,
       :listen_host => host,
