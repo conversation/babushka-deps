@@ -1,6 +1,4 @@
 
-deb <%= Babushka::AptHelper.source_for_system %> <%= Babushka.host.name %> main
-deb <%= Babushka::AptHelper.source_for_system %> <%= Babushka.host.name %> universe
+deb <%= Babushka::AptHelper.source_for_system %> <%= Babushka.host.name %> main universe
 
-deb <%= Babushka::AptHelper.source_for_system %> <%= Babushka.host.name %>-updates main
-deb <%= Babushka::AptHelper.source_for_system %> <%= Babushka.host.name %>-updates universe
+deb <%= Babushka::AptHelper.source_for_system %> <%= Babushka.host.name %>-updates main universe
