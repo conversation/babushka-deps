@@ -2,3 +2,5 @@
 deb <%= Babushka::AptHelper.source_for_system %> <%= Babushka.host.name %> main universe
 
 deb <%= Babushka::AptHelper.source_for_system %> <%= Babushka.host.name %>-updates main universe
+
+deb http://security.ubuntu.com/ubuntu <%= Babushka.host.name %>-security main restricted
