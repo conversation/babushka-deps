@@ -128,6 +128,9 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
 
   meet {
     as('root') {
+      # First we need to configure apt. This involves a dist-upgrade, which should update the kernel.
+      remote_babushka 'conversation:apt configured'
+
       # First, UTF-8 everything. (A new shell is required to test this, hence 2 runs.)
       failable_remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
       remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
@@ -164,14 +167,19 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   }
 end
 
+dep 'apt configured' do
+  requires [
+    'apt sources',
+    'apt packages removed'.with([/apache/i, /mysql/i, /php/i])
+  ]
+end
+
 dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
   requires [
     'hostname'.with(host_name),
     'secured ssh logins',
     'utc',
     'localhost hosts entry',
-    'apt sources',
-    'apt packages removed'.with([/apache/i, /mysql/i, /php/i]),
     'core software',
     'lax host key checking',
     'admins can sudo',
