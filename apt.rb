@@ -14,6 +14,13 @@ dep 'apt sources', :for => :ubuntu do
   }
 end
 
+dep 'upgrade apt packages', :template => 'task' do
+  requires 'aptitude.bin'
+  run {
+    log_shell("Upgrading installed packages", "#{Babushka::AptHelper.pkg_cmd} -y full-upgrade")
+  }
+end
+
 dep 'apt packages removed', :packages, :for => :apt do
   def installed_packages
     shell("dpkg --get-selections").split("\n").select {|l|

@@ -1,3 +1,5 @@
+dep 'aptitude.bin'
+
 dep 'aspell.bin'
 
 dep 'aspell dictionary.lib' do
