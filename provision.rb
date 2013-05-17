@@ -46,8 +46,11 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     @user = previous_user
   end
 
+  def host_spec
+    "#{@user || 'root'}@#{host}"
+  end
+
   def remote_shell *cmd
-    host_spec = "#{@user || 'root'}@#{host}"
     opening_message = [
       host_spec.colorize("on grey"), # user@host spec
       cmd.map {|i| i.sub(/^(.{50})(.{3}).*/m, '\1...') }.join(' ') # the command, with long args truncated
@@ -82,6 +85,24 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   rescue Babushka::UnmeetableDep
     log "That remote run was marked as failable; moving on."
     false
+  end
+
+  def reboot_remote!
+    remote_shell('reboot')
+
+    log "Waiting for #{host} to go offline...", :newline => false
+    while shell?("ssh", '-o', 'ConnectTimeout=1', host_spec, 'true')
+      print '.'
+      sleep 5
+    end
+    puts " gone."
+
+    log "Waiting for #{host} to boot...", :newline => false
+    until shell?("ssh", '-o', 'ConnectTimeout=1', host_spec, 'true')
+      print '.'
+      sleep 5
+    end
+    puts " booted."
   end
 
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
@@ -130,7 +151,14 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     as('root') {
       # First we need to configure apt. This involves a dist-upgrade, which should update the kernel.
       remote_babushka 'conversation:apt configured'
+      reboot_remote!
 
+      # Make sure we're running on the correct kernel now. (This dep won't attempt an install.)
+      remote_babushka 'conversation:kernel running', :version => '3.2.0-43-generic' # linux-3.2.0-43.68, for the CVE-2013-2094 fix.
+    }
+
+    # Right, now we can start provisioning.
+    as('root') {
       # First, UTF-8 everything. (A new shell is required to test this, hence 2 runs.)
       failable_remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
       remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
