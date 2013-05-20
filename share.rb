@@ -1,5 +1,9 @@
 dep 'sharejs system', :app_user, :key, :env
 
+dep 'sharejs env vars set', :domain do
+  requires 'env var set'.with('SHAREJS_HOST', "https://#{domain}/sharejs")
+end
+
 dep 'sharejs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'user setup'.with(:key => key),

@@ -180,7 +180,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
       remote_babushka 'conversation:user setup', :key => keys
 
       # Set up the app user for deploys: db user, env vars, and ~/current.
-      remote_babushka 'conversation:deploy user setup', :env => env
+      remote_babushka 'conversation:deploy user setup', :env => env, :app_name => app_name, :domain => domain
     }
 
     # The initial deploy.

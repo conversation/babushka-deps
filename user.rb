@@ -16,13 +16,16 @@ dep 'user setup for provisioning', :username, :key do
   ]
 end
 
-dep 'deploy user setup', :env do
+dep 'deploy user setup', :env, :app_name, :domain do
   requires [
     # Add a corresponding DB user.
     'postgres access',
 
     # Set RACK_ENV and friends.
     'app env vars set'.with(:env => env),
+
+    # Set up custom env vars, if there are any.
+    Dep("#{app_name} env vars set").with(domain),
 
     # Configure the ~/current repo to accept deploys.
     'benhoskings:web repo'
