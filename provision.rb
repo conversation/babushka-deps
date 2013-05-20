@@ -155,11 +155,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
 
       # Make sure we're running on the correct kernel (it should have been installed and booted
       # by the above upgrade; this dep won't attempt an install).
-      #
-      # Since provisioning CI runs on a VPS, we can't change the kernel via apt and so this check
-      # will fail. It should be uncommented when provisioning on bare metal.
-      #
-      # remote_babushka 'conversation:kernel running', :version => '3.2.0-43-generic' # linux-3.2.0-43.68, for the CVE-2013-2094 fix.
+      remote_babushka 'conversation:kernel running', :version => '3.2.0-43-generic' # linux-3.2.0-43.68, for the CVE-2013-2094 fix.
     }
 
     # Right, now we can start provisioning.
