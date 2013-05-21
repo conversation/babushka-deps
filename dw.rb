@@ -1,5 +1,7 @@
 dep 'dw system', :app_user, :key, :env
 
+dep 'dw env vars set', :domain
+
 dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'existing db'.with(

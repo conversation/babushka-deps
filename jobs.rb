@@ -1,5 +1,7 @@
 dep 'jobs system', :app_user, :key, :env
 
+dep 'jobs env vars set', :domain
+
 dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name
     YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']

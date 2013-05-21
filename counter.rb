@@ -5,6 +5,8 @@ dep 'counter system', :app_user, :key, :env do
   ]
 end
 
+dep 'counter env vars set', :domain
+
 dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'geoip database'.with(:app_root => app_root),

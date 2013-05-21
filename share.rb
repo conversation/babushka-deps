@@ -1,5 +1,6 @@
 dep 'sharejs system', :app_user, :key, :env
 
+dep 'sharejs env vars set', :domain
 
 dep 'sharejs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [

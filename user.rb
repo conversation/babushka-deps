@@ -24,8 +24,8 @@ dep 'deploy user setup', :env, :app_name, :domain do
     # Set RACK_ENV and friends.
     'app env vars set'.with(:env => env),
 
-    # Set up custom env vars, if there are any.
-    Dep("#{app_name} env vars set").with(domain),
+    # Set up custom env vars.
+    "#{app_name} env vars set".with(domain),
 
     # Configure the ~/current repo to accept deploys.
     'benhoskings:web repo'
