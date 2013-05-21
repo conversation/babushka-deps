@@ -36,9 +36,7 @@ dep 'babushka bootstrapped', :host do
   }
 end
 
-# This is massive and needs a refactor, but it works for now.
-dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content do
-
+meta :remote do
   def as user, &block
     previous_user, @user = @user, user
     yield
@@ -86,6 +84,10 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     log "That remote run was marked as failable; moving on."
     false
   end
+end
+
+# This dep couples two concerns together (kernel & apt upgrade) and should be refactored.
+dep 'host updated', :host, :template => 'remote' do
 
   def reboot_remote!
     remote_shell('reboot')
@@ -104,6 +106,23 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     end
     puts " booted."
   end
+
+  met? {
+    # Make sure we're running on the correct kernel (it should have been installed and booted
+    # by the above upgrade; this dep won't attempt an install).
+    remote_babushka 'conversation:kernel running', :version => '3.2.0-43-generic' # linux-3.2.0-43.68, for the CVE-2013-2094 fix.
+  }
+
+  meet {
+    # First we need to configure apt. This involves a dist-upgrade, which should update the kernel.
+    remote_babushka 'conversation:apt configured'
+    # The above update could have touched the kernel and/or glibc, so a reboot might be required.
+    reboot_remote!
+  }
+end
+
+# This is massive and needs a refactor, but it works for now.
+dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content, :template => 'remote' do
 
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   domain.default!(app_user) if env == 'production'
@@ -148,17 +167,6 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   requires_when_unmet 'git remote'.with(env, app_user, host)
 
   meet {
-    as('root') {
-      # First we need to configure apt. This involves a dist-upgrade, which should update the kernel.
-      remote_babushka 'conversation:apt configured'
-      reboot_remote!
-
-      # Make sure we're running on the correct kernel (it should have been installed and booted
-      # by the above upgrade; this dep won't attempt an install).
-      remote_babushka 'conversation:kernel running', :version => '3.2.0-43-generic' # linux-3.2.0-43.68, for the CVE-2013-2094 fix.
-    }
-
-    # Right, now we can start provisioning.
     as('root') {
       # First, UTF-8 everything. (A new shell is required to test this, hence 2 runs.)
       failable_remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
