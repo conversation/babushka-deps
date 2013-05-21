@@ -6,6 +6,10 @@ dep 'tc system', :app_user, :key, :env do
   ]
 end
 
+dep 'tc env vars set', :domain do
+  requires 'env var set'.with('SHAREJS_HOST', "https://#{domain}/sharejs")
+end
+
 dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
   def db_name
     YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
