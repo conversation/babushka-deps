@@ -16,7 +16,6 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
   end
 
   requires [
-    'delayed job'.with(env, app_user),
     'geoip database'.with(:app_root => app_root),
     'ssl cert in place'.with(:domain => domain, :cert_name => 'theconversation.edu.au'),
     'db restored'.with(
@@ -25,6 +24,8 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :db_name => db_name,
       :app_root => app_root
     ),
+
+    'delayed job'.with(env, app_user),
 
     'db'.with(
       :env => env,

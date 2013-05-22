@@ -8,8 +8,6 @@ dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
   end
 
   requires [
-    'delayed job'.with(env, app_user),
-
     'ssl cert in place'.with(:domain => domain, :cert_name => 'donate.theconversation.edu.au'),
 
     'db'.with(
@@ -18,6 +16,8 @@ dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
       :root => app_root,
       :data_required => 'no'
     ),
+
+    'delayed job'.with(env, app_user),
 
     'rails app'.with(
       :app_name => 'donate',

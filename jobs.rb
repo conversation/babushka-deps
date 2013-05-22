@@ -8,7 +8,6 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
   end
 
   requires [
-    'delayed job'.with(env, app_user),
     'postgres extension'.with(app_user, db_name, 'pg_trgm'),
     'ssl cert in place'.with(:domain => domain, :cert_name => 'jobs.theconversation.edu.au'),
 
@@ -18,6 +17,8 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
       :root => app_root,
       :data_required => 'yes'
     ),
+
+    'delayed job'.with(env, app_user),
 
     'rails app'.with(
       :app_name => 'jobs',
