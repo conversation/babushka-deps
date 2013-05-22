@@ -48,7 +48,7 @@ dep 'jobs common packages' do
   requires [
     'bundler.gem',
     'postgres.bin'.with('9.2'),
-    'postgresql-contrib.lib', # for pg_trgm, for search
+    'postgresql-contrib.lib'.with('9.2'), # for pg_trgm, for search
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
     'imagemagick.bin', # for paperclip
