@@ -17,7 +17,15 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
 
   requires [
     'geoip database'.with(:app_root => app_root),
+
     'ssl cert in place'.with(:domain => domain, :cert_name => 'theconversation.edu.au'),
+  ]
+
+  if env == 'production'
+    requires 'ssl cert in place'.with(:domain => 'theconversation.com', :cert_name => 'theconversation.com')
+  end
+
+  requires [
     'db restored'.with(
       :env => env,
       :app_user => app_user,
@@ -54,12 +62,6 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :proxy_port => 9000
     )
   ]
-
-  setup {
-    if env == 'production'
-      requires 'ssl cert in place'.with(:domain => 'theconversation.com', :cert_name => 'theconversation.com')
-    end
-  }
 end
 
 dep 'tc packages' do
