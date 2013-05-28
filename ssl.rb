@@ -6,13 +6,25 @@ dep 'ssl cert in place', :nginx_prefix, :domain, :env, :cert_source, :template =
     env == 'staging' ? '*.tc-dev.net' : domain
   end
 
+  def source_file ext
+    cert_source / "#{cert_name}.#{ext}"
+  end
+
+  def dest_file ext
+    cert_path / "#{domain}.#{ext}"
+  end
+
   met? {
-    %w[key crt].all? {|ext| (cert_path / "#{domain}.#{ext}").exists? }
+    %w[key crt].all? {|ext|
+      dest_file(ext).exists?
+    }
   }
   meet {
     sudo "mkdir -p #{cert_path}"
-    %w[key crt].all? {|ext| sudo "cp '#{cert_source / cert_name}.#{ext}' '#{cert_path / domain}.#{ext}'" }
-    sudo "chmod 600 '#{cert_path / domain}'.*"
+    %w[key crt].all? {|ext|
+      sudo "cp '#{source_file(ext)}' '#{dest_file(ext)}'"
+      sudo "chmod 600 '#{dest_file(ext)}'"
+    }
     restart_nginx
   }
 end
