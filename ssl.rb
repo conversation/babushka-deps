@@ -16,7 +16,7 @@ dep 'ssl cert in place', :nginx_prefix, :domain, :env, :cert_source, :template =
 
   met? {
     %w[key crt].all? {|ext|
-      dest_file(ext).exists?
+      shell? "cmp '#{source_file(ext)}' '#{dest_file(ext)}'", sudo: true
     }
   }
   meet {
