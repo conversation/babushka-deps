@@ -26,7 +26,7 @@ dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
       :check_table => 'content_views'
     ),
 
-    'rack app'.with(
+    'sinatra app'.with(
       :app_name => 'counter',
       :env => env,
       :listen_host => host,

@@ -9,7 +9,7 @@ dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
       :db_name => "tc_dw_#{env}"
     ),
 
-    'rack app'.with(
+    'sinatra app'.with(
       :app_name => 'dw',
       :env => env,
       :listen_host => host,
