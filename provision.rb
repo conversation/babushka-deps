@@ -125,9 +125,7 @@ end
 dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content, :template => 'remote' do
 
   # In production, default the domain to the app user (specified per-app).
-  # Otherwise, default it to the host name of the box (since staging boxes
-  # typically run just a single app and are accessed directly in the browser).
-  domain.default!(env == 'production' ? app_user : host_name)
+  domain.default!(app_user) if env == 'production'
 
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   app_root.default!('~/current')
