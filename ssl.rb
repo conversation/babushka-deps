@@ -1,6 +1,11 @@
-dep 'ssl cert in place', :nginx_prefix, :domain, :cert_name, :cert_source, :template => 'nginx' do
+dep 'ssl cert in place', :nginx_prefix, :domain, :env, :cert_source, :template => 'nginx' do
   nginx_prefix.default!('/opt/nginx')
   cert_source.default('~/current/config/certs')
+
+  def cert_name
+    env == 'staging' ? '*.tc-dev.net' : domain
+  end
+
   met? {
     %w[key crt].all? {|ext| (cert_path / "#{domain}.#{ext}").exists? }
   }

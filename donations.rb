@@ -8,7 +8,7 @@ dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
   end
 
   requires [
-    'ssl cert in place'.with(:domain => domain, :cert_name => 'donate.theconversation.edu.au'),
+    'ssl cert in place'.with(:domain => domain, :env => env),
 
     'db'.with(
       :env => env,
