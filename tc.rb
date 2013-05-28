@@ -18,11 +18,11 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'geoip database'.with(:app_root => app_root),
 
-    'ssl cert in place'.with(:domain => domain, :cert_name => 'theconversation.edu.au'),
+    'ssl cert in place'.with(:domain => domain, :cert_name => 'theconversation.com')
   ]
 
   if env == 'production'
-    requires 'ssl cert in place'.with(:domain => 'theconversation.com', :cert_name => 'theconversation.com')
+    requires 'ssl cert in place'.with(:domain => 'theconversation.edu.au', :cert_name => 'theconversation.edu.au')
   end
 
   requires [
