@@ -107,6 +107,7 @@ dep 'tc common packages' do
     'tidy.bin', # for upmark preprocessing in MarkdownController
     'imagemagick.bin', # for paperclip
     'libxml.lib', # for nokogiri
-    'libxslt.lib' # for nokogiri
+    'libxslt.lib', # for nokogiri
+    'ntpdate.bin' # to keep time syncronised
   ]
 end

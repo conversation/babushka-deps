@@ -79,6 +79,8 @@ dep 'nc.bin'
 
 dep 'nmap.bin'
 
+dep 'ntpdate.bin'
+
 dep 'pcre.lib' do
   installs 'libpcre3-dev'
 end
