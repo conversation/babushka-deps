@@ -71,6 +71,7 @@ dep 'tc packages' do
     'running.nginx',
     'memcached', # for fragment caching
     'socat.bin', # for DB replication tunnelling
+    'ntpdate.bin', # to keep time syncronised
     'tc common packages'
   ]
 end
@@ -108,6 +109,5 @@ dep 'tc common packages' do
     'imagemagick.bin', # for paperclip
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
-    'ntpdate.bin' # to keep time syncronised
   ]
 end
