@@ -133,7 +133,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   expected_content_path.default!('/')
 
   met? {
-    cmd = raw_shell("curl --connect-timeout 2 -v -H 'Host: #{domain}' http://#{host}#{check_path}")
+    cmd = raw_shell("curl --connect-timeout 2 --max-time=30 -v -H 'Host: #{domain}' http://#{host}#{check_path}")
 
     if !cmd.ok?
       log "Couldn't connect to http://#{host}."
@@ -148,7 +148,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
 
         check_uri = "http://#{host}#{expected_content_path}"
         log "about to request check_uri: #{check_uri}"
-        check_output = shell("curl -v -H 'Host: #{domain}' #{check_uri}")
+        check_output = shell("curl -v --max-time=30 -H 'Host: #{domain}' #{check_uri}")
         log "check_output: #{check_output}"
 
         if !check_output[/#{Regexp.escape(expected_content)}/]
