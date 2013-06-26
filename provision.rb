@@ -147,10 +147,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
         log_ok "#{domain}#{check_path} responded with 200 OK."
 
         check_uri = "http://#{host}#{expected_content_path}"
-        log "about to request check_uri: #{check_uri}"
         check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
-        log "check_output: #{check_output}"
-        log "check_output to_i: #{check_output.to_i}"
 
         if check_output.to_i == 0
           @should_confirm = true
