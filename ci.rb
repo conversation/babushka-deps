@@ -5,7 +5,7 @@ dep 'ci prepared', :app_user, :public_key, :private_key do
     'key installed'.with(:username => app_user, :public_key => public_key, :private_key => private_key),
 
     'set.locale'.with(:locale_name => 'en_AU'),
-    'ruby.src'.with(:version => '2.0.0', :patchlevel => 'p195'),
+    'ruby.src'.with(:version => '2.0.0', :patchlevel => 'p247'),
   ]
 end
 
