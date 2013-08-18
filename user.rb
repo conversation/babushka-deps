@@ -28,7 +28,7 @@ dep 'deploy user setup', :env, :app_name, :domain do
     "#{app_name} env vars set".with(domain),
 
     # Configure the ~/current repo to accept deploys.
-    'benhoskings:web repo'
+    'common:web repo'
   ]
 end
 
