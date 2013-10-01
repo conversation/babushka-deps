@@ -56,11 +56,15 @@ dep 'update dns record', :prefix, :domain, :type, :value, :api_username, :api_ke
     end
   end
 
-  met? {
+  def find_record(domain, prefix, type)
     remote_domain = find_domain(domain)
     record = DNSimple::Record.all(remote_domain).detect { |record|
       record.name == prefix && record.record_type == type
     }
+  end
+
+  met? {
+    record = find_record(domain, prefix, type)
     if record.nil?
       log("record #{prefix}.#{domain} #{type} not found")
       false
@@ -75,10 +79,7 @@ dep 'update dns record', :prefix, :domain, :type, :value, :api_username, :api_ke
   }
 
   meet {
-    remote_domain = find_domain(domain)
-    record = DNSimple::Record.all(remote_domain).detect { |record|
-      record.name == prefix && record.record_type == type
-    }
+    record = find_record(domain, prefix, type)
     if record.nil?
       log("creating #{prefix}.#{domain} #{type}")
       DNSimple::Record.create(remote_domain, prefix, type, value)
