@@ -82,10 +82,11 @@ dep 'update dns record', :prefix, :domain, :type, :value, :api_username, :api_ke
     record = find_record(domain, prefix, type)
     if record.nil?
       log("creating #{prefix}.#{domain} #{type}")
-      DNSimple::Record.create(remote_domain, prefix, type, value)
+      DNSimple::Record.create(remote_domain, prefix, type, value, ttl: 60)
     else
       log("updating #{prefix}.#{domain} #{type} to #{value}")
       record.content = value
+      record.ttl = 60
       record.save
     end
   }
