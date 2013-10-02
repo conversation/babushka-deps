@@ -216,11 +216,11 @@ end
 
 dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
   requires [
+    'localhost hosts entry',
     'hostname'.with(host_name),
     'secured ssh logins',
     'utc',
     'time is syncronised',
-    'localhost hosts entry',
     'core software',
     'lax host key checking',
     'admins can sudo',
