@@ -1,20 +1,20 @@
 dep 'promote staging-a to master' do
   requires [
-    #'promote psql to master'.with(host: "prod-dal.tc-dev.net"),
+    'promote psql to master'.with(host: "staging-a.tc-dev.net"),
     'update staging dns'.with(new_master_domain: 'staging-a.tc-dev.net', new_standby_domain: 'staging-b.tc-dev.net'),
   ]
 end
 
 dep 'promote staging-b to master' do
   requires [
-    #'promote psql to master'.with(host: "prod-dal.tc-dev.net"),
+    'promote psql to master'.with(host: "staging-b.tc-dev.net"),
     'update staging dns'.with(new_master_domain: 'staging-b.tc-dev.net', new_standby_domain: 'staging-a.tc-dev.net'),
   ]
 end
 
 dep 'promote dallas to master' do
   requires [
-    #'promote psql to master'.with(host: "prod-dal.tc-dev.net"),
+    'promote psql to master'.with(host: "prod-dal.tc-dev.net"),
     'update prod dns'.with(new_master_domain: 'prod-dal.tc-dev.net', new_standby_domain: 'prod-lon.tc-dev.net'),
   ]
 end
@@ -28,11 +28,13 @@ end
 
 dep 'promote psql to master', :host do
   met? {
-    #shell('git submodule status').split("\n").all? {|l| l[/^ /] }
-    false
+    # this command will return 'f' for master postgres clusters and 't'
+    # for standby clusters
+    result = shell(%Q{ssh postgres@#{host} "psql postgres -t -c 'SELECT pg_is_in_recovery()'"}).strip
+    result == "f"
   }
   meet {
-    puts "promote psql to master (#{host})"
+    shell(%Q{ssh postgres@#{host} "touch /var/lib/postgresql/9.2/main/trigger"})
   }
 end
 
