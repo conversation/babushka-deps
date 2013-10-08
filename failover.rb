@@ -1,14 +1,28 @@
+dep 'promote staging-a to master' do
+  requires [
+    #'promote psql to master'.with(host: "prod-dal.tc-dev.net"),
+    'update staging dns'.with(new_master_domain: 'staging-a.tc-dev.net', new_standby_domain: 'staging-b.tc-dev.net'),
+  ]
+end
+
+dep 'promote staging-b to master' do
+  requires [
+    #'promote psql to master'.with(host: "prod-dal.tc-dev.net"),
+    'update staging dns'.with(new_master_domain: 'staging-b.tc-dev.net', new_standby_domain: 'staging-a.tc-dev.net'),
+  ]
+end
+
 dep 'promote dallas to master' do
   requires [
     #'promote psql to master'.with(host: "prod-dal.tc-dev.net"),
-    'update dns'.with(new_master_domain: 'prod-dal.tc-dev.net', new_standby_domain: 'prod-lon.tc-dev.net'),
+    'update prod dns'.with(new_master_domain: 'prod-dal.tc-dev.net', new_standby_domain: 'prod-lon.tc-dev.net'),
   ]
 end
 
 dep 'promote london to master' do
   requires [
     'promote psql to master'.with(host: "prod-lon.tc-dev.net"),
-    'update dns'.with(new_master_domain: 'prod-lon.tc-dev.net', new_standby_domain: 'prod-dal.tc-dev.net'),
+    'update prod dns'.with(new_master_domain: 'prod-lon.tc-dev.net', new_standby_domain: 'prod-dal.tc-dev.net'),
   ]
 end
 
@@ -22,7 +36,14 @@ dep 'promote psql to master', :host do
   }
 end
 
-dep 'update dns', :new_master_domain, :new_standby_domain, :api_username, :api_key do
+dep 'update staging dns', :new_master_domain, :new_standby_domain, :api_username, :api_key do
+  requires [
+    "update dns record".with(prefix: "staging",             domain: "tc-dev.net",    api_username: api_username, api_key: api_key, type: "CNAME", value: new_master_domain),
+    "update dns record".with(prefix: "staging-standby",     domain: "tc-dev.net",    api_username: api_username, api_key: api_key, type: "CNAME", value: new_standby_domain),
+  ]
+end
+
+dep 'update prod dns', :new_master_domain, :new_standby_domain, :api_username, :api_key do
   requires [
     "update dns record".with(prefix: "",             domain: "theconversation.com",    api_username: api_username, api_key: api_key, type: "ALIAS", value: "dot-com.#{new_master_domain}"),
     "update dns record".with(prefix: "www",          domain: "theconversation.com",    api_username: api_username, api_key: api_key, type: "CNAME", value: "dot-com.#{new_master_domain}"),
