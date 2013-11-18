@@ -16,7 +16,7 @@ dep 'postgres standby', :env, :version, :local_user, :local_port, :remote_user, 
   }[env])
 
   requires [
-    'postgres socket tunnel.upstart'.with(local_user, local_port, remote_user, remote_host),
+    'postgres socket tunnel'.with(local_user, local_port, remote_user, remote_host),
     'postgres recovery config'.with(version, local_port, remote_user)
   ]
 end
@@ -40,7 +40,7 @@ dep 'postgres recovery config', :version, :local_port, :remote_user do
   }
 end
 
-dep 'postgres socket tunnel.upstart', :local_user, :local_port, :remote_user, :remote_host do
+dep 'postgres socket tunnel', :local_user, :local_port, :remote_user, :remote_host do
   local_user.default!('postgres')
   remote_user.default!('standby')
 
@@ -52,15 +52,17 @@ dep 'postgres socket tunnel.upstart', :local_user, :local_port, :remote_user, :r
   def remote_socket
     "/var/run/postgresql/.s.PGSQL.5432"
   end
-
-  command %Q{socat UNIX-LISTEN:#{local_socket},fork EXEC:'ssh -C #{remote_user}@#{remote_host} "socat STDIO UNIX-CONNECT:#{remote_socket}"'}
-  setuid local_user
-  chdir "~#{local_user}".p
-  respawn 'yes'
+  def tunnel_config
+    "/etc/init/postgres_postgres_socket_tunnel.conf"
+  end
 
   met? {
     local_socket.p.exists? &&
-    shell("lsof #{local_socket}").val_for('socat').ends_with?(local_socket)
+    shell("lsof #{local_socket}").val_for('socat').ends_with?(local_socket) &&
+    Babushka::Renderable.new(tunnel_config).from?(dependency.load_path.parent / "replication/postgres_socket_tunnel.conf.erb")
+  }
+  meet {
+    render_erb 'replication/postgres_socket_tunnel.conf.erb', :to => tunnel_config
   }
 end
 
