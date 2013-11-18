@@ -104,7 +104,7 @@ end
 dep 'startup script.nginx', :nginx_prefix do
   requires 'nginx.src'.with(:nginx_prefix => nginx_prefix)
   met? {
-    shell('initctl list').split("\n").grep(/^nginx\b/).any?
+    Babushka::Renderable.new("/etc/init/nginx.conf").from?(dependency.load_path.parent / "nginx/nginx.init.conf.erb")
   }
   meet {
     render_erb 'nginx/nginx.init.conf.erb', :to => '/etc/init/nginx.conf'
