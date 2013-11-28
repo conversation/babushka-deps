@@ -1,10 +1,22 @@
-dep 'unicorn.upstart', :env, :user do
+dep 'unicorn upstart config', :env, :user do
   def app_root
     "/srv/http/#{user}/current"
   end
 
+  def template_path
+    dependency.load_path.parent / 'unicorn/unicorn.init.erb'
+  end
+
+  def service_name
+    "#{user}_unicorn"
+  end
+
+  def conf_dest
+    "/etc/init/#{service_name}.conf"
+  end
+
   def config_current?
-    if Babushka::Renderable.new(conf_dest).from?(dependency.load_path.parent / 'upstart/service.conf.erb')
+    if Babushka::Renderable.new(conf_dest).from?(template_path)
       true
     else
       log "upstart config needs updating"
@@ -25,11 +37,6 @@ dep 'unicorn.upstart', :env, :user do
     }
   end
 
-  task 'yes'
-  command "bundle exec unicorn -D -E #{env} -c config/unicorn.rb"
-  setuid user
-  chdir app_root
-
   met? {
     if !(app_root / 'config/unicorn.rb').exists?
       log "Not starting any unicorns because there's no unicorn config."
@@ -37,6 +44,11 @@ dep 'unicorn.upstart', :env, :user do
     else
       config_current? && running?
     end
+  }
+  meet {
+    render_erb template_path, :to => conf_dest, :sudo => true
+    sudo "initctl start #{service_name}; true"
+    sleep 5
   }
 end
 
