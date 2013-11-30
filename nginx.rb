@@ -61,7 +61,7 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
     if !source.p.exists?
       true # If the source config doesn't exist, this is optional (i.e. a .common conf).
     else
-      Babushka::Renderable.new(dest).from?(source)
+      Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
     end
   end
 
@@ -104,7 +104,8 @@ end
 dep 'startup script.nginx', :nginx_prefix do
   requires 'nginx.src'.with(:nginx_prefix => nginx_prefix)
   met? {
-    Babushka::Renderable.new("/etc/init/nginx.conf").from?(dependency.load_path.parent / "nginx/nginx.init.conf.erb")
+    Babushka::Renderable.new("/etc/init/nginx.conf").from?(dependency.load_path.parent / "nginx/nginx.init.conf.erb") &&
+      Babushka::Renderable.new("/etc/init/nginx.conf").clean?
   }
   meet {
     render_erb 'nginx/nginx.init.conf.erb', :to => '/etc/init/nginx.conf'
