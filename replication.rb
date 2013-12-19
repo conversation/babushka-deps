@@ -53,7 +53,7 @@ dep 'postgres socket tunnel', :local_user, :local_port, :remote_user, :remote_ho
     "/var/run/postgresql/.s.PGSQL.5432"
   end
   def tunnel_config
-    "/etc/init/postgres_postgres_socket_tunnel.conf"
+    "/etc/init/postgres_socket_tunnel.conf"
   end
 
   met? {
