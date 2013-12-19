@@ -33,7 +33,7 @@ end
 
 dep 'jobs packages' do
   requires [
-    'postgres'.with('9.2'),
+    'postgres'.with('9.3'),
     'curl.lib',
     'running.nginx',
     'jobs common packages'
@@ -47,8 +47,8 @@ end
 dep 'jobs common packages' do
   requires [
     'bundler.gem',
-    'postgres.bin'.with('9.2'),
-    'postgresql-contrib.lib'.with('9.2'), # for pg_trgm, for search
+    'postgres.bin'.with('9.3'),
+    'postgresql-contrib.lib'.with('9.3'), # for pg_trgm, for search
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
     'imagemagick.bin', # for paperclip
