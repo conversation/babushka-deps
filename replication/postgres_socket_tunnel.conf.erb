@@ -14,4 +14,4 @@ chdir /var/lib/postgresql
 setuid <%= local_user %>
 console log
 
-exec socat UNIX-LISTEN:<%=local_socket%>,fork EXEC:'ssh -C <%=remote_user%>@<%=remote_host%> "socat STDIO UNIX-CONNECT:<%= remote_socket%>"
+exec socat UNIX-LISTEN:<%=local_socket%>,fork EXEC:'ssh -C <%=remote_user%>@<%=remote_host%> "socat STDIO UNIX-CONNECT:<%= remote_socket%>"'
