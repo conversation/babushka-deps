@@ -20,7 +20,7 @@ server {
   # Redirect authed users to https. (The app does this too; we redirect
   # cached pages here to avoid having to do it on the frontend.)
   if ($http_cookie ~ 'user_tracer_engage') {
-    return 301 https://<%= domain %>$request_uri;
+    return 302 https://<%= domain %>$request_uri;
   }
 
   include vhosts/<%= domain %>.common;
