@@ -29,6 +29,6 @@ end
 
 dep 'assets precompiled', :env, :path, :template => 'task' do
   run {
-    shell "bundle exec rake assets:precompile:primary RAILS_GROUPS=assets RAILS_ENV=#{env}", :cd => path
+    shell "bundle exec rake assets:precompile RAILS_GROUPS=assets RAILS_ENV=#{env}", :cd => path
   }
 end
