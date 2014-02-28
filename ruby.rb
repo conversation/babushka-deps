@@ -8,9 +8,17 @@ dep 'ruby.src', :version, :patchlevel do
     version.to_s.scan(/^\d\.\d/).first
   end
 
+  def filename
+    if version.to_s >= '2.1.0'
+      "ruby-#{version}.tar.gz"
+    else
+      "ruby-#{version}-#{patchlevel}.tar.gz"
+    end
+  end
+
   requires_when_unmet 'curl.lib', 'readline.lib', 'ssl.lib', 'yaml.lib', 'zlib.lib'
 
-  source "ftp://ftp.ruby-lang.org/pub/ruby/#{version_group}/ruby-#{version}-#{patchlevel}.tar.gz"
+  source "ftp://ftp.ruby-lang.org/pub/ruby/#{version_group}/#{filename}"
   provides "ruby == #{version}#{patchlevel}", 'gem', 'irb'
   configure_args '--disable-install-doc',
     "--with-readline-dir=#{Babushka.host.pkg_helper.prefix}",
