@@ -33,7 +33,7 @@ end
 
 dep 'jobs packages' do
   requires [
-    'postgres'.with('9.3'),
+    'postgres'.with('9.2'),
     'curl.lib',
     'running.nginx',
     'jobs common packages'
