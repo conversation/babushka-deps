@@ -21,3 +21,21 @@ dep 'cache cleared' do
     shell "git clean -fdx public/*.html public/pages/*.html", :log => true
   }
 end
+
+dep 'marked on newrelic.task', :ref, :env do
+  requires 'app bundled'.with('.', 'development')
+  run {
+    if 'config/newrelic.yml'.p.exists?
+      shell "bundle exec newrelic deployments -e #{env} -r #{shell("git rev-parse --short #{ref}")}"
+    end
+  }
+end
+
+dep 'marked on bugsnag.task', :ref, :env do
+  requires 'app bundled'.with('.', 'development')
+  run {
+    if 'config/initializers/bugsnag.rb'.p.exists?
+      log_shell "Notifying bugsnag", "bundle exec rake bugsnag:deploy BUGSNAG_REVISION=#{shell("git rev-parse --short #{ref}")}"
+    end
+  }
+end
