@@ -27,6 +27,8 @@ dep 'marked on newrelic.task', :ref, :env do
   run {
     if 'config/newrelic.yml'.p.exists?
       shell "bundle exec newrelic deployments -e #{env} -r #{shell("git rev-parse --short #{ref}")}"
+    else
+      log_ok "newrelic config not found, skipping"
     end
   }
 end
@@ -36,6 +38,8 @@ dep 'marked on bugsnag.task', :ref, :env do
   run {
     if 'config/initializers/bugsnag.rb'.p.exists?
       log_shell "Notifying bugsnag", "bundle exec rake bugsnag:deploy BUGSNAG_REVISION=#{shell("git rev-parse --short #{ref}")}"
+    else
+      log_ok "bugsnag config not found, skipping"
     end
   }
 end
