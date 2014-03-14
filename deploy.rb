@@ -25,8 +25,14 @@ end
 dep 'marked on newrelic.task', :ref, :env do
   requires 'app bundled'.with('.', 'development')
   run {
+    # Some of our apps store the newrelic config file in a template that is copied]
+    # into position in production.
     if 'config/newrelic.yml'.p.exists?
       shell "bundle exec newrelic deployments -e #{env} -r #{shell("git rev-parse --short #{ref}")}"
+    elsif 'config/newrelic.yml.template'.p.exists?
+      FileUtils.cp('config/newrelic.yml.template', 'config/newrelic.yml')
+      shell "bundle exec newrelic deployments -e #{env} -r #{shell("git rev-parse --short #{ref}")}"
+      FileUtils.rm('config/newrelic.yml')
     else
       log_ok "newrelic config not found, skipping"
     end
