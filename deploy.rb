@@ -1,3 +1,5 @@
+require 'fileutils'
+
 def on_standby?
   psql_output = shell?("psql tc_#{env} -t -c 'SHOW transaction_read_only'")
   !psql_output.nil? && psql_output['on']
