@@ -49,3 +49,22 @@ dep 'marked on bugsnag.task', :ref, :env do
     end
   }
 end
+
+# This dep ensures that we only enable newrelic monitoring on production
+# and not standby. Prevents us from having to pay for two servers
+dep "set up newrelic configuration", :env do
+  setup {
+    if (env == "production" && !on_standby?) || env == "staging"
+      log "Writing newrelic config"
+      FileUtils.cp(
+        File.join('config', 'newrelic.yml.template'),
+        File.join('config', 'newrelic.yml')
+      )
+      true
+    else
+      log "Deleting newrelic config"
+      FileUtils.rm(File.join('config', 'newrelic.yml'), force: true)
+      true
+    end
+  }
+end
