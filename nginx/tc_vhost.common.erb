@@ -34,6 +34,9 @@ error_page 405 = @app;
 # Respond with the maintenance page whenever the status is 503.
 error_page 503 /system/maintenance.html;
 
+# Respond with our custom 502 page when the unicorns are overloaded
+error_page 502 /502.html;
+
 # Serve cached pages if they exist; otherwise, punt the request to the app.
 try_files $uri/index.html $uri.html $uri @app;
 
