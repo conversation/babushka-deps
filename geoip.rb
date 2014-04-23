@@ -3,7 +3,7 @@ dep 'geoip.bin' do
     via :apt, 'geoip-bin', 'libgeoip-dev'
     otherwise 'geoip'
   }
-  provides 'geoiplookup', 'geoiplookup6', 'geoipupdate'
+  provides 'geoiplookup', 'geoiplookup6'
 end
 
 dep 'geoip database', :source, :app_root do
