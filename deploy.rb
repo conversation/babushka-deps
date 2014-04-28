@@ -70,7 +70,7 @@ dep "set up newrelic configuration", :env do
       true
     else
       log "Deleting newrelic config"
-      FileUtils.rm(File.join('config', 'newrelic.yml'), force: true)
+      FileUtils.rm(File.join('config', 'newrelic.yml'), :force => true)
       true
     end
   }
