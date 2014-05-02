@@ -100,6 +100,10 @@ dep 'qt-dev.lib' do
   }
 end
 
+dep 'raca.gem' do
+  provides []
+end
+
 dep 'rcconf.bin' do
   requires 'whiptail.bin'
 end

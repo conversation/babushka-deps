@@ -73,11 +73,20 @@ dep 'db restored', :env, :app_user, :db_name, :app_root, :backup_path do
 end
 
 dep 'db backup from cloudfiles', :app_root, :backup_path do
-  require app_root.p.join('lib/tc/cloud_info')
-  require app_root.p.join('lib/tc/cloud_bucket')
+  requires 'raca.gem'
+  def cloudfiles_username
+    YAML.load_file(app_root.p.join('config/application.yml'))["cloudfiles"]["username"]
+  end
+  def cloudfiles_api_key
+    YAML.load_file(app_root.p.join('config/application.yml'))["cloudfiles"]["api_key"]
+  end
 
   def bucket
-    @bucket ||= TC::CloudBucket.new('tc_db_backups')
+    require 'raca'
+    @bucket ||= begin
+      account = Raca::Account.new(cloudfiles_username, cloudfiles_api_key)
+      account.containers(:ord).get('tc_db_backups')
+    end
   end
 
   backup_path.default!(app_root.p / 'tmp/tc_production.psql.gz')
