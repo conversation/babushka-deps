@@ -48,7 +48,7 @@ dep 'unicorn upstart config', :env, :user do
   meet {
     render_erb template_path, :to => conf_dest, :sudo => true
     sudo "initctl start #{service_name}; true"
-    sleep 5
+    sleep 10
   }
 end
 
