@@ -12,7 +12,7 @@ setuid <%=user%>
 console log
 
 script
-  /usr/local/bin/bundle exec unicorn -c config/unicorn.rb -E production
+  /usr/local/bin/bundle exec unicorn -c config/unicorn.rb -E <%=env%>
 
   exists=0
   pidfile=<%=app_root%>/tmp/pids/unicorn.pid
