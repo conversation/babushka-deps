@@ -48,7 +48,7 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
   def listen_host_au
     {
       # .com IP => .edu.au IP
-      '74.50.63.173' => '74.50.63.170',
+      '74.50.56.43' => '74.50.56.70',
       '91.186.19.133' => '31.193.141.103'
     }[listen_host.to_s]
   end
