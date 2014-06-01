@@ -7,6 +7,9 @@ dep 'geoip.bin' do
 end
 
 dep 'geoip database', :source, :app_root do
+  # we download a cached copy of this database from our cloud files account to
+  # avoid hitting usage limits on the upstream server. Don't forget to occasionally
+  # update the cached version with a fresh file from http://dev.maxmind.com/geoip/legacy/geolite/
   source.default!('http://c10736763.r63.cf2.rackcdn.com/GeoLiteCity.dat.gz')
   app_root.default('~/current')
   def local_path
