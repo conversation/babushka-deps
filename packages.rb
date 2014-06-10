@@ -112,6 +112,8 @@ dep 'simplejson.pip'
 
 dep 'socat.bin'
 
+dep 'sox.bin'
+
 dep 'sshd.bin' do
   installs {
     via :apt, 'openssh-server'
