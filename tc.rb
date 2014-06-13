@@ -110,6 +110,7 @@ dep 'tc common packages' do
     'imagemagick.bin', # for paperclip
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
-    'sox.bin' # for audio processing
+    'sox.bin', # for audio processing
+    'ffmpeg.bin' # for audio processing
   ]
 end
