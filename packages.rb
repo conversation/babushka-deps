@@ -16,9 +16,30 @@ end
 
 dep 'carbon.pip'
 
+dep 'nodejs.bin', :version do
+  version.default('0.10.28')
+  requires_when_unmet {
+    on :apt, 'keyed apt source'.with(
+      :uri => 'http://ppa.launchpad.net/chris-lea/node.js/ubuntu',
+      :release => 'precise',
+      :repo => 'main',
+      :key_sig => 'C7917B12',
+      :key_uri => 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xB9316A7BC7917B12'
+    )
+  }
+  installs {
+    via :apt, [
+      "nodejs",
+      "nodejs-dev"
+    ]
+    via :brew, "nodejs"
+  }
+  provides "nodejs ~> #{version}"
+end
+
 dep 'coffeescript.src', :version do
   version.default!('1.3.3')
-  requires 'core:nodejs.bin'
+  requires 'nodejs.bin'
   source "https://github.com/jashkenas/coffee-script/archive/#{version}.tar.gz"
   provides "coffee >= #{version}"
 
