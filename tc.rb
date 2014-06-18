@@ -110,7 +110,6 @@ dep 'tc common packages' do
     'imagemagick.bin', # for paperclip
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
-    'libtag.lib', # for taglib-ruby gem
-    'sox.bin' # for audio processing
+    'libtag.lib' # for taglib-ruby gem
   ]
 end
