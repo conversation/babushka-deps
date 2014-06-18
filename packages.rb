@@ -14,8 +14,6 @@ dep 'bundler.gem' do
   provides 'bundle'
 end
 
-dep 'carbon.pip'
-
 dep 'nodejs.bin', :version do
   version.default('0.10.28')
   requires_when_unmet {
@@ -55,16 +53,8 @@ dep 'curl.lib' do
   }
 end
 
-dep 'django.pip'
-
-dep 'django-tagging.pip'
-
 dep 'git-smart.gem' do
   provides %w[git-smart-log git-smart-merge git-smart-pull]
-end
-
-dep 'graphite-web.pip' do
-  requires %w[carbon.pip whisper.pip django.pip django-tagging.pip uwsgi.pip simplejson.pip]
 end
 
 dep 'htop.bin'
@@ -133,8 +123,6 @@ dep 'rcconf.bin' do
   requires 'whiptail.bin'
 end
 
-dep 'simplejson.pip'
-
 dep 'socat.bin'
 
 dep 'sshd.bin' do
@@ -158,13 +146,9 @@ dep 'traceroute.bin'
 
 dep 'tree.bin'
 
-dep 'uwsgi.pip'
-
 dep 'vim.bin'
 
 dep 'whiptail.bin'
-
-dep 'whisper.pip'
 
 dep 'yaml.lib' do
   installs {
