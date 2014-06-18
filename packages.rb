@@ -106,6 +106,10 @@ dep 'pcre.lib' do
   installs 'libpcre3-dev'
 end
 
+dep 'libtag.lib' do
+  installs 'libtag1-dev'
+end
+
 dep 'pv.bin'
 
 dep 'readline.lib' do
