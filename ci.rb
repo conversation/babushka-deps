@@ -21,20 +21,14 @@ dep 'ci provisioned', :app_user, :public_key, :private_key do
     'jobs common packages',
     'apt packages removed'.with(%w[resolvconf ubuntu-minimal]),
     'ci packages',
-    'postgres access'.with(:username => app_user, :flags => '-sdrw'),
-    'jenkins target'.with(:app_user => app_user)
+    'postgres access'.with(:username => app_user, :flags => '-sdrw')
   ]
 end
 
 dep 'ci packages' do
   requires [
-    'openjdk-6-jdk',
     'phantomjs'.with('1.8.2')
   ]
-end
-
-dep 'openjdk-6-jdk', :template => 'bin' do
-  provides 'java', 'javac'
 end
 
 dep 'key installed', :username, :public_key, :private_key do
@@ -52,20 +46,6 @@ dep 'key installed', :username, :public_key, :private_key do
 
     shell "chmod 600 '#{(ssh_dir / 'ci_host')}'"
     sudo "chown -R #{username} '#{ssh_dir}'" unless username == shell('whoami')
-  }
-end
-
-dep 'jenkins target', :path, :app_user do
-  path.default!('/opt/jenkins')
-  def app_group
-    shell("groups '#{app_user}'").split(' ').first
-  end
-  met? {
-    path.p.directory? && shell?("touch #{path}", :as => app_user)
-  }
-  meet {
-    path.p.mkdir
-    shell "chown -R #{app_user}:#{app_group} #{path}"
   }
 end
 
