@@ -1,17 +1,13 @@
-dep 'ci prepared', :app_user, :public_key, :private_key do
+dep 'ci prepared' do
   requires [
-    'passwordless ssh logins'.with(:username => 'root', :key => public_key),
-    'passwordless ssh logins'.with(:username => app_user, :key => public_key),
-    'key installed'.with(:username => app_user, :public_key => public_key, :private_key => private_key),
-
     'set.locale'.with(:locale_name => 'en_AU'),
     'ruby.src'.with(:version => '2.1.2', :patchlevel => 'p95'),
   ]
 end
 
-dep 'ci provisioned', :app_user, :public_key, :private_key do
+dep 'ci provisioned', :app_user do
   requires [
-    'ci prepared'.with(app_user, public_key, private_key),
+    'ci prepared',
     'localhost hosts entry',
     'lax host key checking',
     'apt sources',
@@ -29,24 +25,6 @@ dep 'ci packages' do
   requires [
     'phantomjs'.with('1.8.2')
   ]
-end
-
-dep 'key installed', :username, :public_key, :private_key do
-  def ssh_dir
-    "~#{username}/.ssh/".p
-  end
-  met? {
-    # TODO: This is only a partial check, but it'll do for now.
-    (ssh_dir / 'ci_host').exists? && (ssh_dir / 'ci_host').read['PRIVATE KEY']
-  }
-  meet {
-    (ssh_dir / 'ci_host.pub').write(public_key)
-    (ssh_dir / 'ci_host').write(private_key)
-    (ssh_dir / 'config').append "IdentityFile ~/.ssh/ci_host\n"
-
-    shell "chmod 600 '#{(ssh_dir / 'ci_host')}'"
-    sudo "chown -R #{username} '#{ssh_dir}'" unless username == shell('whoami')
-  }
 end
 
 dep 'phantomjs', :version do
