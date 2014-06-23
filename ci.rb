@@ -23,7 +23,8 @@ end
 
 dep 'ci packages' do
   requires [
-    'phantomjs'.with('1.8.2')
+    'phantomjs'.with('1.8.2'),
+    'xvfb.bin'
   ]
 end
 
@@ -46,4 +47,8 @@ dep 'phantomjs', :version do
       shell "ln -fs /usr/local/phantomjs/bin/phantomjs /usr/local/bin"
     end
   }
+end
+
+dep 'xvfb.bin' do
+  provides 'Xvfb'
 end
