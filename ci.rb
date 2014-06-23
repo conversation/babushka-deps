@@ -23,6 +23,7 @@ end
 
 dep 'ci packages' do
   requires [
+    'firefox.bin',
     'phantomjs'.with('1.8.2'),
     'xvfb.bin'
   ]
@@ -52,3 +53,5 @@ end
 dep 'xvfb.bin' do
   provides 'Xvfb'
 end
+
+dep 'firefox.bin'
