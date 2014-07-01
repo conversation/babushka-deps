@@ -23,7 +23,8 @@ server {
   ssl_certificate      certs/<%= domain %>.crt;
   ssl_certificate_key  certs/<%= domain %>.key;
   ssl_session_timeout  5m;
-  ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
+  ssl_ciphers          ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA:HIGH:!aNULL:!MD5:!kEDH;
+  ssl_prefer_server_ciphers on;
 <% end %>
 
   root <%= path / 'public' %>;
