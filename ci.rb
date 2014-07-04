@@ -32,9 +32,9 @@ end
 dep 'phantomjs', :version do
   def phantomjs_uri
     if Babushka.host.linux?
-      "https://phantomjs.googlecode.com/files/phantomjs-#{version}-linux-x86_64.tar.bz2"
+      "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-x86_64.tar.bz2"
     elsif Babushka.host.osx?
-      "https://phantomjs.googlecode.com/files/phantomjs-#{version}-macosx.zip"
+      "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-macosx.zip"
     else
       unmeetable! "Not sure where to download a phantomjs binary for #{Babushka.base.host}."
     end
