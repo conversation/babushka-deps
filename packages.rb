@@ -100,6 +100,23 @@ dep 'libtag.lib' do
   installs 'libtag1-dev'
 end
 
+dep 'pngquant.bin', :version do
+  version.default('2.0.1')
+  requires_when_unmet {
+    on :apt, 'keyed apt source'.with(
+      :uri => 'http://ppa.launchpad.net/danmbox/ppa/ubuntu',
+      :release => 'precise',
+      :repo => 'main',
+      :key_sig => '751CCC86',
+      :key_uri => 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x1066CD08751CCC86'
+    )
+  }
+  installs {
+    via :apt, "pngquant"
+    via :brew, "pngquant"
+  }
+end
+
 dep 'pv.bin'
 
 dep 'readline.lib' do
