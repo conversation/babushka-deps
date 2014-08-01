@@ -13,7 +13,7 @@ class ProxyService
   #   jobs, etc.
   #
   def initialize(api_key, service_name)
-    @fastly = Fastly.new(api_key: api_key)
+    @fastly = Fastly.new(:api_key => api_key)
     @service = @fastly.list_services.detect { |service|
       service.name == service_name
     }
@@ -51,7 +51,7 @@ class ProxyService
   private
 
   def get_backend(version)
-    backend = @fastly.list_backends(service_id: @service.id, version: version.number).detect { |b|
+    backend = @fastly.list_backends(:service_id => @service.id, :version => version.number).detect { |b|
       b.name == @backend_name
     }
     raise "backend #{backend_name} not found" if backend.nil?
