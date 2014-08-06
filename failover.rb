@@ -117,6 +117,7 @@ dep 'update prod dns', :new_master_domain, :new_standby_domain, :api_username, :
     "update dns record".with(:prefix => "jobs",         :domain => "theconversation.edu.au", :api_username => api_username, :api_key => api_key, :type => "CNAME", :value => "jobs.#{new_master_domain}"),
     "update dns record".with(:prefix => "counter",      :domain => "theconversation.edu.au", :api_username => api_username, :api_key => api_key, :type => "CNAME", :value => "counter.#{new_master_domain}"),
     "update dns record".with(:prefix => "jobs",         :domain => "theconversation.edu.au", :api_username => api_username, :api_key => api_key, :type => "CNAME", :value => "jobs.#{new_master_domain}"),
+    "update dns record".with(:prefix => "jobs",         :domain => "theconversation.com",    :api_username => api_username, :api_key => api_key, :type => "CNAME", :value => "jobs.#{new_master_domain}"),
     "update dns record".with(:prefix => "donate",       :domain => "theconversation.edu.au", :api_username => api_username, :api_key => api_key, :type => "CNAME", :value => "donate.#{new_master_domain}"),
     "update dns record".with(:prefix => "",             :domain => "theconversation.edu.au", :api_username => api_username, :api_key => api_key, :type => "ALIAS", :value => "au-redirect.#{new_master_domain}"),
     "update dns record".with(:prefix => "www",          :domain => "theconversation.edu.au", :api_username => api_username, :api_key => api_key, :type => "CNAME", :value => "au-redirect.#{new_master_domain}"),
