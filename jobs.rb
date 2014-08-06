@@ -10,7 +10,13 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'postgres extension'.with(app_user, db_name, 'pg_trgm'),
     'ssl cert in place'.with(:domain => domain, :env => env),
+  ]
 
+  if env == 'production'
+    requires 'ssl cert in place'.with(:domain => 'jobs.theconversation.edu.au', :env => env)
+  end
+
+  requires [
     'db'.with(
       :env => env,
       :username => app_user,
