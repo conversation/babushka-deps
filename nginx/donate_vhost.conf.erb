@@ -76,15 +76,15 @@ server {
 # Redirect requests from our old domain to our new
 server {
   charset utf-8;
-  server_name jobs.theconversation.edu.au;
+  server_name donate.theconversation.edu.au;
 
   listen <%= listen_host %>:<%= listen_port %>;
   listen <%= listen_host %>:443 ssl;
 
-  ssl_certificate      certs/jobs.theconversation.edu.au.crt;
-  ssl_certificate_key  certs/jobs.theconversation.edu.au.key;
+  ssl_certificate      certs/donate.theconversation.edu.au.crt;
+  ssl_certificate_key  certs/donate.theconversation.edu.au.key;
   ssl_session_timeout  5m;
   ssl_ciphers          HIGH:!aNULL:!MD5:!kEDH;
 
-  return 301 https://jobs.theconversation.com$request_uri;
+  return 301 https://donate.theconversation.com$request_uri;
 }
