@@ -110,7 +110,7 @@ dep 'tc common packages' do
     'coffeescript.src', # for barista
     'tidy.bin', # for upmark preprocessing in MarkdownController
     'imagemagick.bin', # for paperclip
-    'pngquant.bin', # for reducing the size of PNGs
+    'pngquant', # for reducing the size of PNGs
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
     'libtag.lib' # for taglib-ruby gem

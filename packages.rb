@@ -100,20 +100,24 @@ dep 'libtag.lib' do
   installs 'libtag1-dev'
 end
 
-dep 'pngquant.bin', :version do
+dep 'pngquant', :version do
   version.default('2.0.1')
-  requires_when_unmet {
-    on :apt, 'keyed apt source'.with(
-      :uri => 'http://ppa.launchpad.net/danmbox/ppa/ubuntu',
-      :release => 'precise',
-      :repo => 'main',
-      :key_sig => '751CCC86',
-      :key_uri => 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x1066CD08751CCC86'
-    )
+
+  def source_url
+    "http://ppa.launchpad.net/danmbox/ppa/ubuntu/pool/main/p/pngquant/pngquant_2.0.1-1~precise0~danmboxppa1_amd64.deb"
+  end
+
+  met? {
+    log_shell("checking for pngquant", "which pngquant")
   }
-  installs {
-    via :apt, "pngquant"
-    via :brew, "pngquant"
+  meet {
+    if Babushka.host.linux?
+      Babushka::Resource.get(source_url) { |path|
+        log_shell("installing pngquant", "dpkg -i #{path}", :sudo => true)
+      }
+    else
+      unmeetable! "Not sure how to install pngquant on this system."
+    end
   }
 end
 
