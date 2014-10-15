@@ -71,7 +71,7 @@ server {
 server {
   listen <%= listen_host %>:<%= listen_port %>;
   server_name www.donate.theconversation.edu.au;
-  return 301 https://jobs.theconversation.com$request_uri;
+  return 301 https://donate.theconversation.com$request_uri;
 }
 
 # Redirect requests from our old domain to our new
