@@ -50,7 +50,7 @@ dep 'marked on bugsnag.task', :ref, :env do
   requires 'app bundled'.with('.', 'development')
   run {
     if 'config/initializers/bugsnag.rb'.p.exists?
-      log_shell "Notifying bugsnag", "bundle exec rake bugsnag:deploy BUGSNAG_REVISION=#{shell("git rev-parse --short #{ref}")}"
+      log_shell "Notifying bugsnag", "bundle exec rake bugsnag:deploy BUGSNAG_REVISION=#{shell("git rev-parse --short #{ref}")} BUGSNAG_RELEASE_STAGE=#{env}"
     else
       log_ok "bugsnag config not found, skipping"
     end
