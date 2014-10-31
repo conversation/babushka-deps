@@ -59,6 +59,6 @@ dep 'secured ssh logins' do
       shell("sed -i'' -e 's/^[# ]*#{option}\\W*\\w*$/#{option} no/' #{ssh_conf_path(:sshd)}")
     }
 
-    shell "/etc/init.d/ssh restart"
+    shell "initctl restart ssh"
   }
 end
