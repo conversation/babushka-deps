@@ -65,9 +65,6 @@ dep 'jnettop.bin'
 
 dep 'libxml.lib' do
   installs {
-    # The latest libxml2 on 12.04 doesn't have a corresponding libxml2-dev.
-    on :precise, 'libxml2=2.7.8.dfsg-5.1ubuntu4', 'libxml2-dev=2.7.8.dfsg-5.1ubuntu4'
-
     via :apt, 'libxml2-dev'
   }
 end
