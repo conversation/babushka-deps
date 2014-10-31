@@ -100,26 +100,7 @@ dep 'libtag.lib' do
   installs 'libtag1-dev'
 end
 
-dep 'pngquant', :version do
-  version.default('2.0.1')
-
-  def source_url
-    "http://ppa.launchpad.net/danmbox/ppa/ubuntu/pool/main/p/pngquant/pngquant_2.0.1-1~precise0~danmboxppa1_amd64.deb"
-  end
-
-  met? {
-    log_shell("checking for pngquant", "which pngquant")
-  }
-  meet {
-    if Babushka.host.linux?
-      Babushka::Resource.get(source_url) { |path|
-        log_shell("installing pngquant", "dpkg -i #{path}", :sudo => true)
-      }
-    else
-      unmeetable! "Not sure how to install pngquant on this system."
-    end
-  }
-end
+dep 'pngquant.bin'
 
 dep 'pv.bin'
 
