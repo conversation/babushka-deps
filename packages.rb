@@ -15,20 +15,12 @@ dep 'bundler.gem' do
 end
 
 dep 'nodejs.bin', :version do
-  version.default('0.10.28')
-  requires_when_unmet {
-    on :apt, 'keyed apt source'.with(
-      :uri => 'http://ppa.launchpad.net/chris-lea/node.js/ubuntu',
-      :release => 'precise',
-      :repo => 'main',
-      :key_sig => 'C7917B12',
-      :key_uri => 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xB9316A7BC7917B12'
-    )
-  }
+  version.default('0.10.25')
   installs {
     via :apt, [
       "nodejs",
-      "nodejs-dev"
+      "nodejs-dev",
+      "nodejs-legacy"
     ]
     via :brew, "nodejs"
   }
