@@ -3,22 +3,3 @@ destemail = dev@theconversation.edu.au
 bantime = 86400
 maxretry = 3
 ignoreip = 127.0.0.1/8 31.193.141.103 74.50.63.0/24 74.50.56.0/24 151.236.47.0/24 92.48.71.0/24
-
-[nginx-badbots]
-enabled = true
-port    = http,https
-filter  = nginx-badbots
-logpath = /opt/nginx/logs/access.log
-
-[nginx-noscript]
-enabled = true
-port    = http,https
-filter  = nginx-noscript
-logpath = /opt/nginx/logs/access.log
-
-[tc-too-many-signups]
-enabled = true
-port    = http,https
-filter  = user-signup
-logpath = /srv/http/theconversation.com/current/log/<%= env %>.concise.log
-findtime = 300

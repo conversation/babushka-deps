@@ -1,25 +1,5 @@
 dep 'throttling', :env do
-  requires [
-    'fail2ban filter'.with('nginx-badbots', env),
-    'fail2ban filter'.with('nginx-noscript', env),
-    'fail2ban filter'.with('user-signup', env),
-  ]
-end
-
-dep 'fail2ban filter', :filter_name, :env do
-  def filter_file
-    "#{filter_name}.conf"
-  end
   requires 'local fail2ban config'.with(env)
-  met? {
-    Babushka::Renderable.new("/etc/fail2ban/filter.d/#{filter_file}").from?(
-      dependency.load_path.parent / "throttling/#{filter_file}"
-    )
-  }
-  meet {
-    render_erb "throttling/#{filter_file}", :to => "/etc/fail2ban/filter.d/#{filter_file}"
-    shell "/etc/init.d/fail2ban restart"
-  }
 end
 
 dep 'local fail2ban config', :env do
