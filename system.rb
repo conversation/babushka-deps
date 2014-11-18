@@ -11,7 +11,6 @@ dep 'core software' do
     'tmux.bin',
     'nmap.bin',
     'tree.bin',
-    'tzdata',
     'pv.bin'
   ]
 end

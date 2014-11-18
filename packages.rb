@@ -167,22 +167,6 @@ dep 'traceroute.bin'
 
 dep 'tree.bin'
 
-# we require tzdata 2014f or higher to get the correct Australian timezone data
-dep 'tzdata', :version do
-  met? {
-    installed_version = shell("apt-cache policy tzdata | grep 'Installed:' | cut -c 14-")
-
-    if installed_version == "(none)"
-      false
-    else
-      Babushka::VersionStr.new(installed_version) >= Babushka::VersionStr.new("2014f")
-    end
-  }
-  meet {
-    log_shell("installing tzdata", "apt-get install tzdata", :sudo => true)
-  }
-end
-
 dep 'vim.bin'
 
 dep 'whiptail.bin'
