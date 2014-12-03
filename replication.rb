@@ -80,8 +80,8 @@ dep 'postgres replication monitoring', :version, :test_user do
 
       CREATE TYPE replication_tuple AS (
         started_at timestamp with time zone,
-        master_position text,
-        standby_position text,
+        master_position pg_lsn,
+        standby_position pg_lsn,
         standby_lag numeric
       );
 
