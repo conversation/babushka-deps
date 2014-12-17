@@ -8,7 +8,7 @@ listen_addresses = ''
 port = 5432
 max_connections = 100
 superuser_reserved_connections = 2
-unix_socket_directory = '/var/run/postgresql'
+unix_socket_directories = '/var/run/postgresql'
 
 ssl = off
 
@@ -37,7 +37,7 @@ default_text_search_config = 'pg_catalog.english'
 wal_level = hot_standby
 max_wal_senders = 4
 wal_keep_segments = 1024 # 16GB of wal segments
-replication_timeout = 60s
+wal_sender_timeout = 60s
 
 # These settings only apply to the standby.
 hot_standby = on
