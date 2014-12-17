@@ -95,7 +95,7 @@ dep 'promote psql to master', :host do
   }
   meet {
     confirm "OK to promote psql on #{host} to master. There's no going back!" do
-      shell(%Q{ssh postgres@#{host} "touch /var/lib/postgresql/9.2/main/trigger"})
+      shell(%Q{ssh postgres@#{host} "touch /var/lib/postgresql/9.3/main/trigger"})
     end
   }
 end
