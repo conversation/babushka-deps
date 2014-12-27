@@ -19,13 +19,6 @@ dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
       :data_required => 'no'
     ),
 
-    # The data warehouse importer needs read access to the counter DB.
-    'db access'.with(
-      :db_name => YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database'],
-      :username => 'dw.theconversation.edu.au',
-      :check_table => 'content_views'
-    ),
-
     'sinatra app'.with(
       :app_name => 'counter',
       :env => env,
