@@ -42,6 +42,15 @@ http {
     }
   }
 
+  # sets a new variable called $tc_client_ip to the HTTP_FASTLY_CLIENT_IP if available,
+  # otherwise to the IP of the current client. When proxying to a rails app, set this
+  # value as the "Client-Ip" header and rails will use it as the best guess of the
+  # client IP
+  map $http_fastly_client_ip $tc_client_ip {
+    "" $remote_addr;
+    default $http_fastly_client_ip;
+  }
+
   # Pull in all enabled vhosts
   include vhosts/on/*.conf;
 }
