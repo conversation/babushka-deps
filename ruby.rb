@@ -18,7 +18,7 @@ dep 'ruby.src', :version, :patchlevel do
 
   requires_when_unmet 'curl.lib', 'readline.lib', 'ssl.lib', 'yaml.lib', 'zlib.lib'
 
-  source "ftp://ftp.ruby-lang.org/pub/ruby/#{version_group}/#{filename}"
+  source "http://cache.ruby-lang.org/pub/ruby/#{version_group}/#{filename}"
   provides "ruby == #{version}#{patchlevel}", 'gem', 'irb'
   configure_args '--disable-install-doc',
     "--with-readline-dir=#{Babushka.host.pkg_helper.prefix}",
