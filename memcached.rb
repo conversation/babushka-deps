@@ -4,9 +4,6 @@ end
 
 dep 'memcached configured' do
   requires 'memcached.bin', 'nc.bin'
-  def psql cmd
-    shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
-  end
   def current_settings
     Hash[
       shell('nc 127.0.0.1 11211', :input => "stats\n").split("\n").
@@ -14,11 +11,29 @@ dep 'memcached configured' do
         map {|l| l.strip.split(/\W/, 2) }
     ]
   end
+  # on systems with >= 16Gb of RAM (like our production boxes), allocate 3Gb to
+  # memcached. Otherwise stick with something smaller
+  def cache_size
+    if installed_ram_kb >= 16_000_000
+      2048
+    else
+      64
+    end
+  end
+  def installed_ram_kb
+    shell('cat /proc/meminfo').split("\n").
+      collapse(/^MemTotal/).
+      map { |l| l[/(\d+)/,1].to_i }.
+      first
+  end
+  def megabytes_to_bytes(mb)
+    mb.to_i * 1_048_576
+  end
   def expected_settings
     # Some settings that we customise, and hence use to test whether
     # our config has been applied.
     {
-      'limit_maxbytes' => '1073741824' # 1GB
+      'limit_maxbytes' => megabytes_to_bytes(cache_size).to_s
     }
   end
   met? {
