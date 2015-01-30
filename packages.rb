@@ -53,6 +53,10 @@ dep 'curl.lib' do
   }
 end
 
+dep 'fastly.gem' do
+  provides []
+end
+
 dep 'git-smart.gem' do
   provides %w[git-smart-log git-smart-merge git-smart-pull]
 end

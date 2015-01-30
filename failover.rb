@@ -74,6 +74,7 @@ end
 
 dep 'promote dallas to master' do
   requires [
+    'fastly.gem',
     'promote psql to master'.with(:host => "prod-dal.tc-dev.net"),
     'update fastly'.with(:new_master_domain => 'prod-dal.tc-dev.net'),
   ]
@@ -81,6 +82,7 @@ end
 
 dep 'promote london to master' do
   requires [
+    'fastly.gem',
     'promote psql to master'.with(:host => "prod-lon.tc-dev.net"),
     'update fastly'.with(:new_master_domain => 'prod-lon.tc-dev.net'),
   ]
@@ -113,6 +115,8 @@ dep 'update fastly backend', :service, :backend_address, :fastly_api_key do
   def proxy
     ProxyService.new(fastly_api_key, service)
   end
+
+  requires ['fastly.gem']
 
   setup {
     require 'fastly'
