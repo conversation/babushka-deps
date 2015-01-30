@@ -102,9 +102,10 @@ end
 
 dep 'update fastly', :new_master_domain, :fastly_api_key do
   requires [
-    "update fastly backend".with(:service => "dw",     :backend_address => "dw.#{new_master_domain}",     :fastly_api_key => fastly_api_key),
-    "update fastly backend".with(:service => "donate", :backend_address => "donate.#{new_master_domain}", :fastly_api_key => fastly_api_key),
-    "update fastly backend".with(:service => "jobs",   :backend_address => "jobs.#{new_master_domain}",   :fastly_api_key => fastly_api_key)
+    "update fastly backend".with(:service => "tc",     :backend_address => "dot-com.#{new_master_domain}", :fastly_api_key => fastly_api_key),
+    "update fastly backend".with(:service => "dw",     :backend_address => "dw.#{new_master_domain}",      :fastly_api_key => fastly_api_key),
+    "update fastly backend".with(:service => "donate", :backend_address => "donate.#{new_master_domain}",  :fastly_api_key => fastly_api_key),
+    "update fastly backend".with(:service => "jobs",   :backend_address => "jobs.#{new_master_domain}",    :fastly_api_key => fastly_api_key)
   ]
 end
 
