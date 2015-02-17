@@ -66,11 +66,13 @@ dep "set up newrelic configuration", :env do
       FileUtils.cp(
         File.join('config', 'newrelic.yml.template'),
         File.join('config', 'newrelic.yml')
-      )
+      ) if File.file?('newrelic.yml.template')
+      FileUtils.cp('newrelic.js.template', 'newrelic.js') if File.file?('newrelic.js.template')
       true
     else
       log "Deleting newrelic config"
       FileUtils.rm(File.join('config', 'newrelic.yml'), :force => true)
+      FileUtils.rm(File.join('newrelic.js'), :force => true)
       true
     end
   }
