@@ -28,5 +28,7 @@ dep 'unbound configured' do
   meet {
     render_erb renderable_conf, :to => system_conf, :sudo => true
     render_erb renderable_default, :to => system_default, :sudo => true
+    log_shell "Restarting unbound", "/etc/init.d/unbound restart"
+    sleep 1 # Wait a moment for unbound to start.
   }
 end
