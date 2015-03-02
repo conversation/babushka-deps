@@ -1,16 +1,19 @@
 dep 'unbound' do
   requires 'unbound configured'
+  requires 'unbound.bin'
 end
 
 dep 'unbound configured' do
-  requires 'unbound.bin'
-
   def renderable_conf
     "unbound/unbound.conf.erb"
   end
 
   def system_conf
     "/etc/unbound/unbound.conf"
+  end
+
+  def system_conf_dir
+    "/etc/unbound"
   end
 
   def renderable_default
@@ -26,9 +29,8 @@ dep 'unbound configured' do
      Babushka::Renderable.new(system_default).from?(dependency.load_path.parent / renderable_default)
   }
   meet {
+    shell "mkdir -p #{system_conf_dir}"
     render_erb renderable_conf, :to => system_conf, :sudo => true
     render_erb renderable_default, :to => system_default, :sudo => true
-    log_shell "Restarting unbound", "/etc/init.d/unbound restart"
-    sleep 1 # Wait a moment for unbound to start.
   }
 end
