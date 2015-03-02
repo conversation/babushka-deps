@@ -171,6 +171,8 @@ dep 'traceroute.bin'
 
 dep 'tree.bin'
 
+dep 'unbound.bin'
+
 dep 'vim.bin'
 
 dep 'whiptail.bin'
