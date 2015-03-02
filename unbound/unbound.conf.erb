@@ -1,0 +1,15 @@
+# Unbound configuration file for Debian.
+#
+# See the unbound.conf(5) man page.
+#
+# See /usr/share/doc/unbound/examples/unbound.conf for a commented
+# reference config file.
+
+server:
+  do-ip6: no
+  verbosity: 1
+
+  forward-zone:
+    name: "."
+    forward-addr: 8.8.8.8        # Google Public DNS
+    forward-addr: 8.8.4.4        # Google Public DNS
