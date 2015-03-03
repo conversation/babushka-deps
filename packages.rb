@@ -171,7 +171,14 @@ dep 'traceroute.bin'
 
 dep 'tree.bin'
 
-dep 'unbound.bin'
+dep 'unbound.bin' do
+  met? {
+    log_shell("checking for unbound", "which unbound")
+  }
+  meet {
+    log_shell("installing unbound", "env DEBCONF_TERSE='yes' DEBIAN_PRIORITY='critical' DEBIAN_FRONTEND='noninteractive' aptitude install -y -o Dpkg::Options::='--force-confold' unbound", :sudo => true)
+  }
+end
 
 dep 'vim.bin'
 
