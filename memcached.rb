@@ -11,7 +11,7 @@ dep 'memcached configured' do
         map {|l| l.strip.split(/\W/, 2) }
     ]
   end
-  # on systems with >= 16Gb of RAM (like our production boxes), allocate 3Gb to
+  # on systems with >= 16Gb of RAM (like our production boxes), allocate lots of RAM to
   # memcached. Otherwise stick with something smaller
   def cache_size
     if installed_ram_kb >= 16_000_000
