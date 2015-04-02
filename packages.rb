@@ -84,6 +84,10 @@ dep 'libxslt.lib' do
   installs { via :apt, 'libxslt1-dev' }
 end
 
+dep 'ffi.lib' do
+  installs { via :apt, 'libffi-dev' }
+end
+
 dep 'logrotate.bin'
 
 dep 'lsof.bin'

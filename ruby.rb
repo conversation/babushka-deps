@@ -16,7 +16,7 @@ dep 'ruby.src', :version, :patchlevel do
     end
   end
 
-  requires_when_unmet 'curl.lib', 'readline.lib', 'ssl.lib', 'yaml.lib', 'zlib.lib'
+  requires_when_unmet 'curl.lib', 'ffi.lib', 'readline.lib', 'ssl.lib', 'yaml.lib', 'zlib.lib'
 
   source "http://cache.ruby-lang.org/pub/ruby/#{version_group}/#{filename}"
   provides "ruby == #{version}#{patchlevel}", 'gem', 'irb'
