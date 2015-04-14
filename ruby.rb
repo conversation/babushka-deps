@@ -1,8 +1,3 @@
-dep 'ruby 1.9.bin', :version, :patchlevel do
-  installs 'ruby1.9.1-full'
-  provides "ruby >= #{version}#{patchlevel}", 'gem', 'irb'
-end
-
 dep 'ruby.src', :version, :patchlevel do
   def version_group
     version.to_s.scan(/^\d\.\d/).first
