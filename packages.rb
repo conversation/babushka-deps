@@ -15,35 +15,22 @@ dep 'bundler.gem' do
 end
 
 dep 'nodejs.bin', :version do
-  version.default('0.10.28')
-  requires_when_unmet {
-    on :apt, 'keyed apt source'.with(
-      :uri => 'http://ppa.launchpad.net/chris-lea/node.js/ubuntu',
-      :release => 'precise',
-      :repo => 'main',
-      :key_sig => 'C7917B12',
-      :key_uri => 'http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xB9316A7BC7917B12'
-    )
-  }
+  version.default('0.10.25')
   installs {
     via :apt, [
       "nodejs",
-      "nodejs-dev"
+      "nodejs-dev",
+      "nodejs-legacy"
     ]
     via :brew, "nodejs"
   }
   provides "nodejs ~> #{version}"
 end
 
-dep 'coffeescript.src', :version do
-  version.default!('1.3.3')
+dep 'coffeescript.bin', :version do
+  version.default!('1.4.0')
   requires 'nodejs.bin'
-  source "https://github.com/jashkenas/coffee-script/archive/#{version}.tar.gz"
   provides "coffee >= #{version}"
-
-  configure { true }
-  build { shell "bin/cake build" }
-  install { shell "bin/cake install", :sudo => Babushka::SrcHelper.should_sudo? }
 end
 
 dep 'curl.lib' do
@@ -73,9 +60,6 @@ dep 'jnettop.bin'
 
 dep 'libxml.lib' do
   installs {
-    # The latest libxml2 on 12.04 doesn't have a corresponding libxml2-dev.
-    on :precise, 'libxml2=2.7.8.dfsg-5.1ubuntu4', 'libxml2-dev=2.7.8.dfsg-5.1ubuntu4'
-
     via :apt, 'libxml2-dev'
   }
 end
@@ -108,26 +92,7 @@ dep 'libtag.lib' do
   installs 'libtag1-dev'
 end
 
-dep 'pngquant', :version do
-  version.default('2.0.1')
-
-  def source_url
-    "http://ppa.launchpad.net/danmbox/ppa/ubuntu/pool/main/p/pngquant/pngquant_2.0.1-1~precise0~danmboxppa1_amd64.deb"
-  end
-
-  met? {
-    log_shell("checking for pngquant", "which pngquant")
-  }
-  meet {
-    if Babushka.host.linux?
-      Babushka::Resource.get(source_url) { |path|
-        log_shell("installing pngquant", "dpkg -i #{path}", :sudo => true)
-      }
-    else
-      unmeetable! "Not sure how to install pngquant on this system."
-    end
-  }
-end
+dep 'pngquant.bin'
 
 dep 'pv.bin'
 

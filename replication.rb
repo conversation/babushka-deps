@@ -36,7 +36,7 @@ dep 'postgres recovery config', :version, :local_port, :remote_user do
   meet {
     render_erb "postgres/recovery.conf.erb", :to => "/var/lib/postgresql/#{minor_version}/main/recovery.conf"
     shell "chown postgres:postgres /var/lib/postgresql/#{minor_version}/main/recovery.conf"
-    log_shell "Restarting postgres", "/etc/init.d/postgresql restart", :as => 'postgres'
+    log_shell "Restarting postgres", "initctl restart postgresql", :as => 'postgres'
   }
 end
 

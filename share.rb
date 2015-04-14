@@ -31,6 +31,6 @@ dep 'sharejs common packages' do
     'bundler.gem',
     'postgres.bin',
     "npm",
-    "coffeescript.src"
+    "coffeescript.bin"
   ]
 end

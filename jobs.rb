@@ -58,7 +58,7 @@ dep 'jobs common packages' do
     'libxml.lib', # for nokogiri
     'libxslt.lib', # for nokogiri
     'imagemagick.bin', # for paperclip
-    'coffeescript.src', # for barista
+    'coffeescript.bin', # for barista
     'tidy.bin' # for upmark
   ]
 end
