@@ -39,6 +39,22 @@ dep 'localhost hosts entry' do
   }
 end
 
+dep 'local caching dns server' do
+  requires "unbound"
+
+  def up_to_date?(source_name, dest)
+    source = dependency.load_path.parent / source_name
+    Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
+  end
+
+  met? {
+    up_to_date?("system/resolv.conf.erb", "/etc/resolv.conf")
+  }
+  meet {
+    render_erb "system/resolv.conf.erb", :to => "/etc/resolv.conf", :sudo => true
+  }
+end
+
 dep 'lax host key checking' do
   def ssh_conf_path file
     "/etc#{'/ssh' if Babushka.host.linux?}/#{file}_config"

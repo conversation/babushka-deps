@@ -222,6 +222,7 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
     'utc',
     'time is syncronised',
     'core software',
+    'local caching dns server',
     'lax host key checking',
     'admins can sudo',
     'tmp cleaning grace period',

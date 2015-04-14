@@ -73,7 +73,6 @@ dep 'tc packages' do
     'socat.bin', # for DB replication tunnelling
     'ntpdate.bin', # to keep time syncronised
     'raca.gem', # for interacting with rackspace
-    'unbound', # for caching dns requests
     'tc common packages'
   ]
 end
