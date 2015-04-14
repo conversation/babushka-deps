@@ -27,15 +27,10 @@ dep 'nodejs.bin', :version do
   provides "nodejs ~> #{version}"
 end
 
-dep 'coffeescript.src', :version do
-  version.default!('1.3.3')
+dep 'coffeescript.bin', :version do
+  version.default!('1.4.0')
   requires 'nodejs.bin'
-  source "https://github.com/jashkenas/coffee-script/archive/#{version}.tar.gz"
   provides "coffee >= #{version}"
-
-  configure { true }
-  build { shell "bin/cake build" }
-  install { shell "bin/cake install", :sudo => Babushka::SrcHelper.should_sudo? }
 end
 
 dep 'curl.lib' do

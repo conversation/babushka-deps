@@ -106,7 +106,7 @@ dep 'tc common packages' do
     'postgres.bin',
     'geoip.bin', # for geoip-c
     'aspell dictionary.lib',
-    'coffeescript.src', # for barista
+    'coffeescript.bin', # for barista
     'tidy.bin', # for upmark preprocessing in MarkdownController
     'imagemagick.bin', # for paperclip
     'pngquant.bin', # for reducing the size of PNGs
