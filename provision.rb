@@ -175,7 +175,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
       remote_babushka 'conversation:set.locale', :locale_name => 'en_AU'
 
       # Build ruby separately, because it changes the ruby binary for subsequent deps.
-      remote_babushka 'conversation:ruby.src', :version => '2.2.1', :patchlevel => 'p85'
+      remote_babushka 'conversation:ruby.src', :version => '2.2.2', :patchlevel => 'p95'
 
       # All the system-wide config for this app, like packages and user accounts.
       remote_babushka "conversation:system provisioned", :host_name => host_name, :env => env, :app_name => app_name, :app_user => app_user, :key => keys
