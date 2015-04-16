@@ -199,7 +199,7 @@ dep 'postgres.bin', :version do
     ]
     via :brew, "postgresql"
   }
-  provides "psql ~> #{version}"
+  provides "psql >= #{version}"
 end
 
 dep 'postgresql-contrib.lib', :version do
