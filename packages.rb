@@ -22,9 +22,12 @@ dep 'nodejs.bin', :version do
       "nodejs-dev",
       "nodejs-legacy"
     ]
-    via :brew, "nodejs"
+    otherwise "node"
   }
-  provides "nodejs ~> #{version}"
+  provides {
+    via :apt, "nodejs ~> #{owner.version}"
+    otherwise "node ~> #{owner.version}"
+  }
 end
 
 dep 'coffeescript.bin', :version do
