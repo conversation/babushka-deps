@@ -180,7 +180,7 @@ dep 'postgres.bin', :version do
   def minor_version
     version.to_s.scan(/^\d\.\d/).first
   end
-  version.default('9.3.6')
+  version.default!('9.3.6')
   requires 'set.locale'
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(

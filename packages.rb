@@ -15,7 +15,7 @@ dep 'bundler.gem' do
 end
 
 dep 'nodejs.bin', :version do
-  version.default('0.10.25')
+  version.default!('0.10.25')
   installs {
     via :apt, [
       "nodejs",
