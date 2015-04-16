@@ -92,7 +92,10 @@ dep 'pcre.lib' do
 end
 
 dep 'libtag.lib' do
-  installs 'libtag1-dev'
+  installs {
+    via :apt, 'libtag1-dev'
+    via :brew, 'taglib'
+  }
 end
 
 dep 'pngquant.bin'
