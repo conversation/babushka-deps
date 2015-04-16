@@ -24,12 +24,13 @@ end
 dep 'ci packages' do
   requires [
     'firefox.bin',
-    'phantomjs'.with('1.8.2'),
+    'phantomjs',
     'xvfb.bin'
   ]
 end
 
 dep 'phantomjs', :version do
+  version.default!('1.8.2')
   def phantomjs_uri
     if Babushka.host.linux?
       "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-x86_64.tar.bz2"
