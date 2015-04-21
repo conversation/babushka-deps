@@ -35,8 +35,6 @@ server {
 }
 
 <% if env == 'production' %>
-
-<% if listen_host_au %>
 # AU www. redirect
 server {
   listen <%= listen_host_au %>:<%= listen_port %>;
@@ -64,7 +62,6 @@ server {
     return 301 $scheme://<%= domain %>$request_uri;
   }
 }
-<% end %>
 
 # UK www. redirect
 server {

@@ -50,14 +50,14 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
       # .com IP => .edu.au IP
       '74.50.56.43' => '74.50.56.70',
       '151.236.47.197' => '92.48.71.35'
-    }[listen_host.to_s]
+    }.fetch(listen_host.to_s, listen_host.to_s)
   end
   def listen_host_uk
     {
       # .com IP => .edu.au IP
       '74.50.56.43' => '74.50.56.70',
       '151.236.47.197' => '92.48.71.35'
-    }[listen_host.to_s]
+    }.fetch(listen_host.to_s, listen_host.to_s)
   end
   def domain_au; 'theconversation.edu.au' end
   def domain_uk; 'theconversation.org.uk' end
