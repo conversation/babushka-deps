@@ -190,7 +190,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     }
 
     # The initial deploy.
-    Dep('benhoskings:pushed.push').meet(ref, env)
+    Dep('common:pushed.push').meet(ref, env)
 
     as(app_user) {
       # Now that the code is in place, provision the app.
