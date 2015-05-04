@@ -4,9 +4,12 @@ dep 'dw env vars set', :domain
 
 dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    'existing db'.with(
+    'migrated db'.with(
       :username => app_user,
-      :db_name => "tc_dw_#{env}"
+      :root => app_root,
+      :env => env,
+      :db_name => "tc_dw_#{env}",
+      :deploying => 'no'
     ),
 
     'sinatra app'.with(
