@@ -42,7 +42,8 @@ end
 dep 'counter dev' do
   requires [
     'counter common packages',
-    'geoip database'.with(:app_root => '.')
+    'geoip database'.with(:app_root => '.'),
+    'as database'.with(:app_root => '.')
   ]
 end
 
