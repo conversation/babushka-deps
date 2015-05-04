@@ -21,7 +21,7 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
       :env => env,
       :username => app_user,
       :root => app_root,
-      :data_required => 'yes'
+      :data_required => (env == 'production' ? 'yes' : 'no')
     ),
 
     'delayed job'.with(env, app_user),
