@@ -25,7 +25,6 @@ dep 'ssl cert in place', :nginx_prefix, :domain, :env, :cert_source, :template =
       sudo "cp '#{source_file(ext)}' '#{dest_file(ext)}'"
       sudo "chmod 600 '#{dest_file(ext)}'"
     }
-    restart_nginx
   }
 end
 
