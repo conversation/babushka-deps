@@ -132,17 +132,18 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   check_path.default!('/health')
   expected_content_path.default!('/')
 
-  met? {
+  def check_host
     cmd = raw_shell("curl --connect-timeout 5 --max-time 30 -v -H 'Host: #{domain}' http://#{host}#{check_path}")
 
     if !cmd.ok?
       log "Couldn't connect to http://#{host}."
+      :down
     else
       log_ok "#{host} is up."
 
       if cmd.stderr.val_for('Status') != '200 OK'
-        @should_confirm = true
         log_warn "http://#{domain}#{check_path} on #{host} reported a problem:\n#{cmd.stdout}"
+        :non_200
       else
         log_ok "#{domain}#{check_path} responded with 200 OK."
 
@@ -150,13 +151,25 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
         check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
 
         if check_output.to_i == 0
-          @should_confirm = true
           log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
+          :expected_content_missing
         else
           log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
-          @run || log_warn("The app seems to be up; babushkaing anyway. (How bad could it be?)")
+          :ok
         end
       end
+    end
+  end
+
+  met? {
+    case check_host
+    when :down
+      false
+    when :non_200, :expected_content_missing
+      @should_confirm = true
+      false
+    when :ok
+      @run || log_warn("The app seems to be up; babushkaing anyway. (How bad could it be?)")
     end
   }
 
