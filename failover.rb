@@ -88,6 +88,14 @@ dep 'promote london to master' do
   ]
 end
 
+dep 'promote london3 to master' do
+  requires [
+    'fastly.gem',
+    'promote psql to master'.with(:host => "prod-lon3.tc-dev.net"),
+    'update fastly'.with(:new_master_domain => 'prod-lon3.tc-dev.net'),
+  ]
+end
+
 dep 'promote psql to master', :host do
   met? {
     # this command will return 'f' for master postgres clusters and 't'
