@@ -169,7 +169,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     when :down
       false
     when :non_200, :expected_content_missing
-      @should_confirm = true
+      @confirm_beforehand = true
       false
     when :ok
       @run || log_warn("The app seems to be up; babushkaing anyway. (How bad could it be?)")
@@ -177,7 +177,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   }
 
   prepare {
-    unmeetable! "OK, bailing." if @should_confirm && !confirm("Sure you want to provision #{domain} on #{host}?")
+    unmeetable! "OK, bailing." if @confirm_beforehand && !confirm("Sure you want to provision #{domain} on #{host}?")
   }
 
   requires_when_unmet 'public key in place'.with(host, keys)
