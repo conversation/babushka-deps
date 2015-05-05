@@ -63,7 +63,7 @@ dep "set up newrelic configuration", :env do
   setup {
     if (env == "production" && !on_standby?) || env == "staging"
       log "Writing newrelic config"
-      if File.file?('newrelic.yml.template')
+      if File.file?('config/newrelic.yml.template')
         FileUtils.cp('config/newrelic.yml.template', 'config/newrelic.yml')
       end
       FileUtils.cp('newrelic.js.template', 'newrelic.js') if File.file?('newrelic.js.template')
