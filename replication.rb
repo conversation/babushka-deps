@@ -85,7 +85,7 @@ dep 'postgres replication monitoring', :version, :test_user do
         standby_lag numeric
       );
 
-      CREATE FUNCTION replication_status() RETURNS replication_tuple AS
+      CREATE FUNCTION replication_status() RETURNS SETOF replication_tuple AS
         'SELECT
           backend_start,
           pg_current_xlog_location(),
