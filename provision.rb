@@ -130,7 +130,6 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   app_root.default!('~/current')
   check_path.default!('/health')
-  expected_content_path.default!('/')
 
   def check_host
     cmd = raw_shell("curl --connect-timeout 5 --max-time 30 -v -H 'Host: #{domain}' http://#{host}#{check_path}")
@@ -147,15 +146,19 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
       else
         log_ok "#{domain}#{check_path} responded with 200 OK."
 
-        check_uri = "http://#{host}#{expected_content_path}"
-        check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
-
-        if check_output.to_i == 0
-          log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
-          :expected_content_missing
-        else
-          log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
+        if !expected_content_path.set?
           :ok
+        else
+          check_uri = "http://#{host}#{expected_content_path}"
+          check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
+
+          if check_output.to_i == 0
+            log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
+            :expected_content_missing
+          else
+            log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
+            :ok
+          end
         end
       end
     end
