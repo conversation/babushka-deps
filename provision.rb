@@ -130,38 +130,58 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   app_root.default!('~/current')
   check_path.default!('/health')
-  expected_content_path.default!('/')
 
-  met? {
+  def check_host
     cmd = raw_shell("curl --connect-timeout 5 --max-time 30 -v -H 'Host: #{domain}' http://#{host}#{check_path}")
 
     if !cmd.ok?
       log "Couldn't connect to http://#{host}."
+      :down
     else
       log_ok "#{host} is up."
 
       if cmd.stderr.val_for('Status') != '200 OK'
-        @should_confirm = true
         log_warn "http://#{domain}#{check_path} on #{host} reported a problem:\n#{cmd.stdout}"
+        :non_200
       else
         log_ok "#{domain}#{check_path} responded with 200 OK."
 
-        check_uri = "http://#{host}#{expected_content_path}"
-        check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
+        check_expected_content ? :ok : :expected_content_missing
+      end
+    end
+  end
 
-        if check_output.to_i == 0
-          @should_confirm = true
-          log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
-        else
+  def check_expected_content
+    if !expected_content_path.set?
+      true # Nothing to check.
+    else
+      check_uri = "http://#{host}#{expected_content_path}"
+      check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
+
+      (check_output.to_i > 0).tap do |result|
+        if result
           log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
-          @run || log_warn("The app seems to be up; babushkaing anyway. (How bad could it be?)")
+        else
+          log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
         end
       end
+    end
+  end
+
+  met? {
+    case check_host
+    when :down
+      false
+    when :non_200, :expected_content_missing
+      @confirm_beforehand = true
+      false
+    when :ok
+      @run || log_warn("The app seems to be up; babushkaing anyway. (How bad could it be?)")
     end
   }
 
   prepare {
-    unmeetable! "OK, bailing." if @should_confirm && !confirm("Sure you want to provision #{domain} on #{host}?")
+    unmeetable! "OK, bailing." if @confirm_beforehand && !confirm("Sure you want to provision #{domain} on #{host}?")
   }
 
   requires_when_unmet 'public key in place'.with(host, keys)
