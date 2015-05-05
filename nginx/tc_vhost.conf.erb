@@ -39,15 +39,15 @@ server {
 <% if env == 'production' %>
 # AU www. redirect
 server {
-  listen <%= listen_host_au %>:<%= listen_port %>;
+  listen <%= legacy_listen_host %>:<%= listen_port %>;
   server_name www.<%= domain_au %>;
   return 301 http://<%= domain_au %>$request_uri;
 }
 
 # AU -> canonical redirect
 server {
-  listen <%= listen_host_au %>:<%= listen_port %>;
-  listen <%= listen_host_au %>:443 ssl;
+  listen <%= legacy_listen_host %>:<%= listen_port %>;
+  listen <%= legacy_listen_host %>:443 ssl;
   server_name <%= domain_au %>;
 
   ssl_certificate      certs/<%= domain_au %>.crt;
@@ -67,14 +67,14 @@ server {
 
 # UK www. redirect
 server {
-  listen <%= listen_host_uk %>:<%= listen_port %>;
+  listen <%= legacy_listen_host %>:<%= listen_port %>;
   server_name www.<%= domain_uk %>;
   return 301 http://<%= domain_uk %>$request_uri;
 }
 
 # UK -> canonical redirect
 server {
-  listen <%= listen_host_uk %>:<%= listen_port %>;
+  listen <%= legacy_listen_host %>:<%= listen_port %>;
   server_name <%= domain_uk %>;
 
   location = / {

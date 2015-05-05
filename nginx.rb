@@ -45,18 +45,11 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
   proxy_port.default('8000')
 
   # TODO: Only required until we move to a single-IP nginx config.
-  def listen_host_au
+  def legacy_listen_host
     {
-      # .com IP => .edu.au IP
-      '74.50.56.43' => '74.50.56.70',
-      '151.236.47.197' => '92.48.71.35'
-    }.fetch(listen_host.to_s, listen_host.to_s)
-  end
-  def listen_host_uk
-    {
-      # .com IP => .edu.au IP
-      '74.50.56.43' => '74.50.56.70',
-      '151.236.47.197' => '92.48.71.35'
+      # .com => dw/.edu.du/.org.uk
+      '74.50.56.43' => '74.50.56.70', # dal
+      '151.236.47.197' => '92.48.71.35', # lon
     }.fetch(listen_host.to_s, listen_host.to_s)
   end
   def domain_au; 'theconversation.edu.au' end
