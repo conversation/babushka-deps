@@ -146,19 +146,23 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
       else
         log_ok "#{domain}#{check_path} responded with 200 OK."
 
-        if !expected_content_path.set?
-          :ok
-        else
-          check_uri = "http://#{host}#{expected_content_path}"
-          check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
+        check_expected_content ? :ok : :expected_content_missing
+      end
+    end
+  end
 
-          if check_output.to_i == 0
-            log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
-            :expected_content_missing
-          else
-            log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
-            :ok
-          end
+  def check_expected_content
+    if !expected_content_path.set?
+      true # Nothing to check.
+    else
+      check_uri = "http://#{host}#{expected_content_path}"
+      check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
+
+      (check_output.to_i > 0).tap do |result|
+        if result
+          log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
+        else
+          log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
         end
       end
     end
