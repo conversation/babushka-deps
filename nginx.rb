@@ -49,6 +49,7 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
     {
       # .com => dw/.edu.du/.org.uk
       '74.50.56.43' => '74.50.56.70', # dal
+      '74.50.56.29' => '74.50.56.58', # dal3
       '151.236.47.197' => '92.48.71.35', # lon
       '213.229.84.38' => '92.48.93.213', # lon3
     }.fetch(listen_host.to_s, listen_host.to_s)
