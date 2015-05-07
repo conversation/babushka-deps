@@ -131,8 +131,12 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
   app_root.default!('~/current')
   check_path.default!('/health')
 
+  def curl_command
+    "curl -v -L --connect-timeout 5 --max-time 30 --resolve #{domain}:80:#{host} --resolve #{domain}:443:#{host}"
+  end
+
   def check_host
-    cmd = raw_shell("curl --connect-timeout 5 --max-time 30 -v -H 'Host: #{domain}' http://#{host}#{check_path}")
+    cmd = raw_shell("#{curl_command} http://#{domain}#{check_path}")
 
     if !cmd.ok?
       log "Couldn't connect to http://#{host}."
@@ -155,8 +159,8 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     if !expected_content_path.set?
       true # Nothing to check.
     else
-      check_uri = "http://#{host}#{expected_content_path}"
-      check_output = shell("curl -v --max-time 30 -H 'Host: #{domain}' #{check_uri} | grep -c '#{expected_content}'")
+      check_uri = "http://#{domain}#{expected_content_path}"
+      check_output = shell("#{curl_command} #{check_uri} | grep -c '#{expected_content}'")
 
       (check_output.to_i > 0).tap do |result|
         if result
