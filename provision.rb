@@ -145,10 +145,10 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
       log_ok "#{host} is up."
 
       if cmd.stderr.val_for('Status') != '200 OK'
-        log_warn "http://#{domain}#{check_path} on #{host} reported a problem:\n#{cmd.stdout}"
+        log_warn "#{domain}#{check_path} on #{host} reported a problem:\n#{cmd.stdout}"
         :non_200
       else
-        log_ok "#{domain}#{check_path} responded with 200 OK."
+        log_ok "#{domain}#{check_path} on #{host} responded with 200 OK."
 
         check_expected_content ? :ok : :expected_content_missing
       end
@@ -159,14 +159,13 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     if !expected_content_path.set?
       true # Nothing to check.
     else
-      check_uri = "http://#{domain}#{expected_content_path}"
-      check_output = shell("#{curl_command} #{check_uri} | grep -c '#{expected_content}'")
+      check_output = shell("#{curl_command} http://#{domain}#{expected_content_path} | grep -c '#{expected_content}'")
 
       (check_output.to_i > 0).tap do |result|
         if result
-          log_ok "#{domain} on #{check_uri} contains '#{expected_content}'."
+          log_ok "#{domain}#{expected_content_path} on #{host} contains '#{expected_content}'."
         else
-          log_warn "#{domain} on #{check_uri} doesn't contain '#{expected_content}'."
+          log_warn "#{domain}#{expected_content_path} on #{host} doesn't contain '#{expected_content}'."
         end
       end
     end
