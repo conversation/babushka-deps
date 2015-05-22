@@ -15,7 +15,7 @@ dep 'memcached configured' do
   # memcached. Otherwise stick with something smaller
   def cache_size
     if installed_ram_kb >= 16_000_000
-      2048
+      4096
     else
       64
     end
