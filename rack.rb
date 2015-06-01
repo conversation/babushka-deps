@@ -1,7 +1,7 @@
 dep 'rails app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
   requires [
     'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix),
-    'assets precompiled'.with(env, path),
+    'common:assets precompiled'.with(env: env, path: path),
     'unicorn upstart config'.with(env, username)
   ]
 end
@@ -25,10 +25,4 @@ dep 'rack app', :app_name, :env, :domain, :username, :path, :listen_host, :liste
     'rack.logrotate'.with(username),
     'running.nginx'
   ]
-end
-
-dep 'assets precompiled', :env, :path, :template => 'task' do
-  run {
-    shell "bundle exec rake assets:precompile RAILS_GROUPS=assets RAILS_ENV=#{env}", :cd => path
-  }
 end
