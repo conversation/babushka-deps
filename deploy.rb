@@ -30,7 +30,7 @@ dep 'cache cleared' do
 end
 
 dep 'marked on newrelic.task', :ref, :env do
-  requires 'app bundled'.with('.', 'development')
+  requires 'common:app bundled'.with('.', 'development')
   run {
     # Some of our apps store the newrelic config file in a template that is copied]
     # into position in production.
@@ -47,7 +47,7 @@ dep 'marked on newrelic.task', :ref, :env do
 end
 
 dep 'marked on bugsnag.task', :ref, :env do
-  requires 'app bundled'.with('.', 'development')
+  requires 'common:app bundled'.with('.', 'development')
   run {
     if 'config/initializers/bugsnag.rb'.p.exists?
       log_shell "Notifying bugsnag", "bundle exec rake bugsnag:deploy BUGSNAG_REVISION=#{shell("git rev-parse --short #{ref}")} BUGSNAG_RELEASE_STAGE=#{env}"
