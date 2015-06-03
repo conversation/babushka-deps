@@ -10,6 +10,7 @@ kill signal QUIT
 chdir <%=app_root%>
 setuid <%=user%>
 console log
+env LANG=en_AU.UTF-8
 
 script
   /usr/local/bin/bundle exec unicorn -c config/unicorn.rb -E <%=env%>
