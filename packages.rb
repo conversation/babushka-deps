@@ -5,7 +5,7 @@ dep 'aspell.bin'
 dep 'aspell dictionary.lib' do
   requires 'aspell.bin'
   installs {
-    on :linux, 'aspell-en', 'libaspell-dev'
+    on :linux, 'aspell-en', 'aspell-fr', 'libaspell-dev'
     otherwise []
   }
 end
