@@ -56,6 +56,60 @@ dep 'local caching dns server' do
   }
 end
 
+dep 'monitored with collectd' do
+  requires 'collectd.bin'
+
+  def conf_files
+    {
+      "collectd/collectd.conf.erb" => "/etc/collectd/collectd.conf",
+      "collectd/10_write_http.conf.erb" => "/etc/collectd/collectd.conf.d/10_write_http.conf",
+      "collectd/20_aggregation.conf.erb" => "/etc/collectd/collectd.conf.d/20_aggregation.conf",
+      "collectd/30_df.conf.erb" => "/etc/collectd/collectd.conf.d/30_df.conf",
+      "collectd/30_disk.conf.erb" => "/etc/collectd/collectd.conf.d/30_disk.conf",
+      "collectd/30_interface.conf.erb" => "/etc/collectd/collectd.conf.d/30_interface.conf",
+      "collectd/30_load.conf.erb" => "/etc/collectd/collectd.conf.d/30_load.conf",
+      "collectd/30_memcached.conf.erb" => "/etc/collectd/collectd.conf.d/30_memcached.conf",
+      "collectd/30_ntpd.conf.erb" => "/etc/collectd/collectd.conf.d/30_ntpd.conf",
+      "collectd/30_processes.conf.erb" => "/etc/collectd/collectd.conf.d/30_processes.conf",
+      "collectd/30_statsd.conf.erb" => "/etc/collectd/collectd.conf.d/30_statsd.conf",
+      "collectd/30_swap.conf.erb" => "/etc/collectd/collectd.conf.d/30_swap.conf",
+      "collectd/30_uptime.conf.erb" => "/etc/collectd/collectd.conf.d/30_uptime.conf",
+      "collectd/30_users.conf.erb" => "/etc/collectd/collectd.conf.d/30_users.conf"
+    }
+  end
+
+  def up_to_date?(source_name, dest)
+    source = dependency.load_path.parent / source_name
+    Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
+  end
+
+  def monitored_network_interface
+    shell("ifconfig -s", :sudo => true).split("\n").map { |line|
+      line[/^([a-z]+\d)\s+/,1]
+    }.compact.first || "eth0"
+  end
+
+  def root_partition_name
+    shell("df").split("\n").select { |line|
+      line[/\/\Z/]
+    }.map { |line|
+      line[/\A([^\s]+)/,1]
+    }.map { |line|
+      line.gsub("/dev/","")
+    }.first
+  end
+
+  met? {
+    conf_files.all? { |source, dest| up_to_date?(source, dest) }
+  }
+  meet {
+    conf_files.each { |source, dest|
+      render_erb(source, :to => dest, :sudo => true)
+    }
+    log_shell "Restarting collectd", "/etc/init.d/collectd restart", :sudo => true
+  }
+end
+
 dep 'lax host key checking' do
   def ssh_conf_path file
     "/etc#{'/ssh' if Babushka.host.linux?}/#{file}_config"

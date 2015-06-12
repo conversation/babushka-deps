@@ -1,0 +1,51 @@
+##############################################################################
+# Global                                                                     #
+#----------------------------------------------------------------------------#
+# Global settings for the daemon.                                            #
+##############################################################################
+
+FQDNLookup true
+AutoLoadPlugin true
+Interval 60
+
+##############################################################################
+# Logging                                                                    #
+#----------------------------------------------------------------------------#
+# Plugins which provide logging functions should be loaded first, so log     #
+# messages generated when loading or configuring other plugins can be        #
+# accessed.                                                                  #
+##############################################################################
+
+LoadPlugin logfile
+
+<Plugin logfile>
+  LogLevel "info"
+  File "/var/log/collectd.log"
+  Timestamp true
+</Plugin>
+
+##############################################################################
+# LoadPlugin section                                                         #
+#----------------------------------------------------------------------------#
+# Specify what features to activate.                                         #
+##############################################################################
+
+LoadPlugin aggregation
+LoadPlugin cpu
+LoadPlugin df
+LoadPlugin disk
+LoadPlugin interface
+LoadPlugin load
+LoadPlugin memcached
+LoadPlugin memory
+LoadPlugin ntpd
+LoadPlugin processes
+LoadPlugin statsd
+LoadPlugin swap
+LoadPlugin uptime
+LoadPlugin users
+LoadPlugin write_http
+
+<Include "/etc/collectd/collectd.conf.d">
+  Filter "*.conf"
+</Include>

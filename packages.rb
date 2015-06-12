@@ -14,6 +14,8 @@ dep 'bundler.gem' do
   provides 'bundle'
 end
 
+dep 'collectd.bin'
+
 dep 'nodejs.bin', :version do
   version.default!('0.10.25')
   installs {
