@@ -14,7 +14,15 @@ dep 'bundler.gem' do
   provides 'bundle'
 end
 
-dep 'collectd.bin'
+dep 'collectd.bin' do
+  met? {
+    log_shell("checking for collectd", "which collectd")
+  }
+  meet {
+    # specify the install command directly to prevent all the recommended packages being installed
+    log_shell("installing collectd", "apt-get install collectd collectd-dev --no-install-recommends -y", :sudo => true)
+  }
+end
 
 dep 'nodejs.bin', :version do
   version.default!('0.10.25')
