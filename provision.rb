@@ -232,7 +232,7 @@ end
 dep 'apt configured' do
   requires [
     'apt sources',
-    'apt packages removed'.with([/apache/i, /mysql/i, /php/i]),
+    'apt packages removed'.with([/apache/i, /mysql/i, /php/i, /dovecot/]),
     'upgrade apt packages'
   ]
 end
