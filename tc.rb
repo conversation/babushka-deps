@@ -71,7 +71,6 @@ dep 'tc packages' do
     'running.nginx',
     'memcached', # for fragment caching
     'socat.bin', # for DB replication tunnelling
-    'ntpdate.bin', # to keep time syncronised
     'raca.gem', # for interacting with rackspace
     'tc common packages'
   ]
