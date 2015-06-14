@@ -1,7 +1,6 @@
 dep 'cleanup' do
   requires [
     'apt packages removed'.with(%w[dovecot postfix apt-xapian-index python-xapian update-inetd cvs ghostscript libcups2 libcupsimage2]),
-    'unwanted packages removed',
     'orphaned dirs deleted',
     'babushka caches removed'
   ]
