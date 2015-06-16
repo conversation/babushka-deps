@@ -2,14 +2,16 @@ dep 'rails app', :app_name, :env, :domain, :username, :path, :listen_host, :list
   requires [
     'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix),
     'common:assets precompiled'.with(env: env, path: path),
-    'unicorn upstart config'.with(env, username)
+    'unicorn upstart config'.with(env, username),
+    'log unicorn socket'.with(app_name, username)
   ]
 end
 
 dep 'sinatra app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
   requires [
     'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix),
-    'unicorn upstart config'.with(env, username)
+    'unicorn upstart config'.with(env, username),
+    'log unicorn socket'.with(username)
   ]
 end
 
