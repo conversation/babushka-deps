@@ -12,7 +12,7 @@ dep 'core software' do
     'nmap.bin',
     'tree.bin',
     'pv.bin',
-    'ntp.bin'
+    'ntpd.bin'
   ]
 end
 
