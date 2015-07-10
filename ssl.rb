@@ -2,12 +2,8 @@ dep 'ssl cert in place', :nginx_prefix, :domain, :env, :cert_source, :template =
   nginx_prefix.default!('/opt/nginx')
   cert_source.default('~/current/config/certs')
 
-  def cert_name
-    env == 'staging' ? '*.tc-dev.net' : domain
-  end
-
   def source_file ext
-    cert_source / "#{cert_name}.#{ext}"
+    cert_source / "#{domain}.#{ext}"
   end
 
   def dest_file ext
