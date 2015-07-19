@@ -82,6 +82,10 @@ dep 'libxslt.lib' do
   installs { via :apt, 'libxslt1-dev' }
 end
 
+dep 'edit.lib' do
+  installs 'libedit-dev'
+end
+
 dep 'ffi.lib' do
   installs { via :apt, 'libffi-dev' }
 end
@@ -134,6 +138,10 @@ end
 
 dep 'rcconf.bin' do
   requires 'whiptail.bin'
+end
+
+dep 'selinux.lib' do
+  installs 'libselinux1-dev'
 end
 
 dep 'socat.bin'
