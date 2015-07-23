@@ -5,6 +5,12 @@ def on_standby?
   !psql_output.nil? && psql_output['on']
 end
 
+dep 'assets precompiled during deploy', :env, :deploying, :template => 'task' do
+  run {
+    shell "bundle exec rake assets:precompile RAILS_ENV=#{env}"
+  }
+end
+
 dep 'upload assets', :env, :deploying do
   met? {
     shell? "bundle exec rake tc:assets:upload_required RAILS_ENV=#{env}"
