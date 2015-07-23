@@ -7,9 +7,6 @@ end
 
 dep 'assets precompiled during deploy', :env, :deploying, :template => 'task' do
   run {
-    # Remove the assets cache to ensure changes to JSON locales are rendered. This
-    # is temporary while we find a more permanent solution.
-    shell "rm -rf tmp/cache/assets"
     shell "bundle exec rake assets:precompile RAILS_ENV=#{env}"
   }
 end
