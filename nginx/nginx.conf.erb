@@ -51,6 +51,17 @@ http {
     default $http_fastly_client_ip;
   }
 
+  # sets a new variable called $fastly_client_scheme that indicates the procotol used
+  # between the client and fastly. If the fastly header isn't found, then the protocol
+  # used to connect to nginx is selected.
+  #
+  # When proxying to a rails app, set this value as the "X-Forwarded-Proto" header and
+  # rails will use it to determine if the client is connecting over SSL
+  map $http_fastly_ssl $fastly_client_scheme {
+    "1" "https";
+    default $scheme;
+  }
+
   # Pull in all enabled vhosts
   include vhosts/on/*.conf;
 }
