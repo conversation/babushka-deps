@@ -62,7 +62,7 @@ server {
     proxy_set_header     Host              $host;
     proxy_set_header     Client-Ip         $tc_client_ip;
     proxy_set_header     X-Real-IP         $remote_addr;
-    proxy_set_header     X-Forwarded-Proto $fastly_client_scheme;
+    proxy_set_header     X-Forwarded-Proto $tc_client_scheme;
     proxy_set_header     X-Request-Start   "t=${msec}";
   }
 }
