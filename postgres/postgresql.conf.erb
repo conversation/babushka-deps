@@ -36,7 +36,7 @@ default_text_search_config = 'pg_catalog.english'
 # These settings only apply to the master.
 wal_level = hot_standby
 max_wal_senders = 4
-wal_keep_segments = 512 # 8GB of wal segments
+wal_keep_segments = 3125 # 50GB of wal segments
 wal_sender_timeout = 60s
 
 # These settings only apply to the standby.
