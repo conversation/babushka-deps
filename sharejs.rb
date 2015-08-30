@@ -1,6 +1,6 @@
 
-dep 'sharejs.upstart', :username, :env, :db_name do
-  requires 'sharejs setup'.with(username, db_name)
+dep 'sharejs.upstart', :username, :env, :app_root, :db_name do
+  requires 'sharejs setup'.with(username, app_root, db_name)
 
   username.default!(shell('whoami'))
   db_name.default!("tc_#{env}")
@@ -16,9 +16,9 @@ dep 'sharejs.upstart', :username, :env, :db_name do
   }
 end
 
-dep 'sharejs setup', :username, :db_name do
+dep 'sharejs setup', :username, :app_root, :db_name do
   requires [
-    'schema loaded'.with(:username => username, :root => root, :db_name => db_name),
+    'schema loaded'.with(:username => username, :root => app_root, :db_name => db_name),
     'npm packages installed'.with('~/current'),
   ]
 end
