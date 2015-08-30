@@ -181,7 +181,7 @@ dep 'postgres.bin', :version do
     version.to_s.scan(/^\d\.\d/).first
   end
   version.default!('9.3.9')
-  requires 'set.locale'
+  requires 'common:set.locale'
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
       :uri => 'http://apt.postgresql.org/pub/repos/apt/',
