@@ -20,7 +20,7 @@ dep 'sharejs setup', :username, :tc_username, :db_name do
   tc_username.default!('theconversation.com')
   requires [
     'schema ownership'.with(username, db_name, "sharejs"),
-    'sharejs tables exist'.with(username, db_name),
+    'schema loaded'.with(:username => username, :root => root, :db_name => db_name),
     'schema access'.with(tc_username, username, db_name, 'sharejs', 'sharejs.article_draft_snapshots'),
     'db access'.with(
       :db_name => db_name,
@@ -30,26 +30,6 @@ dep 'sharejs setup', :username, :tc_username, :db_name do
     ),
     'npm packages installed'.with('~/current'),
   ]
-end
-
-dep 'sharejs tables exist', :username, :db_name do
-  requires 'table exists'.with(username, db_name, 'sharejs.article_draft_operations', <<-SQL)
-    doc text NOT NULL,
-    v int4 NOT NULL,
-    op text NOT NULL,
-    meta text NOT NULL,
-    CONSTRAINT operations_pkey PRIMARY KEY (doc, v)
-  SQL
-
-  requires 'table exists'.with(username, db_name, 'sharejs.article_draft_snapshots', <<-SQL)
-    doc text NOT NULL,
-    v int4 NOT NULL,
-    type text NOT NULL,
-    snapshot text NOT NULL,
-    meta text NOT NULL,
-    created_at timestamp(6) NOT NULL,
-    CONSTRAINT snapshots_pkey PRIMARY KEY (doc, v)
-  SQL
 end
 
 dep 'npm packages installed', :path do
