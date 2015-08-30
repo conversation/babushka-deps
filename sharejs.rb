@@ -19,15 +19,7 @@ end
 dep 'sharejs setup', :username, :tc_username, :db_name do
   tc_username.default!('theconversation.com')
   requires [
-    'schema ownership'.with(username, db_name, "sharejs"),
     'schema loaded'.with(:username => username, :root => root, :db_name => db_name),
-    'schema access'.with(tc_username, username, db_name, 'sharejs', 'sharejs.article_draft_snapshots'),
-    'db access'.with(
-      :db_name => db_name,
-      :schema => 'sharejs',
-      :username => tc_username,
-      :check_table => 'sharejs.article_draft_snapshots'
-    ),
     'npm packages installed'.with('~/current'),
   ]
 end
