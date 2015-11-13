@@ -52,30 +52,6 @@ dep 'unicorn upstart config', :env, :user do
   }
 end
 
-dep 'unicorn configured', :path do
-  requires 'unicorn config exists'.with(path)
-  requires 'unicorn paths'.with(path)
-end
-
-dep 'unicorn config exists', :path do
-  def unicorn_config
-    path / 'config/unicorn.rb'
-  end
-  def unicorn_socket
-    path / 'tmp/sockets/unicorn.socket'
-  end
-  met? { unicorn_config.exists? }
-  meet { render_erb 'unicorn/unicorn.rb.erb', :to => unicorn_config }
-end
-
-dep 'unicorn paths', :root do
-  def missing_paths
-    %w[log tmp/pids tmp/sockets].reject {|p| (root / p).dir? }
-  end
-  met? { missing_paths.empty? }
-  meet { missing_paths.each {|p| (root / p).mkdir } }
-end
-
 dep 'log unicorn socket', :app_name, :user do
   requires [
     "script installed".with('socket-statsd-logger'),

@@ -70,7 +70,6 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
   nginx_prefix.default!('/opt/nginx')
 
   requires 'configured.nginx'.with(nginx_prefix)
-  requires 'unicorn configured'.with(path)
 
   met? {
     up_to_date?("nginx/#{app_name}_vhost.conf.erb", vhost_conf) &&
