@@ -140,6 +140,13 @@ dep 'rcconf.bin' do
   requires 'whiptail.bin'
 end
 
+dep 'sasl.lib' do
+  installs {
+    via :brew, 'libsasl2'
+    via :apt, 'libsasl2-dev'
+  }
+end
+
 dep 'selinux.lib' do
   installs 'libselinux1-dev'
 end
