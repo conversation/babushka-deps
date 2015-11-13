@@ -2,16 +2,14 @@ dep 'rails app', :app_name, :env, :domain, :username, :path, :listen_host, :list
   requires [
     'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix),
     'common:assets precompiled'.with(env: env, path: path),
-    'unicorn upstart config'.with(env, username),
-    'log unicorn socket'.with(app_name, username)
+    'config ruby app server'.with(path, env, username)
   ]
 end
 
 dep 'sinatra app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
   requires [
     'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix),
-    'unicorn upstart config'.with(env, username),
-    'log unicorn socket'.with(username)
+    'config ruby app server'.with(path, env, username)
   ]
 end
 
@@ -27,4 +25,25 @@ dep 'rack app', :app_name, :env, :domain, :username, :path, :listen_host, :liste
     'rack.logrotate'.with(username),
     'running.nginx'
   ]
+end
+
+dep 'config ruby app server', :path, :env, :username do
+  def has_unicorn_config?
+    "#{path}/config/unicorn.rb".p.exists?
+  end
+
+  def has_puma_config?
+    "#{path}/config/puma.rb".p.exists?
+  end
+
+  if has_unicorn_config?
+    requires [
+      'unicorn upstart config'.with(env, username),
+      'log unicorn socket'.with(app_name, username)
+    ]
+  elsif has_puma_config?
+    requires [
+      'puma upstart config'.with(env, username),
+    ]
+  end
 end
