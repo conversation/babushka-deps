@@ -12,9 +12,6 @@ meta :nginx do
   def upstream_name
     "#{domain}.upstream"
   end
-  def unicorn_socket
-    path / 'tmp/sockets/unicorn.socket'
-  end
   def nginx_running?
     shell? "netstat -an | grep -E '^tcp.*[.:]80 +.*LISTEN'"
   end
@@ -56,6 +53,13 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
   end
   def domain_au; 'theconversation.edu.au' end
   def domain_uk; 'theconversation.org.uk' end
+  def application_socket
+    if app_name == "analytics"
+      path / 'tmp/sockets/puma.socket'
+    else
+      path / 'tmp/sockets/unicorn.socket'
+    end
+  end
 
   def up_to_date? source_name, dest
     source = dependency.load_path.parent / source_name

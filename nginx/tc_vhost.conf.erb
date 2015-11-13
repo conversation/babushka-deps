@@ -2,7 +2,7 @@
 upstream <%= upstream_name %> {
   # fail_timeout=0 means we always retry the unicorn master, since it's
   # responsible for restarting workers when they fail.
-  server unix:<%= unicorn_socket %> fail_timeout=0;
+  server unix:<%= application_socket %> fail_timeout=0;
 }
 
 # Canonical www. redirect
