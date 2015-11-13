@@ -13,5 +13,5 @@ console log
 env LANG=en_AU.UTF-8
 
 script
-  /usr/local/bin/bundle exec puma -C config/puma.rb -e staging
+  /usr/local/bin/bundle exec puma -C config/puma.rb -e <%=env%>
 end script
