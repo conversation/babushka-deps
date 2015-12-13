@@ -38,7 +38,7 @@ end
 
 dep 'donations packages' do
   requires [
-    'postgres'.with('9.3'),
+    'postgres'.with('9.4'),
     'running.postfix',
     'running.nginx',
     'donations common packages'
