@@ -64,8 +64,8 @@ end
 
 dep 'tc packages' do
   requires [
-    'postgres'.with('9.3'),
-    'postgresql-contrib.lib'.with('9.3'), # for unaccent, for search
+    'postgres'.with('9.4'),
+    'postgresql-contrib.lib'.with('9.4'), # for unaccent, for search
     'running.postfix',
     'running.nginx',
     'memcached', # for fragment caching
