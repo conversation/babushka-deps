@@ -1,9 +1,11 @@
 require 'fileutils'
 
 def on_standby?
-  psql_output = shell?("psql tc_#{env} -t -c 'SHOW transaction_read_only'")
-  !psql_output.nil? && psql_output['on']
+  standby_hostname = shell?("host -t CNAME prod-standby.tc-dev.net")[/([^\s]+).\Z/,1]
+  current_hostname = shell?("hostname -f").strip
+  current_hostname == standby_hostname
 end
+
 
 dep 'assets precompiled during deploy', :env, :deploying, :template => 'task' do
   run {
