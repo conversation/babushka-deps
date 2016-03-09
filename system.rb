@@ -12,7 +12,8 @@ dep 'core software' do
     'nmap.bin',
     'tree.bin',
     'pv.bin',
-    'ntpd.bin'
+    'ntpd.bin',
+    's3cmd'
   ]
 end
 
