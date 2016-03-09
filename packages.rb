@@ -197,6 +197,8 @@ dep 'traceroute.bin'
 
 dep 'tree.bin'
 
+dep 'trickle.bin'
+
 dep 'unbound.bin' do
   met? {
     log_shell("checking for unbound", "which unbound")
