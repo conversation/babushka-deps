@@ -58,6 +58,9 @@ dep 'fastly.gem' do
   provides []
 end
 
+# Once we're using Ubuntu 16.04 in production, we can simplify this dep to just:
+#
+#  dep "geoipupdate.bin"
 dep 'geoipupdate.bin', :version do
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
@@ -70,7 +73,7 @@ dep 'geoipupdate.bin', :version do
   }
   installs {
     via :apt, "geoipupdate"
-    via :brew, "nodejs"
+    via :brew, "geoipupdate"
   }
 end
 
