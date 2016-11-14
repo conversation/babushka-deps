@@ -43,12 +43,21 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
 
   def domain_au; 'theconversation.edu.au' end
   def domain_uk; 'theconversation.org.uk' end
+
   def application_socket
-    if app_name == "analytics"
-      path / 'tmp/sockets/puma.socket'
-    else
+    if has_unicorn_config?
       path / 'tmp/sockets/unicorn.socket'
+    elsif has_puma_config?
+      path / 'tmp/sockets/puma.socket'
     end
+  end
+
+  def has_unicorn_config?
+    "#{path}/config/unicorn.rb".p.exists?
+  end
+
+  def has_puma_config?
+    "#{path}/config/puma.rb".p.exists?
   end
 
   def up_to_date? source_name, dest
