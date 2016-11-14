@@ -11,7 +11,8 @@ chdir <%=app_root%>
 setuid <%=user%>
 console log
 env LANG=en_AU.UTF-8
+env RACK_ENV=<%=env%>
 
 script
-  /usr/local/bin/bundle exec puma -C config/puma.rb -e <%=env%>
+  ./bin/puma
 end script
