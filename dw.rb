@@ -39,6 +39,7 @@ end
 
 dep 'dw common packages' do
   requires [
+    'bundler.gem',
     'postgres.bin',
     'socat.bin' # for DB tunnelling
   ]
