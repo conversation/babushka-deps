@@ -51,20 +51,3 @@ dep 'unicorn upstart config', :env, :user do
     sleep 10
   }
 end
-
-dep 'log unicorn socket', :app_name, :user do
-  requires [
-    "script installed".with('socket-statsd-logger'),
-    "socket-statsd-logger.upstart".with(app_name, user)
-  ]
-end
-
-dep 'socket-statsd-logger.upstart', :app_name, :user do
-  respawn 'yes'
-  command "/usr/local/bin/socket-statsd-logger /srv/http/#{user}/current/tmp/sockets/unicorn.socket #{app_name}.unicorn.socket"
-  setuid user
-  chdir "/srv/http/#{user}/current"
-  met? {
-    shell?("ps aux | grep -v grep | grep 'socket-statsd-logger /srv/http/#{user}'")
-  }
-end

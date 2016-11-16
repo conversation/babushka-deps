@@ -37,13 +37,8 @@ dep 'config ruby app server', :app_name, :path, :env, :username do
   end
 
   if has_unicorn_config?
-    requires [
-      'unicorn upstart config'.with(env, username),
-      'log unicorn socket'.with(app_name, username)
-    ]
+    requires 'unicorn upstart config'.with(env, username)
   elsif has_puma_config?
-    requires [
-      'puma upstart config'.with(env, username),
-    ]
+    requires 'puma upstart config'.with(env, username)
   end
 end
