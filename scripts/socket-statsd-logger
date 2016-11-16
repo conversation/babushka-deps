@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
-# Logs the number of queued and active connections on the unicorn socket to statsd.
-# There's a cap on the number of queued connections. If we hit it then nginx will
-# start serving 504 pages
+# Logs the number of queued and active connections on the unicorn/puma socket to
+# statsd. There's a cap on the number of queued connections. If we hit it then
+# nginx will start serving 504 pages.
 #
-# There is no visible output, but data is sent to statsd each second
+# There is no visible output, but data is sent to statsd each second.
 #
 # Props to Tim Lucas for the basic structure:
 #
@@ -17,7 +17,7 @@
 
 require 'socket'
 
-USAGE = "socket-statsd-logger <path to unicorn socket> <metric name>"
+USAGE = "socket-statsd-logger <path to socket> <metric name>"
 METRIC_NAME_REGEXP = /\A[a-z][a-z\.]+[a-z]\Z/
 
 socket_path, metric_name = *ARGV

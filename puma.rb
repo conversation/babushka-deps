@@ -48,3 +48,21 @@ dep 'puma upstart config', :env, :user do
   }
 end
 
+dep 'log puma socket', :app_name, :path, :user  do
+  requires [
+    "script installed".with('socket-statsd-logger'),
+    "puma-socket-statsd-logger.upstart".with(app_name, path, user)
+  ]
+end
+
+dep 'puma-socket-statsd-logger.upstart', :app_name, :path, :user do
+  socket_path = (path / "tmp/sockets/puma.socket").abs
+  respawn 'yes'
+  command "/usr/local/bin/socket-statsd-logger #{socket_path} #{app_name}.#{socket_path.basename}"
+  setuid user
+  chdir path.p.abs
+  met? {
+    shell?("ps aux | grep -v grep | grep 'socket-statsd-logger #{socket_path}'")
+  }
+end
+
