@@ -27,23 +27,24 @@ dep 'rack app', :app_name, :env, :domain, :username, :path, :listen_host, :liste
   ]
 end
 
-dep 'config ruby app server', :app_name, :path, :env, :username do
+dep 'config ruby app server', :app_name, :path, :env, :user do
   def has_unicorn_config?
-    "#{path}/config/unicorn.rb".p.exists?
+    (path / "config/unicorn.rb").exists?
   end
 
   def has_puma_config?
-    "#{path}/config/puma.rb".p.exists?
+    (path / "config/puma.rb").exists?
   end
 
   if has_unicorn_config?
     requires [
-      'unicorn upstart config'.with(env, username),
-      'log unicorn socket'.with(app_name, username)
+      'unicorn upstart config'.with(env, user),
+      'log unicorn socket'.with(app_name, path, user)
     ]
   elsif has_puma_config?
     requires [
-      'puma upstart config'.with(env, username),
+      'puma upstart config'.with(env, user),
+      'log puma socket'.with(app_name, path, user)
     ]
   end
 end
