@@ -4,7 +4,9 @@ end
 
 dep 'delayed_job.upstart', :env, :user do
   respawn 'yes'
-  command "bundle exec rake jobs:work RAILS_ENV=#{env}"
+  # This command includes both RACK_ENV and RAILS_ENV as this upstart config can
+  # be used for rails and non-rails apps.
+  command "bundle exec rake jobs:work RACK_ENV=#{env} RAILS_ENV=#{env}"
   setuid user
   chdir "/srv/http/#{user}/current"
   met? {
