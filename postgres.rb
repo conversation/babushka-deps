@@ -158,7 +158,7 @@ dep 'postgres.bin', :version do
   def minor_version
     version.to_s.scan(/^\d\.\d/).first
   end
-  version.default!('9.4.5')
+  version.default!('9.6.1')
   requires 'common:set.locale'
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
@@ -192,7 +192,7 @@ end
 
 dep 'pg_repack.src', :version, :postgres_minor_version do
   version.default!('1.3.1')
-  postgres_minor_version.default!("9.4")
+  postgres_minor_version.default!("9.6")
   source "http://api.pgxn.org/dist/pg_repack/#{version}/pg_repack-#{version}.zip"
   requires [
     'edit.lib',
@@ -215,7 +215,7 @@ dep 'pg_repack.src', :version, :postgres_minor_version do
 end
 
 dep 'postgresql server dev.bin', :postgres_minor_version do
-  postgres_minor_version.default!("9.4")
+  postgres_minor_version.default!("9.6")
   installs {
     via :apt, "postgresql-server-dev-#{owner.postgres_minor_version}"
     otherwise []

@@ -12,7 +12,7 @@ end
 
 dep 'sharejs packages' do
   requires [
-    'postgres'.with('9.4'),
+    'postgres'.with('9.6'),
     'curl.lib',
     'running.nginx',
     'sharejs common packages'
