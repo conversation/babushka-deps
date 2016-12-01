@@ -43,3 +43,7 @@ wal_sender_timeout = 60s
 hot_standby = on
 max_standby_streaming_delay = 120s
 wal_receiver_status_interval = 10s
+
+# Enable parallel queries
+max_worker_processes = 4
+max_parallel_workers_per_gather = 2
