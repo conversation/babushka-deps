@@ -33,7 +33,7 @@ dep 'analytics packages' do
 end
 
 dep 'analytics dev' do
-  requires 'donations common packages'
+  requires 'analytics common packages'
 end
 
 dep 'analytics common packages' do
