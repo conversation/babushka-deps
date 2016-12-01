@@ -36,7 +36,7 @@ default_text_search_config = 'pg_catalog.english'
 idle_in_transaction_session_timeout = '120s'
 
 # These settings only apply to the master.
-wal_level = hot_standby
+wal_level = replica
 max_wal_senders = 4
 wal_keep_segments = 1024 # 16GB of wal segments
 wal_sender_timeout = 60s
