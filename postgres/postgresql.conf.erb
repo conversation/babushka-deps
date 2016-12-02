@@ -39,6 +39,7 @@ wal_level = replica
 max_wal_senders = 4
 wal_keep_segments = 1024 # 16GB of wal segments
 wal_sender_timeout = 60s
+max_replication_slots = 2
 
 # These settings only apply to the standby.
 hot_standby = on
