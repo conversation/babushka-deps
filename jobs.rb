@@ -12,10 +12,6 @@ dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
     'ssl cert in place'.with(:domain => domain, :env => env),
   ]
 
-  if env == 'production'
-    requires 'ssl cert in place'.with(:domain => 'jobs.theconversation.edu.au', :env => env)
-  end
-
   requires [
     'db'.with(
       :env => env,
