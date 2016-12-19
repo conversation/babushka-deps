@@ -41,9 +41,6 @@ dep 'vhost configured.nginx', :app_name, :env, :domain, :path, :listen_host, :li
   proxy_host.default('localhost')
   proxy_port.default('8000')
 
-  def domain_au; 'theconversation.edu.au' end
-  def domain_uk; 'theconversation.org.uk' end
-
   def application_socket
     if has_unicorn_config?
       path / 'tmp/sockets/unicorn.socket'
