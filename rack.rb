@@ -1,8 +1,8 @@
-dep 'rails app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix do
+dep 'rails app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :nginx_prefix, :threads, :workers do
   requires [
     'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port, nginx_prefix),
     'common:assets precompiled'.with(env: env, path: path),
-    'config ruby app server'.with(app_name, path, env, username)
+    'config ruby app server'.with(app_name, path, env, username, threads, workers)
   ]
 end
 
