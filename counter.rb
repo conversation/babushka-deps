@@ -50,6 +50,7 @@ end
 
 dep 'counter common packages' do
   requires [
+    'bundler.gem',
     'postgres.bin',
     'geoip.bin', # for geoip-c
     'libxml.lib', # for nokogiri
