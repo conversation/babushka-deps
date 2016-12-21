@@ -25,7 +25,8 @@ dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
       :listen_host => host,
       :domain => domain,
       :username => app_user,
-      :path => app_root
+      :path => app_root,
+      :threads => 8
     )
   ]
 end
@@ -50,6 +51,7 @@ end
 
 dep 'counter common packages' do
   requires [
+    'bundler.gem',
     'postgres.bin',
     'geoip.bin', # for geoip-c
     'libxml.lib', # for nokogiri

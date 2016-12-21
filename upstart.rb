@@ -13,8 +13,11 @@ meta :upstart do
     def conf_dest
       "/etc/init/#{conf_name}.conf"
     end
+    def template_path
+      dependency.load_path.parent / "upstart/service.conf.erb"
+    end
     meet {
-      render_erb "upstart/service.conf.erb", :to => conf_dest, :sudo => true
+      render_erb template_path, :to => conf_dest, :sudo => true
       sudo "initctl start #{conf_name}; true"
       sleep start_delay
     }
