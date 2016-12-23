@@ -26,7 +26,7 @@ end
 
 dep 'analytics packages' do
   requires [
-    'postgres'.with('9.4'), # not strictly required, but user setup expects it it be installed
+    'postgres'.with('9.6'), # not strictly required, but user setup expects it it be installed
     'running.nginx',
     'analytics common packages'
   ]

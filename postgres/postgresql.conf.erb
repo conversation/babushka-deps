@@ -12,12 +12,11 @@ unix_socket_directories = '/var/run/postgresql'
 
 ssl = off
 
-shared_buffers = 1024MB
+shared_buffers = 2048MB
 temp_buffers = 8MB
 work_mem = 32MB
 maintenance_work_mem = 64MB
 max_stack_depth = 2MB
-#effective_cache_size = 128MB
 
 client_min_messages = warning
 log_min_messages = warning
@@ -33,13 +32,20 @@ lc_numeric = 'en_AU.UTF-8'
 lc_time = 'en_AU.UTF-8'
 default_text_search_config = 'pg_catalog.english'
 
+idle_in_transaction_session_timeout = '120s'
+
 # These settings only apply to the master.
-wal_level = hot_standby
+wal_level = logical
 max_wal_senders = 4
-wal_keep_segments = 512 # 8GB of wal segments
+wal_keep_segments = 1024 # 16GB of wal segments
 wal_sender_timeout = 60s
+max_replication_slots = 2
 
 # These settings only apply to the standby.
 hot_standby = on
 max_standby_streaming_delay = 120s
 wal_receiver_status_interval = 10s
+
+# Enable parallel queries
+max_worker_processes = 4
+max_parallel_workers_per_gather = 2
