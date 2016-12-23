@@ -81,7 +81,7 @@ dep 'postgres config', :version do
       'listen_addresses' => '',
       'superuser_reserved_connections' => '2',
       'work_mem' => '32768',
-      'wal_level' => 'hot_standby',
+      'wal_level' => 'logical',
       'hot_standby' => 'on'
     }
   end
