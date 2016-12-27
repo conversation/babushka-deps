@@ -16,7 +16,6 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
     'postgres extension'.with(app_user, db_name, 'unaccent'),
     'postgres extension'.with(app_user, db_name, 'pg_trgm'),
     'postgres extension'.with(app_user, db_name, 'fuzzystrmatch'),
-    'geoip database'.with(:app_root => app_root),
 
     'ssl cert in place'.with(:domain => domain, :env => env)
   ]
