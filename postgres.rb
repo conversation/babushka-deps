@@ -190,37 +190,17 @@ dep 'postgresql-contrib.lib', :version do
   }
 end
 
-dep 'pg_repack.src', :version, :postgres_minor_version do
-  version.default!('1.3.1')
-  postgres_minor_version.default!("9.6")
-  source "http://api.pgxn.org/dist/pg_repack/#{version}/pg_repack-#{version}.zip"
-  requires [
-    'edit.lib',
-    'selinux.lib',
-    'postgresql server dev.bin'.with(postgres_minor_version)
-  ]
+dep 'postgresql-repack.bin', :version do
+  version.default!('9.6.1')
+  requires 'postgres.bin'.with(:version => version)
+  provides "pg_repack"
 
-  def executable_path
-    "/usr/lib/postgresql/#{postgres_minor_version}/bin/pg_repack"
+  def minor_version
+    version.to_s.scan(/^\d\.\d/).first
   end
 
-  configure {
-    true #nothing
-  }
-  build { log_shell "build", "make" }
-  install { log_shell "install", "make install", :sudo => true }
-  met? {
-    File.executable?(executable_path)
-  }
-end
-
-dep 'postgresql server dev.bin', :postgres_minor_version do
-  postgres_minor_version.default!("9.6")
   installs {
-    via :apt, "postgresql-server-dev-#{owner.postgres_minor_version}"
+    via :apt, "postgresql-#{owner.minor_version}-repack"
     otherwise []
-  }
-  met? {
-    raw_shell("dpkg -l").stdout.include?("postgresql-server-dev-#{postgres_minor_version}")
   }
 end
