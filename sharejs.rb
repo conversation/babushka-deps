@@ -30,7 +30,6 @@ dep 'sharejs common packages' do
   requires [
     'bundler.gem',
     'postgres.bin',
-    "npm",
     "coffeescript.bin"
   ]
 end
