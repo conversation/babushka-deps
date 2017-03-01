@@ -25,7 +25,7 @@ dep 'collectd.bin' do
 end
 
 dep 'nodejs.bin', :version do
-  version.default!('0.10.25')
+  version.default!('6.10.0')
   installs {
     via :apt, [
       "nodejs",
