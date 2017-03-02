@@ -26,18 +26,20 @@ end
 
 dep 'nodejs.bin', :version do
   version.default!('6.10.0')
+  requires_when_unmet {
+    on :apt, 'keyed apt source'.with(
+      :uri => 'https://deb.nodesource.com/node_6.x',
+      :release => 'trusty',
+      :repo => 'main',
+      :key_sig => '68576280',
+      :key_uri => 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key'
+    )
+  }
   installs {
-    via :apt, [
-      "nodejs",
-      "nodejs-dev",
-      "nodejs-legacy"
-    ]
-    otherwise "node"
+    via :apt, "nodejs"
+    via :brew, "node"
   }
-  provides {
-    via :apt, "nodejs ~> #{owner.version}"
-    otherwise "node ~> #{owner.version}"
-  }
+  provides "node ~> #{version}"
 end
 
 dep 'coffeescript.bin', :version do
