@@ -1,12 +1,21 @@
-dep 'delayed job', :env, :user do
-  requires 'delayed_job.upstart'.with(env, user)
+dep 'delayed job', :env, :user, :queue do
+  requires 'delayed_job.upstart'.with(env, user, queue)
 end
 
-dep 'delayed_job.upstart', :env, :user do
+dep 'delayed_job.upstart', :env, :user, :queue do
   respawn 'yes'
-  # This command includes both RACK_ENV and RAILS_ENV as this upstart config can
-  # be used for rails and non-rails apps.
-  command "bundle exec rake jobs:work RACK_ENV=#{env} RAILS_ENV=#{env}"
+
+  queue.default 'global'
+
+  vars = ["RACK_ENV=#{env}", "RAILS_ENV=#{env}"]
+
+  unless queue[/global/]
+    suffix "#{queue}_queue"
+    vars << "QUEUES=#{queue}"
+  end
+
+  environment vars
+  command "bundle exec rake jobs:work"
   setuid user
   chdir "/srv/http/#{user}/current"
   met? {

@@ -5,10 +5,15 @@ meta :upstart do
   accepts_list_for :environment
   accepts_value_for :chdir
   accepts_value_for :setuid
+  accepts_value_for :suffix
   accepts_value_for :start_delay, 5
   template {
     def conf_name
-      "#{setuid}_#{basename.gsub(' ', '_')}"
+      [setuid, basename, suffix]
+        .compact
+        .map { |token| token.to_s.gsub(/[ ,]/, '_') }
+        .reject { |token| token.blank? }
+        .join('_')
     end
     def conf_dest
       "/etc/init/#{conf_name}.conf"
