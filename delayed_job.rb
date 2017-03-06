@@ -22,3 +22,19 @@ dep 'delayed_job.upstart', :env, :user, :queue do
     shell?("ps ux | grep -v grep | grep 'rake jobs:work'")
   }
 end
+
+dep 'delayed job restarted', template: 'task' do
+  run {
+    output = shell?('ps ux | grep -v grep | grep "rake jobs:work"')
+
+    if output.nil?
+      log "`rake jobs:work` isn't running."
+      true
+    else
+      pids = output.scan(/^\S+\s+(\d+)\s+/).flatten
+      pids.each do |pid|
+        log_shell "Sending SIGTERM to #{pid}", "kill -s TERM #{pid}"
+      end
+    end
+  }
+end
