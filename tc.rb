@@ -32,7 +32,10 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :app_root => app_root
     ),
 
-    'delayed job'.with(env, app_user),
+    'delayed job'.with(
+      :env => env,
+      :user => app_user
+    ),
 
     'db'.with(
       :env => env,
