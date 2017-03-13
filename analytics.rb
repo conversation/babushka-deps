@@ -13,6 +13,13 @@ dep 'analytics app', :env, :host, :domain, :app_user, :app_root, :key do
   end
 
   requires [
+    'db'.with(
+      :env => env,
+      :username => app_user,
+      :root => app_root,
+      :data_required => 'no'
+    ),
+
     'rails app'.with(
       :app_name => 'analytics',
       :env => env,
