@@ -12,7 +12,10 @@ dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
       :deploying => 'no'
     ),
 
-    'delayed job'.with(env, app_user),
+    'delayed job'.with(
+      :env => env,
+      :user => app_user
+    ),
 
     'sinatra app'.with(
       :app_name => 'dw',

@@ -19,7 +19,10 @@ dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
       :data_required => 'no'
     ),
 
-    'delayed job'.with(env, app_user),
+    'delayed job'.with(
+      :env => env,
+      :user => app_user
+    ),
 
     'rails app'.with(
       :app_name => 'donate',
