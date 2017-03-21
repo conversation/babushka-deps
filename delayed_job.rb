@@ -14,8 +14,7 @@ dep 'delayed_job.upstart', :env, :user, :queue do
     vars << "QUEUES=#{queue}"
   end
 
-  environment vars
-  command "bundle exec rake jobs:work"
+  command "bundle exec rake jobs:work #{vars.join(' ')}"
   setuid user
   chdir "/srv/http/#{user}/current"
   met? {
