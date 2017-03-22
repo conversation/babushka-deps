@@ -6,6 +6,12 @@ def on_standby?
   current_hostname == standby_hostname
 end
 
+dep 'webpack compile during deploy', :env, :deploying, template: 'task' do
+  requires 'npm packages installed'
+  run {
+    shell 'npm run build'
+  }
+end
 
 dep 'assets precompiled during deploy', :env, :deploying, :template => 'task' do
   run {
