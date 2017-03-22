@@ -18,7 +18,7 @@ dep 'npm packages installed', :path do
 end
 
 dep 'webpack compile during deploy', :env, :deploying, template: 'task' do
-  requires 'npm packages installed'
+  requires 'npm packages installed'.with('~/current')
   run {
     shell 'npm run build'
   }
