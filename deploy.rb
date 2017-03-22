@@ -6,6 +6,23 @@ def on_standby?
   current_hostname == standby_hostname
 end
 
+dep 'npm packages installed', :path do
+  met? {
+    output = raw_shell('npm ls', :cd => path)
+    # Older `npm` versions exit 0 on failure.
+    output.ok? && output.stdout['UNMET DEPENDENCY'].nil?
+  }
+  meet {
+    shell('npm install', :cd => path)
+  }
+end
+
+dep 'webpack compile during deploy', :env, :deploying, template: 'task' do
+  requires 'npm packages installed'
+  run {
+    shell 'npm run build'
+  }
+end
 
 dep 'assets precompiled during deploy', :env, :deploying, :template => 'task' do
   run {
