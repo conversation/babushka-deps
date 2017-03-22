@@ -8,7 +8,7 @@ end
 
 dep 'npm packages installed', :path do
   met? {
-    output = raw_shell('npm ls', :cd => path)
+    output = raw_shell('npm ls #{path}', :cd => path)
     # Older `npm` versions exit 0 on failure.
     output.ok? && output.stdout['UNMET DEPENDENCY'].nil?
   }
