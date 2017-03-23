@@ -6,6 +6,16 @@ def on_standby?
   current_hostname == standby_hostname
 end
 
+dep 'npm development packages installed', :path do
+  met? {
+    output = raw_shell('npm ls --dev', :cd => path)
+    output.ok?
+  }
+  meet {
+    shell('npm install', :cd => path)
+  }
+end
+
 dep 'npm packages installed', :path do
   met? {
     output = raw_shell('npm ls', :cd => path)
@@ -18,7 +28,7 @@ dep 'npm packages installed', :path do
 end
 
 dep 'webpack compile during deploy', :env, :deploying, template: 'task' do
-  requires 'npm packages installed'.with('~/current')
+  requires 'npm development packages installed'.with('~/current')
   run {
     shell 'npm run build'
   }
