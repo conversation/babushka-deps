@@ -30,7 +30,7 @@ end
 dep 'webpack compile during deploy', :env, :deploying, template: 'task' do
   requires 'npm development packages installed'.with('~/current')
   run {
-    shell 'npm run build'
+    shell 'npm run webpack:prod'
   }
 end
 
