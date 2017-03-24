@@ -12,7 +12,7 @@ dep 'npm development packages installed', :path do
     output.ok?
   }
   meet {
-    shell('npm install', :cd => path)
+    shell('npm install --only=dev', :cd => path)
   }
 end
 
