@@ -60,3 +60,18 @@ location @app {
   proxy_set_header     X-Forwarded-Proto $tc_client_scheme;
   proxy_set_header     X-Request-Start   "t=${msec}";
 }
+
+location /api/ {
+  # Currently the Rails app handles auth for the API.
+  auth_basic off;
+
+  proxy_pass     http://<%= upstream_name %>;
+  proxy_redirect off;
+
+  proxy_set_header Host            $host;
+  proxy_set_header X-Real-IP       $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+  client_max_body_size 10m;
+  proxy_buffers        4 32k;
+}
