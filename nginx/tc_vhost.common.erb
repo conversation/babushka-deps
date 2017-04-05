@@ -61,17 +61,20 @@ location @app {
   proxy_set_header     X-Request-Start   "t=${msec}";
 }
 
+# The API endpoint requires HTTP basic auth for non-local hosts.
 location /api/ {
-  # Currently the Rails app handles auth for the API.
-  auth_basic off;
+  satisfy any;
 
-  proxy_pass     http://<%= upstream_name %>;
+  allow 127.0.0.1;
+  allow <%= listen_host %>;
+  deny all;
+
+  auth_basic "API";
+  auth_basic_user_file api_htpasswd;
+
+  proxy_pass http://<%= upstream_name %>;
   proxy_redirect off;
-
-  proxy_set_header Host            $host;
-  proxy_set_header X-Real-IP       $remote_addr;
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-  client_max_body_size 10m;
-  proxy_buffers        4 32k;
 }
