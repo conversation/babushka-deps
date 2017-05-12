@@ -108,7 +108,7 @@ dep 'postgres config', :version do
   }
   meet {
     render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{minor_version}/main/postgresql.conf"
-    log_shell "Restarting postgres", "/etc/init.d/postgresql restart", :as => 'postgres'
+    log_shell "Restarting postgres", "systemctl restart postgresql"
   }
 end
 
