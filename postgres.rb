@@ -158,7 +158,7 @@ dep 'postgres.bin', :version do
   def minor_version
     version.to_s.scan(/^\d\.\d/).first
   end
-  version.default!('9.6.1')
+  version.default!('9.6.3')
   requires 'common:set.locale'
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
@@ -191,7 +191,7 @@ dep 'postgresql-contrib.lib', :version do
 end
 
 dep 'postgresql-repack.bin', :version do
-  version.default!('9.6.1')
+  version.default!('9.6.3')
   requires 'postgres.bin'.with(:version => version)
   provides "pg_repack"
 
