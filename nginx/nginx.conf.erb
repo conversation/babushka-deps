@@ -1,6 +1,6 @@
-user www www;
+user www-data;
 worker_processes 8;
-pid <%= nginx_pid %>;
+pid /run/nginx.pid;
 
 events {
   worker_connections 1024;
@@ -14,11 +14,12 @@ http {
   client_max_body_size 16m;
   server_names_hash_max_size 8192;
 
-  include mime.types;
+  include /etc/nginx/mime.types;
   default_type application/octet-stream;
 
   log_format main '$remote_addr - [$time_local] ($http_host) "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for"';
-  access_log logs/access.log main;
+  access_log /var/log/nginx/access.log main;
+  error_log /var/log/nginx/error.log;
 
   gzip on;
   gzip_min_length 768;
@@ -77,5 +78,6 @@ http {
   }
 
   # Pull in all enabled vhosts
-  include vhosts/on/*.conf;
+  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/sites-enabled/*;
 }
