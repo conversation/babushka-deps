@@ -75,7 +75,10 @@ dep 'postgres', :version do
 end
 
 dep 'postgres config', :version do
-  requires 'postgres.bin'.with(version)
+  requires [
+    'postgres.bin'.with(version),
+    "running.postgres"
+  ]
   def minor_version
     version.to_s.scan(/^\d\.\d/).first
   end
