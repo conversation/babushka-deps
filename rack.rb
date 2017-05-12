@@ -38,7 +38,7 @@ dep 'config ruby app server', :app_name, :path, :env, :username, :threads, :work
 
   if has_unicorn_config?
     requires [
-      'unicorn upstart config'.with(env, username),
+      'unicorn.systemd'.with(env, path, username, threads, workers),
       'log unicorn socket'.with(app_name, path, username)
     ]
   elsif has_puma_config?
