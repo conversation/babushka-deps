@@ -244,7 +244,6 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
     'secured ssh logins',
     'utc',
     'core software',
-    'local caching dns server',
     'lax host key checking',
     'admins can sudo',
     'tmp cleaning grace period',
