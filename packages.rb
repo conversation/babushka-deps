@@ -220,14 +220,7 @@ dep 'tree.bin'
 
 dep 'trickle.bin'
 
-dep 'unbound.bin' do
-  met? {
-    log_shell("checking for unbound", "which unbound")
-  }
-  meet {
-    log_shell("installing unbound", "env DEBCONF_TERSE='yes' DEBIAN_PRIORITY='critical' DEBIAN_FRONTEND='noninteractive' aptitude install -y -o Dpkg::Options::='--force-confold' unbound", :sudo => true)
-  }
-end
+dep 'unbound.bin'
 
 dep 'vim.bin'
 

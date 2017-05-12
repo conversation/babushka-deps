@@ -63,7 +63,7 @@ dep 'postgres socket tunnel', :local_user, :local_port, :remote_user, :remote_ho
   }
   meet {
     render_erb 'replication/postgres_socket_tunnel.conf.erb', :to => tunnel_config
-    sudo "initctl start postgres_socket_tunnel; true"
+    sudo "systemctl start postgres_socket_tunnel; true"
   }
 end
 

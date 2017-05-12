@@ -1,8 +1,9 @@
 dep 'delayed job', :env, :user, :queue do
-  requires 'delayed_job.upstart'.with(env, user, queue)
+  requires 'delayed_job.systemd'.with(env, user, queue)
 end
 
-dep 'delayed_job.upstart', :env, :user, :queue do
+dep 'delayed_job.systemd', :env, :user, :queue do
+  description "Delayed job worker"
   respawn 'yes'
 
   queue.default 'global'
@@ -14,7 +15,7 @@ dep 'delayed_job.upstart', :env, :user, :queue do
     vars << "QUEUES=#{queue}"
   end
 
-  command "bundle exec rake jobs:work #{vars.join(' ')}"
+  command "/usr/local/bin/bundle exec rake jobs:work #{vars.join(' ')}"
   setuid user
   chdir "/srv/http/#{user}/current"
   met? {

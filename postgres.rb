@@ -1,3 +1,18 @@
+meta :postgres do
+  def postgres_running?
+    shell? "systemctl is-active postgresql"
+  end
+
+  def restart_postgres
+    log_shell "Restarting postgres...", "systemctl restart postgresql", sudo: true
+  end
+end
+
+dep "running.postgres" do
+  met? { postgres_running? }
+  meet { restart_postgres }
+end
+
 # Bug: this dep only checks for SELECT access, so if you're adding other privileges
 # you need to start from none at all.
 dep 'db access', :grant, :db_name, :schema, :username, :check_table do
@@ -60,7 +75,10 @@ dep 'postgres', :version do
 end
 
 dep 'postgres config', :version do
-  requires 'postgres.bin'.with(version)
+  requires [
+    'postgres.bin'.with(version),
+    "running.postgres"
+  ]
   def minor_version
     version.to_s.scan(/^\d\.\d/).first
   end
@@ -90,7 +108,7 @@ dep 'postgres config', :version do
   }
   meet {
     render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{minor_version}/main/postgresql.conf"
-    log_shell "Restarting postgres", "/etc/init.d/postgresql restart", :as => 'postgres'
+    log_shell "Restarting postgres", "systemctl restart postgresql"
   }
 end
 
@@ -158,7 +176,7 @@ dep 'postgres.bin', :version do
   def minor_version
     version.to_s.scan(/^\d\.\d/).first
   end
-  version.default!('9.6.1')
+  version.default!('9.6.3')
   requires 'common:set.locale'
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
@@ -191,7 +209,7 @@ dep 'postgresql-contrib.lib', :version do
 end
 
 dep 'postgresql-repack.bin', :version do
-  version.default!('9.6.1')
+  version.default!('9.6.3')
   requires 'postgres.bin'.with(:version => version)
   provides "pg_repack"
 

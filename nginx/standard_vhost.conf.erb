@@ -6,7 +6,7 @@ upstream <%= upstream_name %> {
 
 # Canonical www. redirect
 server {
-  listen <%= listen_host %>:<%= listen_port %>;
+  listen <%= listen_port %>;
   server_name www.<%= domain %>;
   return 301 http://<%= domain %>$request_uri;
 }
@@ -15,13 +15,13 @@ server {
   charset utf-8;
   server_name <%= domain %>;
 
-  listen <%= listen_host %>:<%= listen_port %>;
+  listen <%= listen_port %>;
 
 <% if enable_https[/^y/] %>
-  listen <%= listen_host %>:443 ssl;
+  listen 443 ssl;
 
-  ssl_certificate      certs/<%= domain %>.crt;
-  ssl_certificate_key  certs/<%= domain %>.key;
+  ssl_certificate      /etc/ssl/certs/<%= domain %>.crt;
+  ssl_certificate_key  /etc/ssl/private/<%= domain %>.key;
   ssl_session_timeout  5m;
   ssl_protocols        TLSv1 TLSv1.1 TLSv1.2;
   ssl_ciphers          ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA:HIGH:!aNULL:!MD5:!kEDH;
