@@ -43,7 +43,7 @@ dep 'config ruby app server', :app_name, :path, :env, :username, :threads, :work
     ]
   elsif has_puma_config?
     requires [
-      'puma.upstart'.with(env, path, username, threads, workers),
+      'puma.systemd'.with(env, path, username, threads, workers),
       'log puma socket'.with(app_name, path, username)
     ]
   end
