@@ -222,7 +222,7 @@ dep 'trickle.bin'
 
 dep 'unbound.bin' do
   met? {
-    log_shell("checking for unbound", "which unbound")
+    in_path?("unbound")
   }
   meet {
     log_shell("installing unbound", "env DEBCONF_TERSE='yes' DEBIAN_PRIORITY='critical' DEBIAN_FRONTEND='noninteractive' apt-get install -y -o Dpkg::Options::='--force-confold' unbound", :sudo => true)
