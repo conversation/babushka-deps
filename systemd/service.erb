@@ -5,12 +5,15 @@ After=network.target
 [Service]
 Type=simple
 User=<%= setuid %>
-WorkingDirectory=<%= chdir %>
 Environment=<%= environment.map { |a| "\"#{a}\"" }.join(" ") %>
-ExecStart=<%= command %>
+<% if pid_file %>
+PIDFile=<%= pid_file %>
+<% end %>
+WorkingDirectory=<%= chdir %>
 <% if respawn[/^y/] %>
 Restart=on-failure
 <% end %>
+ExecStart=<%= command %>
 
 [Install]
 WantedBy=multi-user.target

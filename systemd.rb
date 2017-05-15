@@ -1,6 +1,7 @@
 meta :systemd do
   accepts_value_for :respawn, 'no' # Restart the process when it exits.
   accepts_value_for :description, "Unnamed service"
+  accepts_value_for :pid_file
   accepts_value_for :command
   accepts_list_for :environment
   accepts_value_for :chdir

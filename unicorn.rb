@@ -4,6 +4,7 @@ dep 'unicorn.systemd', :env, :path, :username, :threads, :workers do
 
   description "Unicorn HTTP server"
   respawn 'yes'
+  pid_file (path / 'tmp/pids/unicorn.pid').abs
   command (path / "bin/unicorn -c config/unicorn.rb").abs
   setuid username
   chdir path.p.abs

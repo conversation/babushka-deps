@@ -4,6 +4,7 @@ dep 'puma.systemd', :env, :path, :username, :threads, :workers do
 
   description "Puma HTTP server"
   respawn 'yes'
+  pid_file (path / 'tmp/pids/puma.pid').abs
   command (path / 'bin/puma').abs
   setuid username
   chdir path.p.abs
