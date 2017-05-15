@@ -11,7 +11,7 @@ PIDFile=<%= pid_file %>
 <% end %>
 WorkingDirectory=<%= chdir %>
 <% if respawn[/^y/] %>
-Restart=on-failure
+Restart=always
 <% end %>
 ExecStart=<%= command %>
 <% if reload_command %>
