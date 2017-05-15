@@ -14,6 +14,12 @@ WorkingDirectory=<%= chdir %>
 Restart=on-failure
 <% end %>
 ExecStart=<%= command %>
+<% if reload_command %>
+ExecReload=<%= reload_command %>
+<% end %>
+<% if kill_signal %>
+KillSignal=<%= kill_signal %>
+<% end %>
 
 [Install]
 WantedBy=multi-user.target

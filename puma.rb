@@ -5,7 +5,10 @@ dep 'puma.systemd', :env, :path, :username, :threads, :workers do
   description "Puma HTTP server"
   respawn 'yes'
   pid_file (path / 'tmp/pids/puma.pid').abs
+
   command (path / 'bin/puma').abs
+  reload_command "/bin/kill -s USR1 $MAINPID" # reload workers
+
   setuid username
   chdir path.p.abs
   environment "APP_ENV=#{env}", "RACK_ENV=#{env}", "RAILS_ENV=#{env}", "PUMA_THREADS=#{threads}", "PUMA_WORKERS=#{workers}"

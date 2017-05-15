@@ -3,6 +3,8 @@ meta :systemd do
   accepts_value_for :description, "Unnamed service"
   accepts_value_for :pid_file
   accepts_value_for :command
+  accepts_value_for :reload_command
+  accepts_value_for :kill_signal
   accepts_list_for :environment
   accepts_value_for :chdir
   accepts_value_for :setuid
