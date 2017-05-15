@@ -38,6 +38,10 @@ meta :systemd do
   template do
     meet do
       render_erb template_path, to: conf_dest, sudo: true
+
+      # Ensure the service will be automatically started at boot time.
+      sudo "systemctl enable #{service_name}"
+
       sudo "systemctl start #{service_name}"
     end
 
