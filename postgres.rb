@@ -85,12 +85,16 @@ dep 'postgres config', :version do
       'hot_standby' => 'on'
     }
   end
+  def restart_postgres
+    log_shell "Restarting postgres...", "systemctl restart postgresql", sudo: true
+    sleep 5
+  end
   met? {
     current_settings.slice(*expected_settings.keys) == expected_settings
   }
   meet {
     render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{minor_version}/main/postgresql.conf"
-    log_shell "Restarting postgres", "systemctl restart postgresql"
+    restart_postgres
   }
 end
 
