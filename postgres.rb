@@ -176,7 +176,7 @@ dep 'postgres.bin', :version do
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
       :uri => 'http://apt.postgresql.org/pub/repos/apt/',
-      :release => 'trusty-pgdg',
+      :release => 'xenial-pgdg',
       :repo => 'main',
       :key_sig => 'ACCC4CF8',
       :key_uri => 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
