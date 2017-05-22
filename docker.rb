@@ -1,5 +1,5 @@
 dep 'docker.bin', :version do
-  version.default!('17.03.1')
+  version.default!('17.03.1-ce')
 
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(

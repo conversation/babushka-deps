@@ -1,10 +1,10 @@
-dep 'provision ci', :keys, :host do
+dep 'provision ci', :keys, :host, :buildkite_token do
   keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
   requires_when_unmet 'public key in place'.with(host, keys)
   requires_when_unmet 'babushka bootstrapped'.with(host)
   met? { false }
   meet do
-    ssh("root@#{host}") { |h| h.babushka 'conversation:ci provisioned' }
+    ssh("root@#{host}") { |h| h.babushka "conversation:ci provisioned", buildkite_token: buildkite_token }
   end
 end
 
@@ -15,7 +15,7 @@ dep 'ci prepared' do
   ]
 end
 
-dep 'ci provisioned', :app_user do
+dep 'ci provisioned', :app_user, :buildkite_token do
   requires [
     'ci prepared',
     'localhost hosts entry',
@@ -25,12 +25,15 @@ dep 'ci provisioned', :app_user do
     'counter common packages',
     'jobs common packages',
     'ci packages',
+    'buildkite token installed'.with(buildkite_token: buildkite_token),
     'postgres access'.with(:username => app_user, :flags => '-sdrw')
   ]
 end
 
 dep 'ci packages' do
   requires [
+    'docker.bin',
+    'buildkite-agent.bin',
     'firefox.bin',
     'phantomjs',
     'xvfb.bin'
