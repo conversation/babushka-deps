@@ -1,7 +1,15 @@
+dep "buildkite-agent installed", :buildkite_token do
+  requires [
+    'buildkite-agent.bin',
+    'buildkite ssh key installed',
+    'buildkite token installed'.with(buildkite_token: buildkite_token)
+  ]
+end
+
 dep "buildkite-agent.bin", :version do
   version.default!("2.6.3")
 
-  requires "buildkite key installed"
+  requires "buildkite apt key installed"
 
   requires_when_unmet {
     on :apt, "apt source".with(
@@ -24,7 +32,14 @@ dep "buildkite-agent.bin", :version do
   provides "buildkite-agent >= #{version}"
 end
 
-dep "buildkite key installed" do
+dep "buildkite ssh key installed" do
+  met? { "/var/lib/buildkite-agent/.ssh/id_rsa.pub".p.exists? }
+  meet do
+    sudo %Q(mkdir -p ~/.ssh && cd ~/.ssh & ssh-keygen -t rsa -b 4096 -C "build@myorg.com" -f ~/.ssh/id_rsa -N ""), as: "buildkite-agent", su: true
+  end
+end
+
+dep "buildkite apt key installed" do
   met? {
     shell('apt-key list').split("\n").collapse(/^pub.*\//).val_for("6452D198")
   }

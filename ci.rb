@@ -30,13 +30,12 @@ dep 'ci provisioned', :user, :keys, :buildkite_token do
     'ci prepared',
     'localhost hosts entry',
     'lax host key checking',
-    'user setup'.with(user, keys),
     'tc common packages',
     'sharejs common packages',
     'counter common packages',
     'jobs common packages',
     'ci packages',
-    'buildkite token installed'.with(buildkite_token: buildkite_token),
+    'buildkite-agent installed'.with(buildkite_token: buildkite_token),
     'postgres access'.with(:username => user, :flags => '-sdrw')
   ]
 end
@@ -44,7 +43,6 @@ end
 dep 'ci packages' do
   requires [
     'docker.bin',
-    'buildkite-agent.bin',
     'firefox.bin',
     'phantomjs',
     'xvfb.bin'
