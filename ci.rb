@@ -1,3 +1,13 @@
+dep 'provision ci', :keys, :host do
+  keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
+  requires_when_unmet 'public key in place'.with(host, keys)
+  requires_when_unmet 'babushka bootstrapped'.with(host)
+  met? { false }
+  meet do
+    ssh("root@#{host}") { |h| h.babushka 'conversation:ci provisioned' }
+  end
+end
+
 dep 'ci prepared' do
   requires [
     'common:set.locale'.with(:locale_name => 'en_AU'),
@@ -10,12 +20,10 @@ dep 'ci provisioned', :app_user do
     'ci prepared',
     'localhost hosts entry',
     'lax host key checking',
-    'apt sources',
     'tc common packages',
     'sharejs common packages',
     'counter common packages',
     'jobs common packages',
-    'apt packages removed'.with(%w[resolvconf ubuntu-minimal]),
     'ci packages',
     'postgres access'.with(:username => app_user, :flags => '-sdrw')
   ]
@@ -30,7 +38,7 @@ dep 'ci packages' do
 end
 
 dep 'phantomjs', :version do
-  version.default!('1.8.2')
+  version.default!('2.1.1')
   def phantomjs_uri
     if Babushka.host.linux?
       "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-x86_64.tar.bz2"
