@@ -1,12 +1,14 @@
 dep "buildkite-agent.bin", :version do
   version.default!("2.6.3")
 
+  requires "buildkite key installed"
+
   requires_when_unmet {
-    on :apt, "keyed apt source".with(
+    on :apt, "apt source".with(
       :uri => "https://apt.buildkite.com/buildkite-agent",
+      :uri_matcher => "https://apt.buildkite.com/buildkite-agent",
       :release => "stable",
-      :repo => "main",
-      :key_sig => "6452D198"
+      :repo => "main"
     )
   }
 
@@ -20,6 +22,16 @@ dep "buildkite-agent.bin", :version do
   }
 
   provides "buildkite-agent >= #{version}"
+end
+
+dep "buildkite key installed" do
+  met? {
+    shell('apt-key list').split("\n").collapse(/^pub.*\//).val_for("6452D198")
+  }
+
+  meet do
+    sudo %Q(apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 32A37959C2FA5C3C99EFBC32A79206696452D198)
+  end
 end
 
 dep "buildkite token installed", :buildkite_token do
