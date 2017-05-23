@@ -1,8 +1,21 @@
 dep 'rails app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :threads, :workers do
-  requires [
-    'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port),
-    'config ruby app server'.with(app_name, path, env, username, threads, workers)
-  ]
+  def has_webpack_config?
+    (path / "webpack.config.js").exists?
+  end
+
+  if has_webpack_config?
+    requires [
+      'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port),
+      'webpack compile during deploy'.with(env: env),
+      'config ruby app server'.with(app_name, path, env, username, threads, workers)
+    ]
+  else
+    requires [
+      'rack app'.with(app_name, env, domain, username, path, listen_host, listen_port, enable_https, proxy_host, proxy_port),
+      'common:assets precompiled'.with(env: env, path: path),
+      'config ruby app server'.with(app_name, path, env, username, threads, workers)
+    ]
+  end
 end
 
 dep 'sinatra app', :app_name, :env, :domain, :username, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port, :threads, :workers do
