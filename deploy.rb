@@ -27,10 +27,11 @@ dep 'npm packages installed', :path do
   }
 end
 
-dep 'webpack compile during deploy', :env, :deploying, template: 'task' do
-  requires 'npm development packages installed'.with('~/current')
+dep 'webpack compile during deploy', :env, :path, :deploying, template: 'task' do
+  path.default!('~/current')
+  requires 'npm development packages installed'.with(path)
   run {
-    shell 'npm run webpack:prod'
+    shell('npm run webpack:prod', cd: path)
   }
 end
 
