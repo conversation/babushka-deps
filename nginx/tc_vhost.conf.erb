@@ -7,14 +7,14 @@ upstream <%= upstream_name %> {
 
 # Canonical www. redirect
 server {
-  listen <%= listen_host %>:<%= listen_port %>;
+  listen <%= listen_port %>;
   server_name www.<%= domain %>;
   return 301 http://<%= domain %>$request_uri;
 }
 
 # Canonical http:// vhost
 server {
-  listen <%= listen_host %>:<%= listen_port %>;
+  listen <%= listen_port %>;
   server_name <%= domain %>;
 
   include /etc/nginx/sites-available/<%= domain %>.common;
@@ -22,7 +22,7 @@ server {
 
 # Canonical https:// vhost
 server {
-  listen <%= listen_host %>:443 ssl;
+  listen 443 ssl;
   server_name <%= domain %>;
 
   ssl_certificate      /etc/ssl/certs/<%= domain %>.crt;
