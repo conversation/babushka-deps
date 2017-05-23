@@ -6,7 +6,7 @@ dep 'sharejs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'user setup'.with(:key => key),
 
-    "sharejs.upstart".with(app_user, env, app_root, "sharejs_#{env}")
+    "sharejs.systemd".with(app_user, env, app_root, "sharejs_#{env}")
   ]
 end
 
@@ -34,14 +34,15 @@ dep 'sharejs common packages' do
   ]
 end
 
-dep 'sharejs.upstart', :username, :env, :app_root, :db_name do
+dep 'sharejs.systemd', :username, :env, :app_root, :db_name do
   requires 'sharejs setup'.with(username, app_root, db_name)
 
   username.default!(shell('whoami'))
   db_name.default!("tc_#{env}")
 
-  command "coffee app.coffee"
-  environment %Q{NODE_ENV=#{env.to_s.inspect}}
+  description "ShareJS server"
+  command "/usr/bin/coffee app.coffee"
+  environment "NODE_ENV=#{env}"
   setuid username
   chdir "/srv/http/#{username}/current"
   respawn 'yes'
