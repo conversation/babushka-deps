@@ -13,7 +13,7 @@ dep 'core software' do
     'tree.bin',
     'pv.bin',
     'ntpd.bin',
-    's3cmd',
+    's3cmd.bin',
     'trickle.bin'
   ]
 end

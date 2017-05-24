@@ -163,25 +163,8 @@ dep 'rcconf.bin' do
   requires 'whiptail.bin'
 end
 
-dep 's3cmd' do
-  requires "python-dateutil.lib"
-
- def source_url
-   "http://mirrors.kernel.org/ubuntu/pool/universe/s/s3cmd/s3cmd_1.5.0~rc1-2_all.deb"
- end
-
- met? {
-   log_shell("checking for s3cmd", "which s3cmd")
- }
- meet {
-   if Babushka.host.linux?
-     Babushka::Resource.get(source_url) { |path|
-       log_shell("installing s3cmd", "dpkg -i #{path}", :sudo => true)
-     }
-   else
-     unmeetable! "Not sure how to install s3cmd on this system."
-   end
- }
+dep 's3cmd.bin' do
+  requires 'whiptail.bin'
 end
 
 dep 'sasl.lib' do
