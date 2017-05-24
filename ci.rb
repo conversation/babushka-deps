@@ -47,6 +47,7 @@ dep 'ci packages' do
     'firefox.bin',
     'phantomjs',
     'python.bin',
+    'tmux.bin',
     'xvfb.bin'
   ]
 end
