@@ -36,8 +36,7 @@ dep 'counter packages' do
     'counter common packages',
     'curl.lib',
     'running.nginx',
-    'socat.bin', # for DB tunnelling
-    'geoipupdate.bin' # for keeping maxmind geo databases up to date
+    'socat.bin' # for DB tunnelling
   ]
 end
 
