@@ -42,6 +42,7 @@ end
 
 dep 'ci packages' do
   requires [
+    'ack-grep.bin',
     'docker.bin',
     'firefox.bin',
     'phantomjs',
@@ -69,6 +70,10 @@ dep 'phantomjs', :version do
       shell "ln -fs /usr/local/phantomjs/bin/phantomjs /usr/local/bin"
     end
   }
+end
+
+dep 'ack-grep.bin' do
+  provides 'ack'
 end
 
 dep 'xvfb.bin' do
