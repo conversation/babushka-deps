@@ -46,6 +46,7 @@ dep 'ci packages' do
     'docker.bin',
     'firefox.bin',
     'phantomjs',
+    'python.bin',
     'xvfb.bin'
   ]
 end
@@ -74,6 +75,10 @@ end
 
 dep 'ack-grep.bin' do
   provides 'ack'
+end
+
+dep 'python.bin' do
+  provides 'python'
 end
 
 dep 'xvfb.bin' do
