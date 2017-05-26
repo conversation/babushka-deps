@@ -35,6 +35,7 @@ dep 'ci provisioned', :user, :keys, :buildkite_token do
     'counter common packages',
     'jobs common packages',
     'ci packages',
+    'firewall rules',
     'buildkite-agent installed'.with(buildkite_token: buildkite_token),
     'postgres access'.with(:username => user, :flags => '-sdrw')
   ]
@@ -50,8 +51,20 @@ dep 'ci packages' do
     'sasl.lib',
     'terraform',
     'tmux.bin',
+    'ufw.bin',
     'xvfb.bin'
   ]
+end
+
+dep 'firewall rules' do
+  met? {
+    shell? %q(ufw status | grep "Status: active")
+  }
+
+  meet {
+    shell "ufw allow ssh/tcp"
+    shell "ufw --force enable"
+  }
 end
 
 dep 'phantomjs', :version do
@@ -101,3 +114,5 @@ dep 'terraform', :version do
     end
   }
 end
+
+dep 'ufw.bin'
