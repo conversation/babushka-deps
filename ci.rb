@@ -37,7 +37,8 @@ dep 'ci provisioned', :user, :keys, :buildkite_token do
     'ci packages',
     'firewall rules',
     'buildkite-agent installed'.with(buildkite_token: buildkite_token),
-    'postgres access'.with(:username => user, :flags => '-sdrw')
+    'postgres access'.with(:username => user, :flags => '-sdrw'),
+    'docker-gc'
   ]
 end
 

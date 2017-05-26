@@ -29,3 +29,29 @@ dep 'docker-compose', :version do
     shell "chmod a+x /usr/local/bin/docker-compose"
   }
 end
+
+dep 'docker-gc' do
+  def docker_gc_src; "docker/docker-gc.erb" end
+  def docker_gc_dest; "/etc/cron.hourly/docker-gc" end
+  def docker_gc_exclude_src; "docker/docker-gc-exclude.erb" end
+  def docker_gc_exclude_dest; "/etc/docker-gc-exclude" end
+
+  def up_to_date?(source_name, dest)
+    source = dependency.load_path.parent / source_name
+    Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
+  end
+
+  met? {
+    up_to_date?(docker_gc_src, docker_gc_dest) &&
+    up_to_date?(docker_gc_exclude_src, docker_gc_exclude_dest)
+  }
+
+  meet {
+    render_erb(docker_gc_src, to: docker_gc_dest)
+    render_erb(docker_gc_exclude_src, to: docker_gc_exclude_dest)
+  }
+
+  after {
+    shell "chmod a+x #{docker_gc_dest}"
+  }
+end
