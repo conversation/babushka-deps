@@ -27,6 +27,24 @@ dep 'npm packages installed', :path do
   }
 end
 
+dep 'yarn packages installed', :path do
+  met? {
+    output = raw_shell('yarn check', :cd => path)
+    output.ok?
+  }
+  meet {
+    shell('yarn install', :cd => path)
+  }
+end
+
+dep 'yarn webpack compile during deploy', :env, :deploying, template: 'task' do
+  path.default!('~/current')
+  requires 'yarn packages installed'.with(path)
+  run {
+    shell 'yarn webpack:prod'
+  }
+end
+
 dep 'webpack compile during deploy', :env, :path, :deploying, template: 'task' do
   path.default!('~/current')
   requires 'npm development packages installed'.with(path)
