@@ -47,6 +47,7 @@ dep 'ci packages' do
     'firefox.bin',
     'phantomjs',
     'python.bin',
+    'sasl.lib',
     'terraform',
     'tmux.bin',
     'xvfb.bin'
