@@ -25,6 +25,7 @@ dep "buildkite-agent.bin", :version do
   }
 
   after {
+    log_shell "Adding buildkite agent to docker group...", "usermod -aG docker buildkite-agent", sudo: true
     log_shell "Enabling buildkite agent...", "systemctl enable buildkite-agent", sudo: true
     log_shell "Starting buildkite agent...", "systemctl start buildkite-agent", sudo: true
   }
