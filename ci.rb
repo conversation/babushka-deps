@@ -45,6 +45,7 @@ dep 'ci packages' do
   requires [
     'ack-grep.bin',
     'docker.bin',
+    'docker-compose',
     'firefox.bin',
     'phantomjs',
     'python.bin',

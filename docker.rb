@@ -18,3 +18,14 @@ dep 'docker.bin', :version do
 
   provides "docker >= #{version}"
 end
+
+dep 'docker-compose', :version do
+  version.default!('1.13.0')
+  met? {
+    in_path? "docker-compose >= #{version}"
+  }
+  meet {
+    shell "curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+    shell "chmod a+x /usr/local/bin/docker-compose"
+  }
+end
