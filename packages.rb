@@ -144,6 +144,8 @@ dep 'rcconf.bin' do
   requires 'whiptail.bin'
 end
 
+dep 'redis-server.bin'
+
 dep 's3cmd.bin' do
   requires 'whiptail.bin'
 end
