@@ -50,6 +50,7 @@ dep 'ci packages' do
     'firefox.bin',
     'phantomjs',
     'python.bin',
+    'redis-server.bin',
     'sasl.lib',
     'terraform',
     'tmux.bin',
