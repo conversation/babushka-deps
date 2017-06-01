@@ -16,7 +16,7 @@ dep 'postgres standby', :env, :version, :local_user, :local_port, :remote_user, 
   }[env])
 
   requires [
-    'postgres socket tunnel'.with(local_user, local_port, remote_user, remote_host),
+    'postgres socket tunnel.systemd'.with(local_user, local_port, remote_user, remote_host),
     'postgres recovery config'.with(version, local_port, remote_user)
   ]
 end
@@ -36,35 +36,35 @@ dep 'postgres recovery config', :version, :local_port, :remote_user do
   meet {
     render_erb "postgres/recovery.conf.erb", :to => "/var/lib/postgresql/#{minor_version}/main/recovery.conf"
     shell "chown postgres:postgres /var/lib/postgresql/#{minor_version}/main/recovery.conf"
-    log_shell "Restarting postgres", "/etc/init.d/postgresql restart", :as => 'postgres'
+    log_shell "Restarting postgres...", "systemctl restart postgresql", sudo: true
   }
 end
 
-dep 'postgres socket tunnel', :local_user, :local_port, :remote_user, :remote_host do
+dep 'postgres socket tunnel.systemd', :local_user, :local_port, :remote_user, :remote_host do
   local_user.default!('postgres')
   remote_user.default!('standby')
 
   requires 'socat.bin'
 
+  def service_name
+    "postgres_socket_tunnel"
+  end
+
   def local_socket
     "/var/run/postgresql/.s.PGSQL.#{local_port}"
   end
+
   def remote_socket
     "/var/run/postgresql/.s.PGSQL.5432"
   end
-  def tunnel_config
-    "/etc/init/postgres_socket_tunnel.conf"
-  end
 
-  met? {
-    local_socket.p.exists? &&
-    shell("lsof #{local_socket}").val_for('socat').ends_with?(local_socket) &&
-    Babushka::Renderable.new(tunnel_config).from?(dependency.load_path.parent / "replication/postgres_socket_tunnel.conf.erb")
-  }
-  meet {
-    render_erb 'replication/postgres_socket_tunnel.conf.erb', :to => tunnel_config
-    sudo "systemctl start postgres_socket_tunnel; true"
-  }
+  description "Postgres socket tunnel"
+  respawn 'yes'
+
+  command %Q(/usr/bin/socat UNIX-LISTEN:#{local_socket},fork EXEC:'ssh -C #{remote_user}@#{remote_host} "socat STDIO UNIX-CONNECT:#{remote_socket}"')
+
+  setuid local_user
+  chdir "/var/lib/postgresql"
 end
 
 dep 'postgres replication monitoring', :version, :test_user do
