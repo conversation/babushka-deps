@@ -1,6 +1,7 @@
 dep 'core software' do
   requires [
     'sudo.bin',
+    'host.bin',
     'lsof.bin',
     'vim.bin',
     'curl.bin',

@@ -94,6 +94,8 @@ dep 'ffi.lib' do
   installs { via :apt, 'libffi-dev' }
 end
 
+dep 'host.bin'
+
 dep 'logrotate.bin'
 
 dep 'lsof.bin'
