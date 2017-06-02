@@ -29,7 +29,7 @@ dep 'nodejs.bin', :version do
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
       :uri => 'https://deb.nodesource.com/node_6.x',
-      :release => 'trusty',
+      :release => 'xenial',
       :repo => 'main',
       :key_sig => '68576280',
       :key_uri => 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key'
