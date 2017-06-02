@@ -45,6 +45,7 @@ end
 dep 'ci packages' do
   requires [
     'ack-grep.bin',
+    'silversearcher.bin',
     'docker.bin',
     'docker-compose',
     'firefox.bin',

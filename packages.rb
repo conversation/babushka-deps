@@ -165,6 +165,10 @@ dep 'selinux.lib' do
   installs 'libselinux1-dev'
 end
 
+dep 'silversearcher.bin' do
+  provides 'ag'
+end
+
 dep 'socat.bin'
 
 dep 'sshd.bin' do
