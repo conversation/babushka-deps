@@ -231,6 +231,7 @@ end
 
 dep 'apt configured' do
   requires [
+    'apt-transport-https.bin',
     'apt sources',
     'apt packages removed'.with([/apache/i, /mysql/i, /php/i, /dovecot/]),
     'upgrade apt packages'

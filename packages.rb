@@ -1,5 +1,7 @@
 dep 'aptitude.bin'
 
+dep 'apt-transport-https.bin'
+
 dep 'aspell.bin'
 
 dep 'aspell dictionary.lib' do
