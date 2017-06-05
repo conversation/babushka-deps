@@ -7,7 +7,7 @@ dep "buildkite-agent installed", :buildkite_token do
 end
 
 dep "buildkite-agent.bin", :version do
-  version.default!("2.6.3")
+  version.default!("3.0-beta.27")
 
   requires "buildkite apt key installed"
 
@@ -15,7 +15,7 @@ dep "buildkite-agent.bin", :version do
     on :apt, "apt source".with(
       :uri => "https://apt.buildkite.com/buildkite-agent",
       :uri_matcher => "https://apt.buildkite.com/buildkite-agent",
-      :release => "stable",
+      :release => "unstable",
       :repo => "main"
     )
   }
