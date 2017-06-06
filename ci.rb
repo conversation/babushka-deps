@@ -67,6 +67,7 @@ dep 'ci firewall rules' do
 
   meet {
     shell "ufw allow ssh"
+    shell "ufw allow postgresql"
     shell "ufw --force enable"
   }
 end
