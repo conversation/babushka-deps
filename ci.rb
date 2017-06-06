@@ -118,5 +118,3 @@ dep 'terraform', :version do
     end
   }
 end
-
-dep 'ufw.bin'

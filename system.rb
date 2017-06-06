@@ -10,6 +10,7 @@ dep 'core software' do
     'iotop.bin',
     'jnettop.bin',
     'tmux.bin',
+    'ufw.bin',
     'nmap.bin',
     'tree.bin',
     'pv.bin',

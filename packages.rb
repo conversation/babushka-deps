@@ -194,6 +194,8 @@ dep 'tree.bin'
 
 dep 'trickle.bin'
 
+dep 'ufw.bin'
+
 dep 'unbound.bin' do
   met? {
     in_path?("unbound")
