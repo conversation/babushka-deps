@@ -243,6 +243,7 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
     'localhost hosts entry',
     'hostname'.with(host_name),
     'secured ssh logins',
+    'firewall rules',
     'utc',
     'core software',
     'local caching dns server',

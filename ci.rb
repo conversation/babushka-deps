@@ -35,7 +35,7 @@ dep 'ci provisioned', :user, :keys, :buildkite_token do
     'counter common packages',
     'jobs common packages',
     'ci packages',
-    'firewall rules',
+    'ci firewall rules',
     'buildkite-agent installed'.with(buildkite_token: buildkite_token),
     'postgres access'.with(:username => user, :flags => '-sdrw'),
     'docker-gc'
@@ -60,13 +60,13 @@ dep 'ci packages' do
   ]
 end
 
-dep 'firewall rules' do
+dep 'ci firewall rules' do
   met? {
     shell? %q(ufw status | grep "Status: active")
   }
 
   meet {
-    shell "ufw allow ssh/tcp"
+    shell "ufw allow ssh"
     shell "ufw --force enable"
   }
 end

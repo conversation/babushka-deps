@@ -160,3 +160,16 @@ dep 'tmp cleaning grace period', :for => :ubuntu do
     shell("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
   }
 end
+
+dep 'firewall rules' do
+  met? {
+    shell? %q(ufw status | grep "Status: active")
+  }
+
+  meet {
+    shell "ufw allow ssh"
+    shell "ufw allow http"
+    shell "ufw allow https"
+    shell "ufw --force enable"
+  }
+end
