@@ -168,9 +168,9 @@ dep 'firewall rules' do
   }
 
   meet {
-    shell "ufw allow ssh"
-    shell "ufw allow http"
-    shell "ufw allow https"
+    shell "ufw allow ssh/tcp"
+    shell "ufw allow http/tcp"
+    shell "ufw allow https/tcp"
     shell "ufw --force enable"
   }
 end
