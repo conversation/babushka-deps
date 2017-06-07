@@ -30,6 +30,12 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
       :user => app_user
     ),
 
+    'delayed job'.with(
+      :env => env,
+      :user => app_user
+      :queue => "mailers"
+    ),
+
     'db'.with(
       :env => env,
       :username => app_user,
