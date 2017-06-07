@@ -60,7 +60,7 @@ dep 'local caching dns server' do
   }
 end
 
-dep 'monitored with collectd' do
+dep 'monitored with collectd', :librato_user, :librato_password do
   requires 'collectd.bin'
 
   def conf_files
