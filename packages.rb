@@ -27,7 +27,7 @@ dep 'collectd.bin' do
 end
 
 dep 'nodejs.bin', :version do
-  version.default!('6.10.0')
+  version.default!('6.10')
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
       :uri => 'https://deb.nodesource.com/node_6.x',
