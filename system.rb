@@ -15,7 +15,6 @@ dep 'core software' do
     'nmap.bin',
     'tree.bin',
     'pv.bin',
-    'ntpd.bin',
     's3cmd.bin',
     'trickle.bin'
   ]
@@ -74,7 +73,6 @@ dep 'monitored with collectd', :librato_user, :librato_password do
       "collectd/30_interface.conf.erb" => "/etc/collectd/collectd.conf.d/30_interface.conf",
       "collectd/30_load.conf.erb" => "/etc/collectd/collectd.conf.d/30_load.conf",
       "collectd/30_memcached.conf.erb" => "/etc/collectd/collectd.conf.d/30_memcached.conf",
-      "collectd/30_ntpd.conf.erb" => "/etc/collectd/collectd.conf.d/30_ntpd.conf",
       "collectd/30_processes.conf.erb" => "/etc/collectd/collectd.conf.d/30_processes.conf",
       "collectd/30_statsd.conf.erb" => "/etc/collectd/collectd.conf.d/30_statsd.conf",
       "collectd/30_swap.conf.erb" => "/etc/collectd/collectd.conf.d/30_swap.conf",
