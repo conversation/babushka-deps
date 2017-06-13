@@ -100,6 +100,8 @@ dep 'logrotate.bin'
 
 dep 'lsof.bin'
 
+dep 'man.bin'
+
 dep 'memcached.bin'
 
 dep 'nc.bin'
