@@ -108,10 +108,6 @@ dep 'nc.bin'
 
 dep 'nmap.bin'
 
-dep 'ntpd.bin' do
-  installs { via :apt, 'ntp' }
-end
-
 dep 'pcre.lib' do
   installs 'libpcre3-dev'
 end
