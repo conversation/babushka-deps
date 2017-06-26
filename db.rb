@@ -7,7 +7,7 @@ dep 'db', :username, :root, :env, :data_required, :require_db_deps do
 
   require_db_deps.default!('yes')
 
-  requires 'common:app bundled'.with(root, env)
+  requires 'app bundled'.with(root, env)
 
   if require_db_deps[/^y/]
     if data_required[/^y/]
