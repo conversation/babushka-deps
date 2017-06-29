@@ -109,12 +109,12 @@ end
 dep 'firefox.bin'
 
 dep 'terraform', :version do
-  version.default!('0.9.5')
+  version.default!('0.9.9')
   met? {
     in_path? "terraform >= #{version}"
   }
   meet {
-    Babushka::Resource.extract "https://releases.hashicorp.com/terraform/0.9.5/terraform_0.9.5_linux_amd64.zip" do |archive|
+    Babushka::Resource.extract "https://releases.hashicorp.com/terraform/0.9.9/terraform_0.9.9_linux_amd64.zip" do |archive|
       shell "cp -r terraform /usr/local/bin/terraform"
     end
   }
