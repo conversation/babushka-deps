@@ -65,9 +65,7 @@ location @app {
 location /api/ {
   satisfy any;
 
-  allow 127.0.0.1;
-  allow <%= listen_host %>;
-  deny all;
+  allow all;
 
   auth_basic "API";
   auth_basic_user_file api_htpasswd;
