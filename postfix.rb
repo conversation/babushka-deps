@@ -23,6 +23,7 @@ meta :postfix do
 end
 
 dep 'postfix.bin'
+dep 'mailutils.bin'
 
 dep 'running.postfix' do
   requires 'configured.postfix'
@@ -47,10 +48,13 @@ dep 'configured.postfix', :mailgun_password do
   end
 
   requires 'postfix.bin'
+  requires 'mailutils.bin'
+
   met? {
     Babushka::Renderable.new(postfix_conf).from?(dependency.load_path.parent / "postfix/main.cf.erb")
     Babushka::Renderable.new(sasl_passwd).from?(dependency.load_path.parent / "postfix/sasl_passwd.erb")
   }
+
   meet {
     render_erb 'postfix/main.cf.erb', to: postfix_conf
     render_erb 'postfix/sasl_passwd.erb', to: sasl_passwd
