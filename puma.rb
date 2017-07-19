@@ -6,7 +6,10 @@ dep 'puma.systemd', :env, :path, :username, :threads, :workers do
   respawn 'yes'
   pid_file (path / 'tmp/pids/puma.pid').abs
 
-  command (path / 'bin/puma').abs
+  puma = (path / 'bin/puma').abs
+  socket_path = (path / "tmp/sockets/puma.socket").abs
+  command "#{puma} -b unix://#{socket_path}"
+
   reload_command "/bin/kill -s USR1 $MAINPID" # reload workers
 
   setuid username
