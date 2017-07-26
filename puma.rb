@@ -6,12 +6,14 @@ dep 'puma.systemd', :env, :path, :username, :threads, :workers do
   respawn 'yes'
   pid_file (path / 'tmp/pids/puma.pid').abs
 
-  command (path / 'bin/puma').abs
+  puma_path = (path / 'bin/puma').abs
+  socket_path = (path / "tmp/sockets/puma.socket").abs
+  command "#{puma_path} -b 'unix://#{socket_path}' -t #{threads} -w #{workers}"
   reload_command "/bin/kill -s USR1 $MAINPID" # reload workers
 
   setuid username
   chdir path.p.abs
-  environment "APP_ENV=#{env}", "RACK_ENV=#{env}", "RAILS_ENV=#{env}", "PUMA_THREADS=#{threads}", "PUMA_WORKERS=#{workers}"
+  environment "APP_ENV=#{env}", "RACK_ENV=#{env}", "RAILS_ENV=#{env}"
 end
 
 dep 'log puma socket', :app_name, :path, :user  do
