@@ -13,7 +13,7 @@ dep 'puma.systemd', :env, :path, :username, :threads, :workers do
 
   setuid username
   chdir path.p.abs
-  environment "APP_ENV=#{env}", "RACK_ENV=#{env}", "RAILS_ENV=#{env}"
+  environment "APP_ENV=#{env}", "RACK_ENV=#{env}", "RAILS_ENV=#{env}", "LOG_TO_FILE=1"
 end
 
 dep 'log puma socket', :app_name, :path, :user  do
