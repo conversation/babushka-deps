@@ -1,7 +1,8 @@
 <Plugin write_http>
-  <URL "https://collectd.librato.com/v1/measurements">
+  <Node "librato">
+    URL "https://collectd.librato.com/v1/measurements"
     User "<%= librato_user %>"
     Password "<%= librato_password %>"
     Format "JSON"
-  </URL>
+  </Node>
 </Plugin>
