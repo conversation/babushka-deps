@@ -21,7 +21,7 @@ end
 dep 'ci prepared' do
   requires [
     'common:set.locale'.with(:locale_name => 'en_AU'),
-    'ruby.src'.with(:version => '2.3.3', :patchlevel => 'p222'),
+    'ruby.src'.with(:version => '2.3.4', :patchlevel => 'p301'),
   ]
 end
 
