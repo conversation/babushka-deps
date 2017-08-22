@@ -11,7 +11,13 @@ dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     'geoip database'.with(:app_root => app_root),
     'ssl cert in place'.with(:domain => domain, :env => env),
+  ]
 
+  if env == 'production'
+    requires 'ssl cert in place'.with(:domain => 'counter.theconversation.com', :env => env)
+  end
+
+  requires [
     'db'.with(
       :env => env,
       :username => app_user,
