@@ -1,8 +1,9 @@
 # The unicorn appserver.
 upstream <%= upstream_name %> {
+  server 127.0.0.1:3000;
   # fail_timeout=0 means we always retry the unicorn master, since it's
   # responsible for restarting workers when they fail.
-  server unix:<%= application_socket %> fail_timeout=0;
+  server unix:<%= application_socket %> fail_timeout=0 backup;
 }
 
 # Canonical www. redirect
