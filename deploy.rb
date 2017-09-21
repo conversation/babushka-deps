@@ -8,6 +8,8 @@ end
 
 dep 'npm packages installed', :path do
   met? {
+    # Prune extraneous packages.
+    shell('npm prune --production=false', :cd => path)
     output = raw_shell('npm ls --production=false', :cd => path)
     # Older `npm` versions exit 0 on failure.
     output.ok? && output.stdout['UNMET DEPENDENCY'].nil?
