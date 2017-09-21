@@ -6,14 +6,24 @@ def on_standby?
   current_hostname == standby_hostname
 end
 
+dep 'npm development packages installed', :path do
+  met? {
+    output = raw_shell('npm ls --dev', :cd => path)
+    output.ok?
+  }
+  meet {
+    shell('npm install --only=dev', :cd => path)
+  }
+end
+
 dep 'npm packages installed', :path do
   met? {
-    output = raw_shell('npm ls --production', :cd => path)
+    output = raw_shell('npm ls', :cd => path)
     # Older `npm` versions exit 0 on failure.
     output.ok? && output.stdout['UNMET DEPENDENCY'].nil?
   }
   meet {
-    shell('npm install --production', :cd => path)
+    shell('npm install', :cd => path)
   }
 end
 
@@ -37,7 +47,7 @@ end
 
 dep 'webpack compile during deploy', :env, :path, :deploying, template: 'task' do
   path.default!('~/current')
-  requires 'npm packages installed'.with(path)
+  requires 'npm development packages installed'.with(path)
   run {
     shell('npm run webpack:prod', cd: path)
   }
