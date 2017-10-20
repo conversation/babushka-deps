@@ -37,7 +37,7 @@ dep 'yarn packages installed', :path do
   }
 end
 
-dep 'yarn webpack compile during deploy', :env, :deploying, template: 'task' do
+dep 'yarn webpack compile during deploy', :env, :path, :deploying, template: 'task' do
   path.default!('~/current')
   requires 'yarn packages installed'.with(path)
   run {
