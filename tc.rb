@@ -107,6 +107,7 @@ dep 'tc common packages' do
     'geoip.bin', # for geoip-c
     'aspell dictionary.lib',
     'coffeescript.bin', # for barista
+    'yarn.npm',
     'tidy.bin', # for upmark preprocessing in MarkdownController
     'imagemagick.bin', # for paperclip
     'pngquant.bin', # for reducing the size of PNGs

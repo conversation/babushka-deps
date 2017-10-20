@@ -44,6 +44,13 @@ dep 'nodejs.bin', :version do
   provides "node ~> #{version}"
 end
 
+dep 'yarn.npm', :version do
+  version.default!('1.2.1')
+  installs "yarn = #{version}"
+  requires 'nodejs.bin'
+  provides "yarn = #{version}"
+end
+
 dep 'coffeescript.bin', :version do
   version.default!('1.4.0')
   requires 'nodejs.bin'
