@@ -33,7 +33,7 @@ dep 'yarn packages installed', :path do
     output.ok?
   }
   meet {
-    shell('yarn install', :cd => path)
+    shell('yarn install --frozen-lockfile', :cd => path)
   }
 end
 
