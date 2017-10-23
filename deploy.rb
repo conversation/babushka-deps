@@ -29,8 +29,12 @@ end
 
 dep 'yarn packages installed', :path do
   met? {
-    output = raw_shell('yarn check', :cd => path)
-    output.ok?
+    # We haven't found the right way to have yarn return non-zero when there's packages
+    # to install. As an interim measure, we're falling back to npm to check if
+    # work is required.
+    output = raw_shell('npm ls', :cd => path)
+    # Older `npm` versions exit 0 on failure.
+    output.ok? && output.stdout['UNMET DEPENDENCY'].nil?
   }
   meet {
     shell('yarn install --frozen-lockfile --production=false', :cd => path)
