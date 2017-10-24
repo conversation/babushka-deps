@@ -24,8 +24,7 @@ dep 'dw app', :env, :host, :domain, :app_user, :app_root, :key do
       :enable_https => 'no',
       :domain => domain,
       :username => app_user,
-      :path => app_root,
-      :threads => 6
+      :path => app_root
     )
   ]
 end

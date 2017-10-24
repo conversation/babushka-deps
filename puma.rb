@@ -1,14 +1,11 @@
-dep 'puma.systemd', :env, :path, :username, :threads, :workers do
-  threads.default!('4')
-  workers.default!('1')
-
+dep 'puma.systemd', :env, :path, :username do
   description "Puma HTTP server"
   respawn 'yes'
   pid_file (path / 'tmp/pids/puma.pid').abs
 
   puma_path = (path / 'bin/puma').abs
   socket_path = (path / "tmp/sockets/puma.socket").abs
-  command "#{puma_path} -b 'unix://#{socket_path}' -t #{threads} -w #{workers}"
+  command "#{puma_path} -b 'unix://#{socket_path}'"
   reload_command "/bin/kill -s USR1 $MAINPID" # reload workers
 
   setuid username
