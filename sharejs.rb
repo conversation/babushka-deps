@@ -56,5 +56,6 @@ dep 'sharejs setup', :username, :app_root, :db_name do
   requires [
     'schema loaded'.with(:username => username, :root => app_root, :db_name => db_name),
     'npm packages installed'.with('~/current'),
+    'rack.logrotate'.with(username),
   ]
 end
