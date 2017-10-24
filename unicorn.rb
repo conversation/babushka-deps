@@ -1,6 +1,4 @@
-dep 'unicorn.systemd', :env, :path, :username, :threads, :workers do
-  threads.default!('4')
-  workers.default!('1')
+dep 'unicorn.systemd', :env, :path, :username do
 
   description "Unicorn HTTP server"
   respawn 'yes'
@@ -12,7 +10,7 @@ dep 'unicorn.systemd', :env, :path, :username, :threads, :workers do
 
   setuid username
   chdir path.p.abs
-  environment "APP_ENV=#{env}", "RACK_ENV=#{env}", "RAILS_ENV=#{env}", "UNICORN_THREADS=#{threads}", "UNICORN_WORKERS=#{workers}"
+  environment "APP_ENV=#{env}", "RACK_ENV=#{env}", "RAILS_ENV=#{env}"
 end
 
 dep 'log unicorn socket', :app_name, :path, :user  do

@@ -31,8 +31,7 @@ dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
       :listen_host => host,
       :domain => domain,
       :username => app_user,
-      :path => app_root,
-      :threads => 8
+      :path => app_root
     )
   ]
 end
