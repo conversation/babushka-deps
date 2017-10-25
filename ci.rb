@@ -106,7 +106,13 @@ dep 'xvfb.bin' do
   provides 'Xvfb'
 end
 
-dep 'firefox.bin'
+dep 'firefox.bin', :version do
+  version.default!('56.0')
+
+  met? {
+    in_path? "firefox >= #{version}"
+  }
+end
 
 dep 'terraform', :version do
   version.default!('0.10.2')
