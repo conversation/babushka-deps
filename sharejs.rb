@@ -41,7 +41,7 @@ dep 'sharejs.systemd', :username, :env, :app_root, :db_name do
   db_name.default!("tc_#{env}")
 
   description "ShareJS server"
-  command "/usr/bin/coffee app.coffee"
+  command "/usr/bin/npm start"
   environment "NODE_ENV=#{env}"
   setuid username
   chdir "/srv/http/#{username}/current"
