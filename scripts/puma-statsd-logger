@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+
+# Polls puma for key stats every second and sends them to statsd, where they
+# can be graphed and monitored.
+#
+# The raw stats are retrieved by running `pumactl stats`. They're in JSON format,
+# so we extract the numbers we care about and use UDP to talk to statsd.
+#
+# Props to Tim Lucas and Sam Cochran for the basic structure:
+#
+#     https://gist.github.com/toolmantim/0e76d0377bb23974b06f
+#     https://github.com/sj26/puma-plugin-systemd
+#
+# We have a similar script for monitoring the unix socket between nginx and puma:
+#
+#     https://github.com/conversation/babushka-deps/blob/master/scripts/socket-statsd-logger
+# 
+require 'json'
+require 'socket'
+
+USAGE = "puma-statsd-logger <puma-app-path> <metric name>"
+METRIC_NAME_REGEXP = /\A[a-z][a-z\.]+[a-z]\Z/
+
+puma_app_path, metric_name = *ARGV
+
+if puma_app_path.nil? || metric_name.nil? || !metric_name.match(METRIC_NAME_REGEXP) || !File.directory?(puma_app_path)
+  $stderr.puts USAGE
+  exit(1)
+end
+
+# Take puma's stats and safely extract the values we care about
+class PumaStats
+  def initialize(stats)
+    @stats = stats
+  end
+
+  def clustered?
+    @stats.has_key? "workers"
+  end
+
+  def workers
+    @stats.fetch("workers", 1)
+  end
+
+  def booted_workers
+    @stats.fetch("booted_workers", 1)
+  end
+
+  def running
+    if clustered?
+      @stats["worker_status"].map { |s| s["last_status"].fetch("running", 0) }.inject(0, &:+)
+    else
+      @stats.fetch("running", 0)
+    end
+  end
+
+  def backlog
+    if clustered?
+      @stats["worker_status"].map { |s| s["last_status"].fetch("backlog", 0) }.inject(0, &:+)
+    else
+      @stats.fetch("backlog", 0)
+    end
+  end
+
+end
+
+loop do
+  data = `cd #{puma_app_path} && ./bin/pumactl stats`.strip.split("\n").last
+  stats = PumaStats.new(JSON.parse(data))
+  UDPSocket.new.send("#{metric_name}.workers:#{stats.workers}|g", 0, '127.0.0.1', 8125)
+  UDPSocket.new.send("#{metric_name}.booted_workers:#{stats.booted_workers}|g", 0, '127.0.0.1', 8125)
+  UDPSocket.new.send("#{metric_name}.running:#{stats.running}|g", 0, '127.0.0.1', 8125)
+  UDPSocket.new.send("#{metric_name}.backlog:#{stats.backlog}|g", 0, '127.0.0.1', 8125)
+
+  sleep(1)
+end
