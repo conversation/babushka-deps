@@ -27,3 +27,17 @@ dep 'puma-socket-statsd-logger.systemd', :app_name, :path, :user do
   setuid user
   chdir path.p.abs
 end
+
+dep 'log puma workers', :app_name, :path, :user  do
+  requires [
+    "script installed".with('puma-statsd-logger'),
+    "puma-statsd-logger.systemd".with(app_name, path, user)
+  ]
+end
+
+dep 'puma-statsd-logger.systemd', :app_name, :path, :user do
+  respawn 'yes'
+  command "/usr/local/bin/puma-statsd-logger #{path} #{app_name}.puma"
+  setuid user
+  chdir path.p.abs
+end
