@@ -1,32 +1,3 @@
-# Bug: this dep only checks for SELECT access, so if you're adding other privileges
-# you need to start from none at all.
-dep 'db access', :grant, :db_name, :schema, :username, :check_table do
-  grant.default!('SELECT')
-  schema.default!('public')
-  check_table.default!('users')
-  requires 'postgres access'.with(:username => username)
-  met? {
-    shell? %Q{psql #{db_name} -c 'SELECT * FROM #{check_table} LIMIT 1'}, :as => username
-  }
-  meet {
-    %w[TABLES SEQUENCES].each {|objects|
-      sudo %Q{psql #{db_name} -c 'GRANT #{grant} ON ALL #{objects} IN SCHEMA "#{schema}" TO "#{username}"'}, :as => 'postgres'
-    }
-  }
-end
-
-dep 'table exists', :username, :db_name, :table_name, :table_schema do
-  if table_name['.']
-    requires 'schema exists'.with(username, db_name, table_name.to_s.split('.', 2).first)
-  end
-  met? {
-    shell? "psql #{db_name} -t -c '\\d #{table_name}'", :as => username
-  }
-  meet {
-    sudo %Q{psql #{db_name} -c 'CREATE TABLE #{table_name} (#{table_schema})'}, :as => username
-  }
-end
-
 dep 'schema exists', :username, :db_name, :schema_name do
   requires 'postgres access'.with(:username => username)
   met? {
