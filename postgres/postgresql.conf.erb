@@ -4,13 +4,13 @@ ident_file = '/etc/postgresql/<%= minor_version %>/main/pg_ident.conf'
 
 external_pid_file = '/var/run/postgresql/<%= minor_version %>-main.pid'
 
-listen_addresses = ''
+listen_addresses = '127.0.0.1,172.17.0.1'
 port = 5432
 max_connections = 100
 superuser_reserved_connections = 2
 unix_socket_directories = '/var/run/postgresql'
 
-ssl = off
+ssl = on
 
 shared_buffers = 2048MB
 temp_buffers = 8MB
