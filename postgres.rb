@@ -24,6 +24,8 @@ dep 'postgres extension', :username, :db_name, :extension do
 end
 
 dep 'postgres', :version do
+  version.default!('10.1')
+
   requires [
     'postgres config'.with(version),
     'postgres auth config'.with(version)
