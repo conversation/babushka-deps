@@ -1,5 +1,5 @@
 dep 'docker.bin', :version do
-  version.default!('17.06.2-ce')
+  version.default!('17.09.0-ce')
 
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
@@ -20,7 +20,7 @@ dep 'docker.bin', :version do
 end
 
 dep 'docker-compose', :version do
-  version.default!('1.15.0')
+  version.default!('1.16.1')
   met? {
     in_path? "docker-compose >= #{version}"
   }

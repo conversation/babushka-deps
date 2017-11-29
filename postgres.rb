@@ -142,7 +142,7 @@ dep 'postgres.bin', :version do
     log_shell "Starting postgres...", "systemctl start postgresql", sudo: true
   end
 
-  version.default!('9.6.3')
+  version.default!('10.1')
   requires 'common:set.locale'
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
@@ -179,7 +179,7 @@ dep 'postgresql-contrib.lib', :version do
 end
 
 dep 'postgresql-repack.bin', :version do
-  version.default!('9.6.3')
+  version.default!('10.1')
   requires 'postgres.bin'.with(:version => version)
   provides "pg_repack"
 

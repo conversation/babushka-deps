@@ -1,5 +1,15 @@
-# Administrative login -- do not change or disable this.
-local   all             postgres        peer
+# Database administrative login by Unix domain socket
+local   all             postgres                                peer
 
-local   all             all             peer
-local   replication     standby         peer
+# "local" is for Unix domain socket connections only
+local   all             all                                     peer
+
+# IPv4 local connections
+host    all             all             127.0.0.1/32            md5
+
+# Allow IPv4 connections from docker
+host    all             all             172.16.0.0/12           md5
+
+# Allow replication connections from standby
+local   replication     standby                                 peer
+host    replication     standby         127.0.0.1/32            md5
