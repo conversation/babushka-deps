@@ -1,15 +1,18 @@
 # Database administrative login by Unix domain socket
-local   all             postgres                                peer
+local     all             postgres                                peer
 
 # "local" is for Unix domain socket connections only
-local   all             all                                     peer
+local     all             all                                     peer
 
 # IPv4 local connections
-host    all             all             127.0.0.1/32            md5
+host      all             all             127.0.0.1/32            md5
 
-# Allow IPv4 connections from docker
-host    all             all             172.16.0.0/12           md5
+# IPv4 connections from VLAN
+hostnossl all             all             172.16.0.0/16           md5
 
-# Allow replication connections from standby
-local   replication     standby                                 peer
-host    replication     standby         127.0.0.1/32            md5
+# IPv4 connections from docker
+hostnossl all             all             172.17.0.0/16           md5
+
+# Replication connections from standby
+local     replication     standby                                 peer
+host      replication     standby         127.0.0.1/32            md5

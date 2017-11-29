@@ -33,7 +33,9 @@ dep 'postgres', :version do
 end
 
 dep 'postgres config', :version do
+  requires 'postgres cert'.with(version)
   requires 'postgres.bin'.with(version)
+
   def minor_version
     v = version.to_s.scan(/^\d+\.\d/).first.to_f
     # Special-case version 10.x as it is installed everywhere without the minor
@@ -54,7 +56,7 @@ dep 'postgres config', :version do
     # Some settings that we customise, and hence use to test whether
     # our config has been applied.
     {
-      'listen_addresses' => '',
+      'listen_addresses' => '*',
       'superuser_reserved_connections' => '2',
       'work_mem' => '32768',
       'wal_level' => 'logical',
@@ -71,6 +73,29 @@ dep 'postgres config', :version do
   meet {
     render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{minor_version}/main/postgresql.conf"
     restart_postgres
+  }
+end
+
+dep 'postgres cert', :version do
+  def minor_version
+    v = version.to_s.scan(/^\d+\.\d/).first.to_f
+    # Special-case version 10.x as it is installed everywhere without the minor
+    # version number.
+    v >= 10 && v < 11 ? "10" : v.to_s
+  end
+
+  def data_dir
+    "/var/lib/postgresql/#{minor_version}/main"
+  end
+
+  met? { "#{data_dir}/server.crt".p.exists? }
+
+  meet {
+    # Generate a SSL cert valid for 100 years.
+    sudo "mkdir -p #{data_dir}"
+    sudo %(openssl req -new -x509 -days 36500 -nodes -text -out #{data_dir}/server.crt -keyout #{data_dir}/server.key -subj "/CN=tc-dev.net")
+    sudo "chmod og-rwx #{data_dir}/server.key"
+    sudo "chown -R postgres:postgres /var/lib/postgresql"
   }
 end
 
