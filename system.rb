@@ -170,6 +170,7 @@ dep 'firewall rules' do
     shell "ufw allow ssh/tcp"
     shell "ufw allow http/tcp"
     shell "ufw allow https/tcp"
+    shell "ufw allow proto tcp from 172.16.0.0/12 to any port 5432"
     shell "ufw --force enable"
   }
 end
