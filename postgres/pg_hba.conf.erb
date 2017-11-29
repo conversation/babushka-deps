@@ -8,10 +8,10 @@ local     all             all                                     peer
 host      all             all             127.0.0.1/32            md5
 
 # IPv4 connections from VLAN
-hostnossl all             all             172.16.0.0/16           md5
+hostssl   all             all             172.16.0.0/16           md5
 
 # IPv4 connections from docker
-hostnossl all             all             172.17.0.0/16           md5
+hostssl   all             all             172.17.0.0/16           md5
 
 # Replication connections from standby
 local     replication     standby                                 peer
