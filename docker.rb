@@ -1,6 +1,8 @@
 dep 'docker.bin', :version do
   version.default!('17.09.0-ce')
 
+  requires 'docker config'
+
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
       :uri => 'https://download.docker.com/linux/ubuntu',
@@ -17,6 +19,18 @@ dep 'docker.bin', :version do
   }
 
   provides "docker >= #{version}"
+end
+
+dep 'docker config' do
+  def docker_config; "/root/.docker/config.json"; end
+
+  met? { docker_config.p.exists? }
+
+  meet do
+    shell "mkdir -p /root/.docker"
+    shell %(echo '{"credsStore": "ecr-login"}' > #{docker_config})
+    shell "chmod 600 #{docker_config}"
+  end
 end
 
 dep 'docker-compose', :version do
