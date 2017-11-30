@@ -3,10 +3,6 @@ dep 'donations system', :app_user, :key, :env
 dep 'donations env vars set', :domain
 
 dep 'donations app', :env, :host, :domain, :app_user, :app_root, :key do
-  def db_name
-    YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
-  end
-
   requires [
     'ssl cert in place'.with(:domain => domain, :env => env)
   ]
@@ -37,7 +33,7 @@ end
 
 dep 'donations packages' do
   requires [
-    'postgres'.with('9.6'),
+    'postgres',
     'running.postfix',
     'running.nginx',
     'donations common packages'
