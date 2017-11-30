@@ -1,6 +1,6 @@
 require 'uri'
 
-module DatabaseHelper
+module Util
   def self.database_name(root, env)
     config = YAML.load_file(root / 'config/database.yml')
     raise "There is no database.yml file" unless config

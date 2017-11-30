@@ -4,7 +4,7 @@ dep 'jobs env vars set', :domain
 
 dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    'postgres extension'.with(app_user, DatabaseHelper.database_name(app_root, env), 'pg_trgm'),
+    'postgres extension'.with(app_user, Util.database_name(app_root, env), 'pg_trgm'),
     'ssl cert in place'.with(:domain => domain, :env => env),
   ]
 

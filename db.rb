@@ -5,10 +5,10 @@ dep 'db', :username, :root, :env, :data_required, :require_db_deps do
 
   if require_db_deps[/^y/]
     if data_required[/^y/]
-      requires "existing data".with(username, DatabaseHelper.database_name(root, env))
-      requires "migrated db".with(username, root, env, DatabaseHelper.database_name(root, env), 'no')
+      requires "existing data".with(username, Util.database_name(root, env))
+      requires "migrated db".with(username, root, env, Util.database_name(root, env), 'no')
     else
-      requires "seeded db".with(username, root, env, DatabaseHelper.database_name(root, env))
+      requires "seeded db".with(username, root, env, Util.database_name(root, env))
     end
   end
 end

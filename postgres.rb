@@ -65,14 +65,14 @@ dep 'postgres config', :version do
     current_settings.slice(*expected_settings.keys) == expected_settings
   }
   meet {
-    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{DatabaseHelper.minor_version(version)}/main/postgresql.conf"
+    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{Util.minor_version(version)}/main/postgresql.conf"
     restart_postgres
   }
 end
 
 dep 'postgres cert', :version do
   def data_dir
-    "/var/lib/postgresql/#{DatabaseHelper.minor_version(version)}/main"
+    "/var/lib/postgresql/#{Util.minor_version(version)}/main"
   end
 
   met? { "#{data_dir}/server.crt".p.exists? }
@@ -93,7 +93,7 @@ dep 'postgres auth config', :version do
     "postgres/pg_hba.conf.erb"
   end
   def target
-    "/etc/postgresql/#{DatabaseHelper.minor_version(version)}/main/pg_hba.conf"
+    "/etc/postgresql/#{Util.minor_version(version)}/main/pg_hba.conf"
   end
 
   met? {
@@ -165,8 +165,8 @@ dep 'postgres.bin', :version do
   }
   installs {
     via :apt, [
-      "postgresql-#{DatabaseHelper.minor_version(owner.version)}",
-      "postgresql-client-#{DatabaseHelper.minor_version(owner.version)}",
+      "postgresql-#{Util.minor_version(owner.version)}",
+      "postgresql-client-#{Util.minor_version(owner.version)}",
       "libpq-dev"
     ]
     via :brew, "postgresql"
@@ -191,7 +191,7 @@ dep 'postgresql-repack.bin', :version do
   provides "pg_repack"
 
   installs {
-    via :apt, "postgresql-#{DatabaseHelper.minor_version(owner.version)}-repack"
+    via :apt, "postgresql-#{Util.minor_version(owner.version)}-repack"
     otherwise []
   }
 end
