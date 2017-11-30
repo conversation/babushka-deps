@@ -36,12 +36,6 @@ dep 'postgres config', :version do
   requires 'postgres cert'.with(version)
   requires 'postgres.bin'.with(version)
 
-  def minor_version
-    v = version.to_s.scan(/^\d+\.\d/).first.to_f
-    # Special-case version 10.x as it is installed everywhere without the minor
-    # version number.
-    v >= 10 && v < 11 ? "10" : v.to_s
-  end
   def psql cmd
     shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
   end
@@ -71,21 +65,14 @@ dep 'postgres config', :version do
     current_settings.slice(*expected_settings.keys) == expected_settings
   }
   meet {
-    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{minor_version}/main/postgresql.conf"
+    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{DatabaseHelper.minor_version(version)}/main/postgresql.conf"
     restart_postgres
   }
 end
 
 dep 'postgres cert', :version do
-  def minor_version
-    v = version.to_s.scan(/^\d+\.\d/).first.to_f
-    # Special-case version 10.x as it is installed everywhere without the minor
-    # version number.
-    v >= 10 && v < 11 ? "10" : v.to_s
-  end
-
   def data_dir
-    "/var/lib/postgresql/#{minor_version}/main"
+    "/var/lib/postgresql/#{DatabaseHelper.minor_version(version)}/main"
   end
 
   met? { "#{data_dir}/server.crt".p.exists? }
@@ -102,17 +89,11 @@ end
 dep 'postgres auth config', :version do
   requires 'postgres.bin'.with(version)
 
-  def minor_version
-    v = version.to_s.scan(/^\d+\.\d/).first.to_f
-    # Special-case version 10.x as it is installed everywhere without the minor
-    # version number.
-    v >= 10 && v < 11 ? "10" : v.to_s
-  end
   def erb_template
     "postgres/pg_hba.conf.erb"
   end
   def target
-    "/etc/postgresql/#{minor_version}/main/pg_hba.conf"
+    "/etc/postgresql/#{DatabaseHelper.minor_version(version)}/main/pg_hba.conf"
   end
 
   met? {
@@ -163,13 +144,6 @@ dep 'postgres access', :username, :flags do
 end
 
 dep 'postgres.bin', :version do
-  def minor_version
-    v = version.to_s.scan(/^\d+\.\d/).first.to_f
-    # Special-case version 10.x as it is installed everywhere without the minor
-    # version number.
-    v >= 10 && v < 11 ? "10" : v.to_s
-  end
-
   def enable_postgres
     log_shell "Enabling postgres...", "systemctl enable postgresql", sudo: true
   end
@@ -191,8 +165,8 @@ dep 'postgres.bin', :version do
   }
   installs {
     via :apt, [
-      "postgresql-#{owner.minor_version}",
-      "postgresql-client-#{owner.minor_version}",
+      "postgresql-#{DatabaseHelper.minor_version(owner.version)}",
+      "postgresql-client-#{DatabaseHelper.minor_version(owner.version)}",
       "libpq-dev"
     ]
     via :brew, "postgresql"
@@ -216,15 +190,8 @@ dep 'postgresql-repack.bin', :version do
   requires 'postgres.bin'.with(:version => version)
   provides "pg_repack"
 
-  def minor_version
-    v = version.to_s.scan(/^\d+\.\d/).first.to_f
-    # Special-case version 10.x as it is installed everywhere without the minor
-    # version number.
-    v >= 10 && v < 11 ? "10" : v.to_s
-  end
-
   installs {
-    via :apt, "postgresql-#{owner.minor_version}-repack"
+    via :apt, "postgresql-#{DatabaseHelper.minor_version(owner.version)}-repack"
     otherwise []
   }
 end

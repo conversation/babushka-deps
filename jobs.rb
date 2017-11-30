@@ -3,22 +3,8 @@ dep 'jobs system', :app_user, :key, :env
 dep 'jobs env vars set', :domain
 
 dep 'jobs app', :env, :host, :domain, :app_user, :app_root, :key do
-  def database_name
-    config = YAML.load_file(root / 'config/database.yml').tap do |config|
-      unmeetable! "There's no database.yml entry for the #{env} environment." if config.nil?
-    end
-
-    if database = config.dig(env.to_s, 'database')
-      database
-    elsif url = config.dig(env.to_s, 'url')
-      URI.parse(url).path.gsub(/^\//, '')
-    else
-      unmeetable! "There's no database or url defined in the database.yml file for the #{env} environment"
-    end
-  end
-
   requires [
-    'postgres extension'.with(app_user, database_name, 'pg_trgm'),
+    'postgres extension'.with(app_user, DatabaseHelper.database_name(app_root, env), 'pg_trgm'),
     'ssl cert in place'.with(:domain => domain, :env => env),
   ]
 

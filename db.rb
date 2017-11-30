@@ -1,30 +1,14 @@
-require 'uri'
-
 dep 'db', :username, :root, :env, :data_required, :require_db_deps do
-  def database_name
-    config = YAML.load_file(root / 'config/database.yml').tap do |config|
-      unmeetable! "There's no database.yml entry for the #{env} environment." if config.nil?
-    end
-
-    if database = config.dig(env.to_s, 'database')
-      database
-    elsif url = config.dig(env.to_s, 'url')
-      URI.parse(url).path.gsub(/^\//, '')
-    else
-      unmeetable! "There's no database or url defined in the database.yml file for the #{env} environment"
-    end
-  end
-
   require_db_deps.default!('yes')
 
   requires 'app bundled'.with(root, env)
 
   if require_db_deps[/^y/]
     if data_required[/^y/]
-      requires "existing data".with(username, database_name)
-      requires "migrated db".with(username, root, env, database_name, 'no')
+      requires "existing data".with(username, DatabaseHelper.database_name(root, env))
+      requires "migrated db".with(username, root, env, DatabaseHelper.database_name(root, env), 'no')
     else
-      requires "seeded db".with(username, root, env, database_name)
+      requires "seeded db".with(username, root, env, DatabaseHelper.database_name(root, env))
     end
   end
 end
