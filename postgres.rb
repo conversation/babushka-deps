@@ -204,15 +204,9 @@ dep 'postgres.bin', :version do
   provides "psql >= #{version}"
 end
 
-dep 'postgresql-contrib.lib', :version do
-  def minor_version
-    v = version.to_s.scan(/^\d+\.\d/).first.to_f
-    # Special-case version 10.x as it is installed everywhere without the minor
-    # version number.
-    v >= 10 && v < 11 ? "10" : v.to_s
-  end
+dep 'postgresql-contrib.lib' do
   installs {
-    via :apt, "postgresql-contrib-#{owner.minor_version}"
+    via :apt, "postgresql-contrib"
     otherwise []
   }
 end
