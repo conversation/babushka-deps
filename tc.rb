@@ -1,22 +1,14 @@
 dep 'tc system', :app_user, :key, :env do
-  requires [
-    'throttling'.with(env), # Temporarily ban misbehaving clients
-    'user setup for provisioning'.with("dw.theconversation.edu.au", key), # For DW loads from psql on the counter machine
-  ]
+  requires 'throttling'.with(env) # Temporarily ban misbehaving clients
 end
 
 dep 'tc env vars set', :domain
 
 dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
-  def db_name
-    YAML.load_file(app_root / 'config/database.yml')[env.to_s]['database']
-  end
-
   requires [
-    'postgres extension'.with(app_user, db_name, 'unaccent'),
-    'postgres extension'.with(app_user, db_name, 'pg_trgm'),
-    'postgres extension'.with(app_user, db_name, 'fuzzystrmatch'),
-
+    'postgres extension'.with(app_user, Util.database_name(app_root, env), 'unaccent'),
+    'postgres extension'.with(app_user, Util.database_name(app_root, env), 'pg_trgm'),
+    'postgres extension'.with(app_user, Util.database_name(app_root, env), 'fuzzystrmatch'),
     'ssl cert in place'.with(:domain => domain, :env => env)
   ]
 
@@ -60,8 +52,8 @@ end
 
 dep 'tc packages' do
   requires [
-    'postgres'.with('9.6'),
-    'postgresql-contrib.lib'.with('9.6'), # for unaccent, for search
+    'postgres',
+    'postgresql-contrib.lib', # for unaccent, for search
     'running.postfix',
     'running.nginx',
     'memcached', # for fragment caching
