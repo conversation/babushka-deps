@@ -54,6 +54,7 @@ dep 'jobs common packages' do
     'libxslt.lib', # for nokogiri
     'imagemagick.bin', # for paperclip
     'coffeescript.bin', # for barista
+    'sasl.lib', # for memcached gem
     'tidy.bin' # for upmark
   ]
 end
