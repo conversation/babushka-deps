@@ -88,9 +88,9 @@ dep 'postgres replication monitoring', :version, :test_user do
       CREATE FUNCTION replication_status() RETURNS SETOF replication_tuple AS
         'SELECT
           backend_start,
-          pg_current_xlog_location(),
-          replay_location,
-          pg_xlog_location_diff(pg_current_xlog_location(), replay_location)
+          pg_current_wal_lsn(),
+          replay_lsn,
+          pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn)
         FROM
           pg_stat_replication'
       LANGUAGE SQL SECURITY DEFINER
