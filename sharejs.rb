@@ -12,7 +12,7 @@ end
 
 dep 'sharejs packages' do
   requires [
-    'postgres'.with('9.6'),
+    'postgres',
     'curl.lib',
     'running.nginx',
     'sharejs common packages'
@@ -48,7 +48,7 @@ dep 'sharejs.systemd', :username, :env, :app_root, :db_name do
   respawn 'yes'
 
   met? {
-    (shell("curl -I localhost:9000", &:stdout).val_for('X-Refspec') || '')[/\w{7,}/]
+    shell"curl -I localhost:9000/health"
   }
 end
 
