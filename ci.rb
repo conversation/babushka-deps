@@ -49,6 +49,7 @@ dep 'ci packages' do
     'docker.bin',
     'docker-compose',
     'firefox.bin',
+    'nodejs.bin',
     'phantomjs',
     'python.bin',
     'redis-server.bin',

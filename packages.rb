@@ -44,6 +44,13 @@ dep 'nodejs.bin', :version do
   provides "node ~> #{version}"
 end
 
+dep 'slack-cli.npm', :version do
+  version.default!('1.0.18')
+  installs "slack-cli = #{version}"
+  requires 'nodejs.bin'
+  provides "slackcli"
+end
+
 dep 'yarn.npm', :version do
   version.default!('1.2.1')
   installs "yarn = #{version}"
