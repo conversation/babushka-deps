@@ -54,6 +54,7 @@ dep 'ci packages' do
     'python.bin',
     'redis-server.bin',
     'sasl.lib',
+    'slack-cli.npm',
     'terraform',
     'tmux.bin',
     'ufw.bin',
