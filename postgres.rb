@@ -33,12 +33,13 @@ dep 'postgres', :version do
 end
 
 dep 'postgres config', :version do
-  requires 'postgres cert'.with(version)
   requires 'postgres.bin'.with(version)
+  requires 'postgres cert'.with(version)
 
   def psql cmd
     shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
   end
+
   def current_settings
     Hash[
       psql('SELECT name,setting FROM pg_settings').split("\n").map {|l|
@@ -46,6 +47,7 @@ dep 'postgres config', :version do
       }
     ]
   end
+
   def expected_settings
     # Some settings that we customise, and hence use to test whether
     # our config has been applied.
@@ -57,15 +59,22 @@ dep 'postgres config', :version do
       'hot_standby' => 'on'
     }
   end
+
   def restart_postgres
     log_shell "Restarting postgres...", "systemctl restart postgresql", sudo: true
     sleep 5
   end
+
+  def minor_version
+    Util.minor_version(version)
+  end
+
   met? {
     current_settings.slice(*expected_settings.keys) == expected_settings
   }
+
   meet {
-    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{Util.minor_version(version)}/main/postgresql.conf"
+    render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{minor_version}/main/postgresql.conf"
     restart_postgres
   }
 end
