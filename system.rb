@@ -16,7 +16,8 @@ dep 'core software' do
     'tree.bin',
     'pv.bin',
     's3cmd.bin',
-    'trickle.bin'
+    'trickle.bin',
+    'apt-transport-https.bin'
   ]
 end
 
