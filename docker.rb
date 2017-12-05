@@ -1,7 +1,10 @@
 dep 'docker.bin', :version do
   version.default!('17.09.0-ce')
 
-  requires 'docker config'
+  requires [
+    'docker config',
+    'docker credentials'
+  ]
 
   requires_when_unmet {
     on :apt, 'keyed apt source'.with(
@@ -68,4 +71,13 @@ dep 'docker-gc' do
   after {
     shell "chmod a+x #{docker_gc_dest}"
   }
+end
+
+dep 'docker credentials' do
+  met? { in_path? 'docker-credential-ecr-login' }
+
+  meet do
+    shell 'curl -L https://github.com/lox/amazon-ecr-credential-helper/releases/download/v1.0.0/docker-credential-ecr-login_linux_amd64 > /usr/local/bin/docker-credential-ecr-login'
+    shell 'chmod a+x /usr/local/bin/docker-credential-ecr-login'
+  end
 end
