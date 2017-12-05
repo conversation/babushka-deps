@@ -162,6 +162,8 @@ dep 'tmp cleaning grace period', :for => :ubuntu do
 end
 
 dep 'firewall rules' do
+  requires 'ufw.bin'
+
   met? {
     shell? %q(ufw status | grep "Status: active")
   }
