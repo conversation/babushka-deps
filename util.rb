@@ -25,4 +25,8 @@ module Util
     source = dependency.load_path.parent / source_name
     Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
   end
+
+  def self.restart_service(name)
+    Babushka::ShellHelpers.log_shell "Restarting #{name}...", "systemctl restart #{name}", sudo: true
+  end
 end
