@@ -132,8 +132,7 @@ dep 'utc' do
     shell('date')[/\bUTC\b/]
   }
   meet {
-    sudo 'echo UTC > /etc/timezone'
-    sudo 'dpkg-reconfigure --frontend noninteractive tzdata'
+    sudo 'timedatectl set-timezone Etc/UTC'
   }
 end
 
