@@ -1,6 +1,8 @@
 dep 'aptitude.bin'
 
-dep 'apt-transport-https.bin'
+dep 'apt-transport-https.bin' do
+  met? { '/usr/lib/apt/methods/https'.p.exists? }
+end
 
 dep 'aspell.bin'
 
@@ -161,6 +163,10 @@ dep 'rcconf.bin' do
 end
 
 dep 'redis-server.bin'
+
+dep 'rsyslog-gnutls.bin' do
+  met? { '/usr/lib/rsyslog/lmnsd_gtls.so'.p.exists? }
+end
 
 dep 's3cmd.bin' do
   requires 'whiptail.bin'

@@ -20,4 +20,9 @@ module Util
     # version number.
     v >= 10 && v < 11 ? "10" : v.to_s
   end
+
+  def self.up_to_date?(dependency, source_name, dest)
+    source = dependency.load_path.parent / source_name
+    Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
+  end
 end
