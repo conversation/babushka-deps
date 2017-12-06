@@ -160,19 +160,3 @@ dep 'tmp cleaning grace period', :for => :ubuntu do
     shell("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
   }
 end
-
-dep 'firewall rules' do
-  requires 'ufw.bin'
-
-  met? {
-    shell? %q(ufw status | grep "Status: active")
-  }
-
-  meet {
-    shell "ufw allow ssh/tcp"
-    shell "ufw allow http/tcp"
-    shell "ufw allow https/tcp"
-    shell "ufw allow proto tcp from 172.16.0.0/12 to any port 5432"
-    shell "ufw --force enable"
-  }
-end
