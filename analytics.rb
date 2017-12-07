@@ -13,6 +13,8 @@ dep 'analytics app', :env, :host, :domain, :app_user, :app_root, :key do
   end
 
   requires [
+    'user exists'.with(:username => app_user),
+
     'db'.with(
       :env => env,
       :username => app_user,

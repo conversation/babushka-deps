@@ -17,6 +17,8 @@ dep 'tc app', :env, :host, :domain, :app_user, :app_root, :key do
   end
 
   requires [
+    'user exists'.with(:username => app_user),
+
     'delayed job'.with(
       :env => env,
       :user => app_user

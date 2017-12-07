@@ -4,8 +4,7 @@ dep 'sharejs env vars set', :domain
 
 dep 'sharejs app', :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    'user setup'.with(:key => key),
-
+    'user exists'.with(:username => app_user),
     "sharejs.systemd".with(app_user, env, app_root, "sharejs_#{env}")
   ]
 end
@@ -29,8 +28,7 @@ end
 dep 'sharejs common packages' do
   requires [
     'bundler.gem',
-    'postgres.bin',
-    "coffeescript.bin"
+    'postgres.bin'
   ]
 end
 
