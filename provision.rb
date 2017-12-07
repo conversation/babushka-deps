@@ -242,9 +242,10 @@ dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
   requires [
     'localhost hosts entry',
     'hostname'.with(host_name),
+    'utc',
     'secured ssh logins',
     'firewall rules',
-    'utc',
+    'papertrail config',
     'core software',
     'local caching dns server',
     'lax host key checking',
