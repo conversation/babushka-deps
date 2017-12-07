@@ -27,6 +27,10 @@ module Util
   end
 
   def self.restart_service(name)
-    Babushka::ShellHelpers.log_shell "Restarting #{name}...", "systemctl restart #{name}", sudo: true
+    Babushka::ShellHelpers.log_shell("Restarting #{name}...", "systemctl restart #{name}", sudo: true)
+  end
+
+  def self.psql(query, as: 'postgres', db: nil)
+    Babushka::ShellHelpers.shell("psql #{db || as} -t", as: as, input: query).strip
   end
 end

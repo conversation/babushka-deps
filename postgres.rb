@@ -11,15 +11,11 @@ end
 dep 'postgres extension', :username, :db_name, :extension do
   requires 'existing db'.with(username, db_name)
 
-  def psql cmd
-    shell("psql #{db_name} -t", :as => 'postgres', :input => cmd).strip
-  end
-
   met? {
-    psql(%{SELECT count(*) FROM pg_extension WHERE extname = '#{extension}'}).to_i > 0
+    Util.psql(%(SELECT count(*) FROM pg_extension WHERE extname = '#{extension}'), db: db_name).to_i > 0
   }
   meet {
-    psql(%{CREATE EXTENSION "#{extension}"})
+    Util.psql(%(CREATE EXTENSION "#{extension}"), db: db_name)
   }
 end
 
@@ -36,13 +32,9 @@ dep 'postgres config', :version do
   requires 'postgres.bin'.with(version)
   requires 'postgres cert'.with(version)
 
-  def psql cmd
-    shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
-  end
-
   def current_settings
     Hash[
-      psql('SELECT name,setting FROM pg_settings').split("\n").map {|l|
+      Util.psql('SELECT name, setting FROM pg_settings').split("\n").map {|l|
         l.split('|', 2).map(&:strip)
       }
     ]
