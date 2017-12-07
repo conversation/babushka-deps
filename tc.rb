@@ -59,7 +59,6 @@ dep 'tc packages' do
     'running.postfix',
     'running.nginx',
     'memcached', # for fragment caching
-    'socat.bin', # for DB replication tunnelling
     'tc common packages'
   ]
 end

@@ -37,8 +37,7 @@ dep 'counter packages' do
   requires [
     'counter common packages',
     'curl.lib',
-    'running.nginx',
-    'socat.bin' # for DB tunnelling
+    'running.nginx'
   ]
 end
 

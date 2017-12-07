@@ -187,8 +187,6 @@ dep 'silversearcher.bin' do
   provides 'ag'
 end
 
-dep 'socat.bin'
-
 dep 'sshd.bin' do
   installs {
     via :apt, 'openssh-server'
