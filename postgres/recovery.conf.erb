@@ -1,3 +1,3 @@
 standby_mode = 'on'
-primary_conninfo = 'host=/var/run/postgresql port=<%= local_port %> user=<%= remote_user %>'
-trigger_file = '/var/lib/postgresql/9.6/main/trigger'
+primary_conninfo = 'postgres://<%= username %>:<%= password %>@<%= host %>'
+trigger_file = '/var/lib/postgresql/<%= minor_version %>/main/trigger'
