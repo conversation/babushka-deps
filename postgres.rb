@@ -60,11 +60,6 @@ dep 'postgres config', :version do
     }
   end
 
-  def restart_postgres
-    log_shell "Restarting postgres...", "systemctl restart postgresql", sudo: true
-    sleep 5
-  end
-
   def minor_version
     Util.minor_version(version)
   end
@@ -75,7 +70,8 @@ dep 'postgres config', :version do
 
   meet {
     render_erb "postgres/postgresql.conf.erb", :to => "/etc/postgresql/#{minor_version}/main/postgresql.conf"
-    restart_postgres
+    Util.restart_service('postgresql')
+    sleep 5
   }
 end
 
@@ -146,8 +142,12 @@ end
 dep 'postgres access', :username, :flags do
   requires 'postgres.bin'
   requires 'user exists'.with(:username => username)
+
   username.default(shell('whoami'))
-  flags.default!('-SdR')
+
+  # Allow new users to create databases by default.
+  flags.default!('--createdb')
+
   met? { !sudo("echo '\\du' | #{which 'psql'}", :as => 'postgres').split("\n").grep(/^\W*\b#{username}\b/).empty? }
   meet { sudo "createuser #{flags} #{username}", :as => 'postgres' }
 end
