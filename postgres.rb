@@ -131,7 +131,7 @@ dep 'existing db', :username, :db_name do
   }
 end
 
-dep 'postgres access', :username, :flags do
+dep 'postgres access', :username, :password, :flags do
   requires 'postgres.bin'
 
   username.default(shell('whoami'))
@@ -139,8 +139,12 @@ dep 'postgres access', :username, :flags do
   # Allow new users to create databases by default.
   flags.default!('--createdb')
 
-  met? { !sudo("echo '\\du' | #{which 'psql'}", :as => 'postgres').split("\n").grep(/^\W*\b#{username}\b/).empty? }
-  meet { sudo "createuser #{flags} #{username}", :as => 'postgres' }
+  met? { !Util.psql("\\du").split("\n").grep(/^\W*\b#{username}\b/).empty? }
+
+  meet {
+    shell "createuser #{flags} #{username}", :as => 'postgres'
+    Util.psql("ALTER USER #{username} WITH PASSWORD '#{password}'") if password.set?
+  }
 end
 
 dep 'postgres.bin', :version do
