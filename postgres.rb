@@ -141,7 +141,6 @@ end
 
 dep 'postgres access', :username, :flags do
   requires 'postgres.bin'
-  requires 'user exists'.with(:username => username)
 
   username.default(shell('whoami'))
 
