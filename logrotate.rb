@@ -3,6 +3,7 @@ meta :logrotate do
   accepts_value_for :as
   template do
     requires "logrotate.bin"
+
     def conf_dest
       %w[
         /usr/local/etc/logrotate.d
@@ -11,9 +12,11 @@ meta :logrotate do
         path.p.exists?
       end / as
     end
+
     met? do
       Babushka::Renderable.new(conf_dest).from?(dependency.load_path.parent / renders)
     end
+
     meet do
       render_erb renders, to: conf_dest, sudo: true
     end

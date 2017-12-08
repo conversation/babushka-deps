@@ -21,9 +21,11 @@ dep "orphaned dirs deleted" do
       Dir[path].empty?
     end
   end
+
   met? do
     to_remove.empty?
   end
+
   meet do
     to_remove.each do |path|
       shell "rm -rf #{path}"

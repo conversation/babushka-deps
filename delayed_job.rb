@@ -18,6 +18,7 @@ dep "delayed_job.systemd", :env, :user, :queue do
   command "/usr/local/bin/bundle exec rake jobs:work #{vars.join(' ')}"
   setuid user
   chdir "/srv/http/#{user}/current"
+
   met? do
     shell?("ps ux | grep -v grep | grep 'rake jobs:work'")
   end

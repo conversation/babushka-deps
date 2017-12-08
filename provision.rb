@@ -8,6 +8,7 @@ dep "no known_hosts conflicts", :host do
       log_ok "#{host} doesn't appear in #{'~/.ssh/known_hosts'.p}." if result
     end
   end
+
   meet do
     shell "sed -i '' -e '/#{Regexp.escape(host)}/d' ~/.ssh/known_hosts"
   end
@@ -15,11 +16,13 @@ end
 
 dep "public key in place", :host, :keys do
   requires_when_unmet "no known_hosts conflicts".with(host)
+
   met? do
     shell?("ssh -o PasswordAuthentication=no root@#{host} 'true'").tap do |result|
       log "root@#{host} is#{"n't" unless result} accessible via publickey auth.", as: (:ok if result)
     end
   end
+
   meet do
     shell "ssh root@#{host} 'mkdir -p ~/.ssh; cat > ~/.ssh/authorized_keys'", input: keys
   end
@@ -31,6 +34,7 @@ dep "babushka bootstrapped", :host do
       log_ok "#{host} is running babushka-#{result}." if result
     end
   end
+
   meet do
     shell %{ssh root@#{host} 'sh -'}, input: shell("curl https://babushka.me/up"), log: true
   end

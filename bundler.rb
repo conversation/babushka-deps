@@ -2,6 +2,7 @@
 # without binstubs.
 dep "app bundled", :root, :env do
   requires_when_unmet Dep("current dir:packages")
+
   met? do
     if !(root / "Gemfile").exists?
       log "No Gemfile - skipping bundling."
@@ -10,6 +11,7 @@ dep "app bundled", :root, :env do
       shell? "bundle check", cd: root, log: true
     end
   end
+
   meet do
     # Ensure we aren't installing binstubs.
     shell "bundle config --delete bin", cd: root

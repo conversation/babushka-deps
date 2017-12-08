@@ -10,6 +10,7 @@ dep "env var set", :key, :value do
   met? do
     login_shell("echo $#{key}") == value
   end
+
   meet do
     "~/.zshenv".p.append("export #{key}=#{value}\n")
   end

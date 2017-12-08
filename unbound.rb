@@ -28,6 +28,7 @@ dep "unbound configured" do
     Babushka::Renderable.new(system_conf).from?(dependency.load_path.parent / renderable_conf) &&
      Babushka::Renderable.new(system_default).from?(dependency.load_path.parent / renderable_default)
   end
+
   meet do
     shell "mkdir -p #{system_conf_dir}"
     render_erb renderable_conf, to: system_conf, sudo: true

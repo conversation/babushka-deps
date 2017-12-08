@@ -4,6 +4,7 @@ end
 
 dep "memcached configured" do
   requires "memcached.bin", "nc.bin"
+
   def current_settings
     Hash[
       shell("nc 127.0.0.1 11211", input: "stats\n").split("\n").
@@ -40,9 +41,11 @@ dep "memcached configured" do
       "limit_maxbytes" => megabytes_to_bytes(cache_size).to_s
     }
   end
+
   met? do
     current_settings.slice(*expected_settings.keys) == expected_settings
   end
+
   meet do
     render_erb "memcached/memcached.conf.erb", to: "/etc/memcached.conf"
     log_shell "Restarting memcached", "/etc/init.d/memcached restart"

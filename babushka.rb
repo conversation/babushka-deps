@@ -11,9 +11,11 @@ dep "babushka caches removed" do
       Dir[p.p].empty?
     end
   end
+
   met? do
     to_remove.empty?
   end
+
   meet do
     to_remove.each do |path|
       shell %Q{rm -rf #{path}}

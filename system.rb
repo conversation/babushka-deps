@@ -26,9 +26,11 @@ dep "hostname", :host_name, for: :linux do
     shell("hostname -f")
   end
   host_name.default(shell("hostname"))
+
   met? do
     current_hostname == host_name
   end
+
   meet do
     sudo "echo #{host_name} > /etc/hostname"
     sudo "sed -ri 's/^127.0.0.1.*$/127.0.0.1 #{host_name} #{host_name.to_s.sub(/\..*$/, '')} localhost.localdomain localhost/' /etc/hosts"
@@ -40,6 +42,7 @@ dep "localhost hosts entry" do
   met? do
     "/etc/hosts".p.grep(/^127\.0\.0\.1/)
   end
+
   meet do
     "/etc/hosts".p.append("127.0.0.1 localhost.localdomain localhost\n")
   end
@@ -56,6 +59,7 @@ dep "local caching dns server" do
   met? do
     up_to_date?("system/resolv.conf.erb", "/etc/resolv.conf")
   end
+
   meet do
     render_erb "system/resolv.conf.erb", to: "/etc/resolv.conf", sudo: true
   end
@@ -106,6 +110,7 @@ dep "monitored with collectd", :librato_user, :librato_password do
   met? do
     conf_files.all? { |source, dest| up_to_date?(source, dest) }
   end
+
   meet do
     conf_files.each do |source, dest|
       render_erb(source, to: dest, sudo: true)
@@ -118,9 +123,11 @@ dep "lax host key checking" do
   def ssh_conf_path(file)
     "/etc#{'/ssh' if Babushka.host.linux?}/#{file}_config"
   end
+
   met? do
     ssh_conf_path(:ssh).p.grep(/^StrictHostKeyChecking[ \t]+no/)
   end
+
   meet do
     shell("sed -i'' -e 's/^[# ]*StrictHostKeyChecking\\W*\\w*$/StrictHostKeyChecking no/' #{ssh_conf_path(:ssh)}")
   end
@@ -132,6 +139,7 @@ dep "utc" do
   met? do
     shell("date")[/\bUTC\b/]
   end
+
   meet do
     sudo "timedatectl set-timezone Etc/UTC"
   end
@@ -139,9 +147,11 @@ end
 
 dep "admins can sudo" do
   requires "admin group"
+
   met? do
     !"/etc/sudoers".p.read.split("\n").grep(/^%admin\b/).empty?
   end
+
   meet do
     "/etc/sudoers".p.append("%admin  ALL=(ALL) ALL\n")
   end
@@ -156,6 +166,7 @@ dep "tmp cleaning grace period", for: :ubuntu do
   met? do
     "/etc/default/rcS".p.grep(/^[^#]*TMPTIME=0/).nil?
   end
+
   meet do
     shell("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
   end

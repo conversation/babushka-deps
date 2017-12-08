@@ -6,6 +6,7 @@ dep "provision ci", :keys, :host, :user, :buildkite_token do
   requires_when_unmet "babushka bootstrapped".with(host)
 
   met? { false }
+
   meet do
     ssh("root@#{host}") do |h|
       h.babushka(
@@ -76,6 +77,7 @@ end
 
 dep "phantomjs", :version do
   version.default!("2.1.1")
+
   def phantomjs_uri
     if Babushka.host.linux?
       "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-x86_64.tar.bz2"
@@ -85,9 +87,11 @@ dep "phantomjs", :version do
       unmeetable! "Not sure where to download a phantomjs binary for #{Babushka.base.host}."
     end
   end
+
   met? do
     in_path? "phantomjs >= #{version}"
   end
+
   meet do
     Babushka::Resource.extract phantomjs_uri do |_archive|
       shell "cp -r . /usr/local/phantomjs"
@@ -118,9 +122,11 @@ end
 
 dep "terraform", :version do
   version.default!("0.10.2")
+
   met? do
     in_path? "terraform >= #{version}"
   end
+
   meet do
     Babushka::Resource.extract "https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip" do
       shell "cp -r terraform /usr/local/bin/terraform"

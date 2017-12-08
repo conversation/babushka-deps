@@ -78,6 +78,7 @@ dep "submodules cloned" do
     # Initalised and current submodules are listed with a leading ' '.
     shell("git submodule status").split("\n").all? {|l| l[/^ /] }
   end
+
   meet do
     shell("git submodule update --init")
   end

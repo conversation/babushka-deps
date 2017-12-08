@@ -14,6 +14,7 @@ dep "script installed", :script_name do
   met? do
     up_to_date?(source_script, dest_path) && File.stat(dest_path).executable?
   end
+
   meet do
     render_erb(source_script, to: dest_path, sudo: true)
     log_shell "Making #{dest_path} executable", "chmod +x #{dest_path}", sudo: true

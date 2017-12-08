@@ -30,6 +30,7 @@ dep "ssl cert in place", :domain, :env, :cert_dir, template: "nginx" do
     # directory.
     dest_cert_path.exists? && shell?("ls '#{dest_key_path}'", sudo: true)
   end
+
   meet do
     sudo "ln -sf '#{src_cert_path}' '#{dest_cert_path}'"
     sudo "ln -sf '#{src_key_path}' '#{dest_key_path}'"
@@ -45,7 +46,9 @@ dep "secured ssh logins" do
   def ssh_conf_path(file)
     "/etc#{'/ssh' if Babushka.host.linux?}/#{file}_config"
   end
+
   requires "sshd.bin"
+
   met? do
     output = raw_shell("ssh -o StrictHostKeyChecking=no -o PasswordAuthentication=no nonexistentuser@localhost").stderr
     if output.downcase["connection refused"]
@@ -58,6 +61,7 @@ dep "secured ssh logins" do
       end
     end
   end
+
   meet do
     [
       "PasswordAuthentication",

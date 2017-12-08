@@ -22,6 +22,7 @@ dep "collectd.bin" do
   met? do
     log_shell("checking for collectd", "which collectd")
   end
+
   meet do
     # specify the install command directly to prevent all the recommended packages being installed
     log_shell("installing collectd", "apt-get install collectd collectd-dev --no-install-recommends -y", sudo: true)
@@ -216,6 +217,7 @@ dep "unbound.bin" do
   met? do
     in_path?("unbound")
   end
+
   meet do
     env = "env DEBCONF_TERSE='yes' DEBIAN_PRIORITY='critical' DEBIAN_FRONTEND='noninteractive'"
     log_shell("installing unbound", "#{env} apt-get install -y -o Dpkg::Options::='--force-confold' unbound", sudo: true)

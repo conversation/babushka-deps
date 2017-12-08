@@ -22,9 +22,11 @@ dep "schema up to date.push", :ref, :remote, :env do
     # success, because a failed connection can result in an empty file.
     fetch_schema && move_schema_into_place
   end
+
   met? do
     Babushka::GitRepo.new(".").clean?
   end
+
   meet do
     shell "git add db/schema.sql && git commit db/schema.sql -m 'Update DB schema after deploying #{shell("git rev-parse --short #{ref}")}.'"
   end

@@ -11,6 +11,7 @@ dep "npm development packages installed", :path do
     output = raw_shell("npm ls --dev", cd: path)
     output.ok?
   end
+
   meet do
     shell("npm install --only=dev", cd: path)
   end
@@ -22,6 +23,7 @@ dep "npm packages installed", :path do
     # Older `npm` versions exit 0 on failure.
     output.ok? && output.stdout["UNMET DEPENDENCY"].nil?
   end
+
   meet do
     shell("npm install", cd: path)
   end
@@ -36,6 +38,7 @@ dep "yarn packages installed", :path do
     # Older `npm` versions exit 0 on failure.
     output.ok? && output.stdout["UNMET DEPENDENCY"].nil?
   end
+
   meet do
     shell("yarn install --frozen-lockfile --production=false", cd: path)
   end
@@ -67,6 +70,7 @@ dep "upload assets", :env, :deploying do
   met? do
     shell? "bundle exec rake tc:assets:upload_required RAILS_ENV=#{env}"
   end
+
   meet do
     shell "bundle exec rake tc:assets:upload RAILS_ENV=#{env}", log: true
   end
@@ -76,6 +80,7 @@ dep "cache cleared" do
   met? do
     shell("git clean -ndx public/*.html public/pages/*.html").empty?
   end
+
   meet do
     shell "git clean -fdx public/*.html public/pages/*.html", log: true
   end

@@ -1,8 +1,10 @@
 dep "schema exists", :username, :db_name, :schema_name do
   requires "postgres access".with(username: username)
+
   met? do
     raw_shell("psql #{db_name} -t -c '\\dn'", as: "postgres").stdout.val_for(schema_name)
   end
+
   meet do
     sudo %Q{psql #{db_name} -c 'CREATE SCHEMA "#{schema_name}" AUTHORIZATION "#{username}"'}, as: "postgres"
   end
@@ -14,6 +16,7 @@ dep "postgres extension", :username, :db_name, :extension do
   met? do
     Util.psql(%(SELECT count(*) FROM pg_extension WHERE extname = '#{extension}'), db: db_name).to_i > 0
   end
+
   meet do
     Util.psql(%(CREATE EXTENSION "#{extension}"), db: db_name)
   end
@@ -97,6 +100,7 @@ dep "postgres auth config", :version do
   met? do
     Babushka::Renderable.new(target).from?(dependency.load_path.parent / erb_template)
   end
+
   meet do
     render_erb erb_template, to: target, sudo: true
   end
@@ -104,6 +108,7 @@ end
 
 dep "existing data", :username, :db_name do
   requires "existing db".with(username, db_name)
+
   met? do
     shell(
       %Q{psql #{db_name} -t -c "SELECT count(*) FROM pg_tables WHERE schemaname NOT IN ('pg_catalog','information_schema')"}
@@ -122,11 +127,13 @@ end
 
 dep "existing db", :username, :db_name do
   requires "postgres access".with(username: username)
+
   met? do
     !shell("psql -l") {|shell|
       shell.stdout.split("\n").grep(/^\s*#{db_name}\s+\|/)
     }.empty?
   end
+
   meet do
     shell "createdb -O '#{username}' '#{db_name}'"
   end
@@ -159,6 +166,7 @@ dep "postgres.bin", :version do
 
   version.default!("10.1")
   requires "common:set.locale"
+
   requires_when_unmet do
     on :apt, "keyed apt source".with(
       uri: "http://apt.postgresql.org/pub/repos/apt/",
@@ -168,6 +176,7 @@ dep "postgres.bin", :version do
       key_uri: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
     )
   end
+
   installs do
     via :apt, [
       "postgresql-#{Util.minor_version(owner.version)}",
@@ -176,10 +185,12 @@ dep "postgres.bin", :version do
     ]
     via :brew, "postgresql"
   end
+
   after do
     enable_postgres
     start_postgres
   end
+
   provides "psql >= #{version}"
 end
 

@@ -38,10 +38,13 @@ end
 
 dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https, :proxy_host, :proxy_port do
   requires "vhost configured.nginx".with(app_name, env, domain, path, enable_https, proxy_host, proxy_port)
+
   met? { vhost_link.exists? }
+
   meet do
     sudo "ln -sf '#{vhost_conf}' '#{vhost_link}'"
   end
+
   after { reload_nginx }
 end
 
@@ -84,6 +87,7 @@ dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https, :p
     up_to_date?("nginx/#{app_name}_vhost.conf.erb", vhost_conf) &&
     up_to_date?("nginx/#{app_name}_vhost.common.erb", vhost_common)
   end
+
   meet do
     render_erb "nginx/#{app_name}_vhost.conf.erb", to: vhost_conf, sudo: true
     render_erb "nginx/#{app_name}_vhost.common.erb", to: vhost_common, sudo: true if (dependency.load_path.parent / "nginx/#{app_name}_vhost.common.erb").p.exists?
@@ -98,19 +102,23 @@ end
 
 dep "running.nginx" do
   requires "configured.nginx"
+
   met? do
     nginx_running?.tap do |result|
       log "There is #{result ? 'something' : 'nothing'} listening on port 80."
     end
   end
+
   meet { shell "systemctl start nginx" }
 end
 
 dep "configured.nginx" do
   requires "nginx.bin"
+
   met? do
     Babushka::Renderable.new(nginx_conf).from?(dependency.load_path.parent / "nginx/nginx.conf.erb")
   end
+
   meet do
     render_erb "nginx/nginx.conf.erb", to: nginx_conf, sudo: true
   end

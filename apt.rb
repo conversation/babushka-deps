@@ -7,6 +7,7 @@ dep "apt sources", for: :ubuntu do
   met? do
     Babushka::Renderable.new("/etc/apt/sources.list").from?(dependency.load_path.parent / "apt/sources.list.erb")
   end
+
   meet do
     render_erb "apt/sources.list.erb", to: "/etc/apt/sources.list"
     shell "rm -f /etc/apt/sources.list.d/babushka.list"
@@ -37,14 +38,17 @@ dep "apt packages removed", :packages, for: :apt do
       package_list.any? {|p| installed_package[p] }
     end
   end
+
   met? do
     to_remove(packages).empty?
   end
+
   meet do
     to_remove(packages).each do |pkg|
       log_shell "Removing #{pkg}", "apt-get -y remove --purge '#{pkg}'", sudo: true
     end
   end
+
   after do
     log_shell "Autoremoving packages", "apt-get -y autoremove", sudo: true
   end

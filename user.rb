@@ -34,6 +34,7 @@ end
 
 dep "passwordless ssh logins", :username, :key do
   username.default(shell("whoami"))
+
   def ssh_dir
     "~#{username}" / ".ssh"
   end
@@ -45,9 +46,11 @@ dep "passwordless ssh logins", :username, :key do
   def sudo?
     @sudo ||= username != shell("whoami")
   end
+
   met? do
     shell? "fgrep '#{key}' '#{ssh_dir / 'authorized_keys'}'", sudo: sudo?
   end
+
   meet do
     shell "mkdir -p -m 700 '#{ssh_dir}'", sudo: sudo?
     shell "cat >> #{ssh_dir / 'authorized_keys'}", input: key, sudo: sudo?
@@ -62,9 +65,11 @@ dep "dot files", :username, :github_user, :repo do
   github_user.default("conversation")
   repo.default("dot-files")
   requires "user exists".with(username: username), "git", "curl.bin", "git-smart.gem"
+
   met? do
     "~#{username}/.dot-files/.git".p.exists?
   end
+
   meet do
     shell %Q{curl -L "http://github.com/#{github_user}/#{repo}/raw/master/clone_and_link.sh" | bash}, as: username
   end
@@ -76,6 +81,7 @@ dep "user exists", :username, :home_dir_base do
   met? do
     "/etc/passwd".p.grep(/^#{username}:/)
   end
+
   meet do
     sudo("mkdir -p #{home_dir_base}") &&
     sudo("useradd -m -s /bin/bash -b #{home_dir_base} -G admin #{username}") &&
@@ -85,10 +91,12 @@ end
 
 dep "www user and group" do
   www_name = Babushka.host.osx? ? "_www" : "www"
+
   met? do
     "/etc/passwd".p.grep(/^#{www_name}\:/) &&
     "/etc/group".p.grep(/^#{www_name}\:/)
   end
+
   meet do
     sudo "groupadd #{www_name}"
     sudo "useradd -g #{www_name} #{www_name} -s /bin/false"

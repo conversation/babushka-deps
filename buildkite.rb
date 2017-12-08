@@ -35,6 +35,7 @@ end
 
 dep "buildkite ssh key installed" do
   met? { "/var/lib/buildkite-agent/.ssh/id_rsa.pub".p.exists? }
+
   meet do
     sudo %Q(mkdir -p ~/.ssh && cd ~/.ssh & ssh-keygen -t rsa -b 4096 -C "$(hostname)" -f ~/.ssh/id_rsa -N ""), as: "buildkite-agent", su: true
   end

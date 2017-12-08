@@ -4,6 +4,7 @@ dep "gpg key", :key_id do
       l[/\b#{Regexp.escape(key_id)}\b/]
     end
   end
+
   meet do
     shell("gpg --list-keys") # To initialize the config if it's not there
     shell("gpg --recv-keys #{key_id}")

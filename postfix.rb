@@ -37,6 +37,7 @@ dep "running.postfix" do
   meet on: :linux do
     start_postfix
   end
+
   meet on: :osx do
     log_error "launchctl should have already started postfix. Check /var/log/system.log for errors."
   end

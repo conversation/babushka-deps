@@ -34,6 +34,7 @@ dep "schema loaded", :username, :root, :schema_path, :db_name do
   root.default!(".")
   schema_path.default!("db/schema.sql")
   requires "existing db".with(username, db_name)
+
   met? do
     shell(
       %Q{psql #{db_name} -t -c "SELECT count(*) FROM pg_tables WHERE schemaname NOT IN ('pg_catalog','information_schema')"}
@@ -41,6 +42,7 @@ dep "schema loaded", :username, :root, :schema_path, :db_name do
       log "There are #{tables} tables in #{db_name}."
     end > 0
   end
+
   meet do
     log_shell "Applying #{schema_path} to #{db_name}", "psql #{db_name} -f -", input: (root / schema_path).p.read!
   end
@@ -67,6 +69,7 @@ end
 
 dep "db backup from cloudfiles", :app_root, :backup_path do
   requires "raca.gem"
+
   def cloudfiles_username
     YAML.load_file(app_root.p.join("config/application.yml"))["cloudfiles"]["username"]
   end
@@ -96,6 +99,7 @@ dep "db backup from cloudfiles", :app_root, :backup_path do
       log_ok "The downloaded backup is a valid gzip downloaded #{(Time.now - backup_path.p.mtime).round.xsecs} ago."
     end
   end
+
   meet do
     latest_backup = bucket.search("tc_production").sort.last
     bucket.download(latest_backup, backup_path.to_s)

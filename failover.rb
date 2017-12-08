@@ -12,6 +12,7 @@ class ProxyService
   # * service_name is the name of the site to interact with. Probable tc, dw,
   #   jobs, etc.
   #
+
   def initialize(api_key, service_name)
     @fastly = Fastly.new(api_key: api_key)
     @service = @fastly.list_services.detect do |service|
@@ -25,6 +26,7 @@ class ProxyService
   # containing a hostname or IP address. For now it's assumed there is only a
   # single backend address for each service.
   #
+
   def backend_address
     current_version = @service.version
     get_backend(current_version).address
@@ -34,6 +36,7 @@ class ProxyService
   # we're failing over to the standby server. For now it's assumed there is only
   # a single backend address for each service.
   #
+
   def update_backend_address(new_address)
     current_version = @service.version
 
@@ -102,6 +105,7 @@ dep "promote psql to master", :host do
     result = shell(%Q{ssh postgres@#{host} "psql postgres -t -c 'SELECT pg_is_in_recovery()'"}).strip
     result == "f"
   end
+
   meet do
     confirm "OK to promote psql on #{host} to master. There's no going back!" do
       shell(%Q{ssh postgres@#{host} "touch /var/lib/postgresql/9.6/main/trigger"})
@@ -128,10 +132,12 @@ dep "update fastly backend", :service, :backend_address, :fastly_api_key do
   setup do
     require "fastly"
   end
+
   met? do
     log("checking if current backend address is #{backend_address}")
     proxy.backend_address == backend_address
   end
+
   meet do
     log("updating backend address to #{backend_address}")
     proxy.update_backend_address(backend_address)
