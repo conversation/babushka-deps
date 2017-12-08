@@ -6,7 +6,7 @@ upstream <%= upstream_name %> {
 
 # Canonical www. redirect
 server {
-  listen <%= listen_port %>;
+  listen 80;
   server_name www.<%= domain %>;
   return 301 http://<%= domain %>$request_uri;
 }
@@ -15,7 +15,7 @@ server {
   charset utf-8;
   server_name <%= domain %>;
 
-  listen <%= listen_port %>;
+  listen 80;
 
 <% if enable_https[/^y/] %>
   listen 443 ssl;

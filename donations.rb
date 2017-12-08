@@ -23,7 +23,6 @@ dep "donations app", :env, :host, :domain, :app_user, :app_root, :key do
     "rails app".with(
       app_name: "donate",
       env: env,
-      listen_host: host,
       domain: domain,
       username: app_user,
       path: app_root

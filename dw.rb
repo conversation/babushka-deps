@@ -20,7 +20,6 @@ dep "dw app", :env, :host, :domain, :app_user, :app_root, :key do
     "sinatra app".with(
       app_name: "dw",
       env: env,
-      listen_host: host,
       enable_https: "no",
       domain: domain,
       username: app_user,

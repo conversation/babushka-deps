@@ -36,8 +36,8 @@ meta :nginx do
   end
 end
 
-dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port do
-  requires "vhost configured.nginx".with(app_name, env, domain, path, listen_host, listen_port, enable_https, proxy_host, proxy_port)
+dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https, :proxy_host, :proxy_port do
+  requires "vhost configured.nginx".with(app_name, env, domain, path, enable_https, proxy_host, proxy_port)
   met? { vhost_link.exists? }
   meet do
     sudo "ln -sf '#{vhost_conf}' '#{vhost_link}'"
@@ -45,10 +45,8 @@ dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :listen_host, :liste
   after { reload_nginx }
 end
 
-dep "vhost configured.nginx", :app_name, :env, :domain, :path, :listen_host, :listen_port, :enable_https, :proxy_host, :proxy_port do
+dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https, :proxy_host, :proxy_port do
   env.default!("production")
-  listen_host.default!("[::]")
-  listen_port.default!("80")
   enable_https.default!("yes")
   proxy_host.default("localhost")
   proxy_port.default("8000")
