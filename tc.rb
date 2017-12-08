@@ -46,7 +46,7 @@ dep "tc app", :env, :host, :domain, :app_user, :app_root, :key do
       domain: domain,
       username: app_user,
       path: app_root,
-      proxy_host: "localhost",
+      proxy_host: "127.0.0.1",
       proxy_port: 9000
     )
   ]
