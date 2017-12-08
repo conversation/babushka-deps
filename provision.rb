@@ -121,7 +121,7 @@ dep "host updated", :host, template: "remote" do
 end
 
 # This is massive and needs a refactor, but it works for now.
-dep "host provisioned", :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content, template: "remote" do
+dep "host provisioned", :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content, :mailgun_password, template: "remote" do
   # In production, default the domain to the app user (specified per-app).
   domain.default!(app_user) if env == "production"
 
@@ -199,7 +199,7 @@ dep "host provisioned", :host, :host_name, :ref, :env, :app_name, :app_user, :do
       remote_babushka "conversation:ruby.src", version: "2.4.2", patchlevel: "p198"
 
       # All the system-wide config for this app, like packages and user accounts.
-      remote_babushka "conversation:system provisioned", host_name: host_name, env: env, app_name: app_name, app_user: app_user, key: keys
+      remote_babushka "conversation:system provisioned", host_name: host_name, env: env, app_name: app_name, app_user: app_user, key: keys, mailgun_password: mailgun_password
     end
 
     as(app_user) do
@@ -236,7 +236,7 @@ dep "apt configured" do
   ]
 end
 
-dep "system provisioned", :host_name, :env, :app_name, :app_user, :key do
+dep "system provisioned", :host_name, :env, :app_name, :app_user, :key, :mailgun_password do
   requires [
     "localhost hosts entry",
     "hostname".with(host_name),
@@ -249,6 +249,7 @@ dep "system provisioned", :host_name, :env, :app_name, :app_user, :key do
     "lax host key checking",
     "admins can sudo",
     "tmp cleaning grace period",
+    "configured.postfix".with(mailgun_password),
     "#{app_name} packages",
     "user setup".with(key: key),
     "#{app_name} system".with(app_user, key, env),
