@@ -1,12 +1,12 @@
-dep 'cleanup' do
+dep "cleanup" do
   requires [
-    'apt packages removed'.with(%w[dovecot postfix apt-xapian-index python-xapian update-inetd cvs ghostscript libcups2 libcupsimage2]),
-    'orphaned dirs deleted',
-    'babushka caches removed'
+    "apt packages removed".with(%w[dovecot postfix apt-xapian-index python-xapian update-inetd cvs ghostscript libcups2 libcupsimage2]),
+    "orphaned dirs deleted",
+    "babushka caches removed"
   ]
 end
 
-dep 'orphaned dirs deleted' do
+dep "orphaned dirs deleted" do
   def paths
     %w[
       /var/cache/apt/archives/*deb
@@ -15,17 +15,18 @@ dep 'orphaned dirs deleted' do
       /var/lib/mysql/
     ]
   end
+
   def to_remove
-    paths.reject {|path|
+    paths.reject do |path|
       Dir[path].empty?
-    }
+    end
   end
-  met? {
+  met? do
     to_remove.empty?
-  }
-  meet {
-    to_remove.each {|path|
+  end
+  meet do
+    to_remove.each do |path|
       shell "rm -rf #{path}"
-    }
-  }
+    end
+  end
 end

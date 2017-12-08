@@ -1,54 +1,54 @@
-dep 'postgres master', :username, :password do
-  username.default!('standby')
+dep "postgres master", :username, :password do
+  username.default!("standby")
 
   # Create the standby user with replication privileges.
-  requires 'postgres access'.with(username: username, flags: '--replication')
+  requires "postgres access".with(username: username, flags: "--replication")
 end
 
-dep 'postgres standby', :host, :env, :version, :username, :password do
+dep "postgres standby", :host, :env, :version, :username, :password do
   host.default({
-    'production' => 'prod-master.tc-dev.net',
-    'staging' => 'staging.tc-dev.net'
+    "production" => "prod-master.tc-dev.net",
+    "staging" => "staging.tc-dev.net"
   }[env])
-  env.default(ENV['RACK_ENV'])
-  version.default!('10.1')
-  username.default!('standby')
+  env.default(ENV["RACK_ENV"])
+  version.default!("10.1")
+  username.default!("standby")
 
-  requires 'postgres recovery config'.with(host: host, version: version, username: username, password: password)
+  requires "postgres recovery config".with(host: host, version: version, username: username, password: password)
 end
 
-dep 'postgres recovery config', :host, :version, :username, :password do
-  requires 'postgres.bin'.with(version)
+dep "postgres recovery config", :host, :version, :username, :password do
+  requires "postgres.bin".with(version)
 
-  def psql cmd
-    shell?("psql postgres -c 'SELECT 1'", :as => 'postgres') &&
-    shell("psql postgres -t", :as => 'postgres', :input => cmd).strip
+  def psql(cmd)
+    shell?("psql postgres -c 'SELECT 1'", as: "postgres") &&
+    shell("psql postgres -t", as: "postgres", input: cmd).strip
   end
 
   def minor_version
     Util.minor_version(version)
   end
 
-  met? {
-    psql('SELECT pg_is_in_recovery()') == 't'
-  }
+  met? do
+    psql("SELECT pg_is_in_recovery()") == "t"
+  end
 
-  meet {
-    render_erb "postgres/recovery.conf.erb", :to => "/var/lib/postgresql/#{minor_version}/main/recovery.conf"
+  meet do
+    render_erb "postgres/recovery.conf.erb", to: "/var/lib/postgresql/#{minor_version}/main/recovery.conf"
     shell "chown postgres:postgres /var/lib/postgresql/#{minor_version}/main/recovery.conf"
-    Util.restart_service('postgresql')
-  }
+    Util.restart_service("postgresql")
+  end
 end
 
-dep 'postgres replication monitoring', :version, :test_user do
-  requires 'postgres.bin'.with(version)
+dep "postgres replication monitoring", :version, :test_user do
+  requires "postgres.bin".with(version)
 
-  met? {
-    shell? 'psql postgres -c "SELECT replication_status()"', :as => test_user
-  }
+  met? do
+    shell? 'psql postgres -c "SELECT replication_status()"', as: test_user
+  end
 
-  meet {
-    shell 'psql postgres', :as => 'postgres', :input => %q{
+  meet do
+    shell "psql postgres", as: "postgres", input: %q{
       BEGIN;
 
       CREATE TYPE replication_tuple AS (
@@ -75,5 +75,5 @@ dep 'postgres replication monitoring', :version, :test_user do
 
       COMMIT;
     }
-  }
+  end
 end

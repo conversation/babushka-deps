@@ -1,12 +1,12 @@
-dep 'delayed job', :env, :user, :queue do
-  requires 'delayed_job.systemd'.with(env, user, queue)
+dep "delayed job", :env, :user, :queue do
+  requires "delayed_job.systemd".with(env, user, queue)
 end
 
-dep 'delayed_job.systemd', :env, :user, :queue do
+dep "delayed_job.systemd", :env, :user, :queue do
   description "Delayed job worker"
-  respawn 'yes'
+  respawn "yes"
 
-  queue.default 'global'
+  queue.default "global"
 
   vars = ["RACK_ENV=#{env}", "RAILS_ENV=#{env}"]
 
@@ -18,13 +18,13 @@ dep 'delayed_job.systemd', :env, :user, :queue do
   command "/usr/local/bin/bundle exec rake jobs:work #{vars.join(' ')}"
   setuid user
   chdir "/srv/http/#{user}/current"
-  met? {
+  met? do
     shell?("ps ux | grep -v grep | grep 'rake jobs:work'")
-  }
+  end
 end
 
-dep 'delayed job restarted', template: 'task' do
-  run {
+dep "delayed job restarted", template: "task" do
+  run do
     output = shell?('ps ux | grep -v grep | grep "rake jobs:work"')
 
     if output.nil?
@@ -36,5 +36,5 @@ dep 'delayed job restarted', template: 'task' do
         log_shell "Sending SIGTERM to #{pid}", "kill -s TERM #{pid}"
       end
     end
-  }
+  end
 end

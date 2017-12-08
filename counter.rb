@@ -1,60 +1,60 @@
-dep 'counter system', :app_user, :key, :env
+dep "counter system", :app_user, :key, :env
 
-dep 'counter env vars set', :domain
+dep "counter env vars set", :domain
 
-dep 'counter app', :env, :host, :domain, :app_user, :app_root, :key do
+dep "counter app", :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    'geoip database'.with(:app_root => app_root),
-    'ssl cert in place'.with(:domain => domain, :env => env),
+    "geoip database".with(app_root: app_root),
+    "ssl cert in place".with(domain: domain, env: env),
   ]
 
-  if env == 'production'
-    requires 'ssl cert in place'.with(:domain => 'counter.theconversation.com', :env => env)
+  if env == "production"
+    requires "ssl cert in place".with(domain: "counter.theconversation.com", env: env)
   end
 
   requires [
-    'user exists'.with(:username => app_user),
+    "user exists".with(username: app_user),
 
-    'db'.with(
-      :env => env,
-      :username => app_user,
-      :root => app_root,
-      :data_required => 'no'
+    "db".with(
+      env: env,
+      username: app_user,
+      root: app_root,
+      data_required: "no"
     ),
 
-    'sinatra app'.with(
-      :app_name => 'counter',
-      :env => env,
-      :listen_host => host,
-      :domain => domain,
-      :username => app_user,
-      :path => app_root
+    "sinatra app".with(
+      app_name: "counter",
+      env: env,
+      listen_host: host,
+      domain: domain,
+      username: app_user,
+      path: app_root
     )
   ]
 end
 
-dep 'counter packages' do
+dep "counter packages" do
   requires [
-    'counter common packages',
-    'curl.lib',
-    'running.nginx'
+    "counter common packages",
+    "curl.lib",
+    "running.nginx"
   ]
 end
 
-dep 'counter dev' do
+dep "counter dev" do
   requires [
-    'counter common packages',
-    'geoip database'.with(:app_root => '.'),
-    'as database'.with(:app_root => '.')
+    "counter common packages",
+    "geoip database".with(app_root: "."),
+    "as database".with(app_root: ".")
   ]
 end
 
-dep 'counter common packages' do
+dep "counter common packages" do
   requires [
-    'bundler.gem',
-    'postgres.bin',
-    'geoip.bin', # for geoip-c
-    'libxml.lib', # for nokogiri
-    'libxslt.lib', # for nokogiri
+    "bundler.gem",
+    "postgres.bin",
+    "geoip.bin", # for geoip-c
+    "libxml.lib", # for nokogiri
+    "libxslt.lib", # for nokogiri
   ]
 end

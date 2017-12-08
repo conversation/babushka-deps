@@ -1,26 +1,26 @@
 meta :logrotate do
   accepts_value_for :renders
   accepts_value_for :as
-  template {
-    requires 'logrotate.bin'
+  template do
+    requires "logrotate.bin"
     def conf_dest
       %w[
         /usr/local/etc/logrotate.d
         /etc/logrotate.d
-      ].detect {|path|
+      ].detect do |path|
         path.p.exists?
-      } / as
+      end / as
     end
-    met? {
+    met? do
       Babushka::Renderable.new(conf_dest).from?(dependency.load_path.parent / renders)
-    }
-    meet {
-      render_erb renders, :to => conf_dest, :sudo => true
-    }
-  }
+    end
+    meet do
+      render_erb renders, to: conf_dest, sudo: true
+    end
+  end
 end
 
-dep 'rack.logrotate', :username do
+dep "rack.logrotate", :username do
   renders "logrotate/rack.conf"
   as username
 end
