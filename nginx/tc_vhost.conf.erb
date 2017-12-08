@@ -7,14 +7,14 @@ upstream <%= upstream_name %> {
 
 # Canonical www. redirect
 server {
-  listen <%= listen_port %>;
+  listen 80;
   server_name www.<%= domain %>;
   return 301 http://<%= domain %>$request_uri;
 }
 
 # Canonical http:// vhost
 server {
-  listen <%= listen_port %>;
+  listen 80;
   server_name <%= domain %>;
 
   include /etc/nginx/sites-available/<%= domain %>.common;

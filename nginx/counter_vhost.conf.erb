@@ -7,8 +7,7 @@ upstream <%= upstream_name %> {
 server {
   server_name <%= domain %>;
 
-  listen <%= listen_port %>;
-
+  listen 80;
   listen 443 ssl;
 
   ssl_certificate      /etc/ssl/certs/<%= domain %>.crt;
