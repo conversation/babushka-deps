@@ -1,5 +1,5 @@
 dep "docker.bin", :version do
-  version.default!("17.09.0-ce")
+  version.default!("17.09.1-ce")
 
   requires [
     "docker config",
