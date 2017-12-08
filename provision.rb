@@ -1,43 +1,43 @@
 
 # Several deps load YAML, e.g. database configs.
-require 'yaml'
+require "yaml"
 
-dep 'no known_hosts conflicts', :host do
-  met? {
-    "~/.ssh/known_hosts".p.grep(/\b#{Regexp.escape(host)}\b/).blank?.tap {|result|
+dep "no known_hosts conflicts", :host do
+  met? do
+    "~/.ssh/known_hosts".p.grep(/\b#{Regexp.escape(host)}\b/).blank?.tap do |result|
       log_ok "#{host} doesn't appear in #{'~/.ssh/known_hosts'.p}." if result
-    }
-  }
-  meet {
+    end
+  end
+  meet do
     shell "sed -i '' -e '/#{Regexp.escape(host)}/d' ~/.ssh/known_hosts"
-  }
+  end
 end
 
-dep 'public key in place', :host, :keys do
-  requires_when_unmet 'no known_hosts conflicts'.with(host)
-  met? {
-    shell?("ssh -o PasswordAuthentication=no root@#{host} 'true'").tap {|result|
-      log "root@#{host} is#{"n't" unless result} accessible via publickey auth.", :as => (:ok if result)
-    }
-  }
-  meet {
-    shell "ssh root@#{host} 'mkdir -p ~/.ssh; cat > ~/.ssh/authorized_keys'", :input => keys
-  }
+dep "public key in place", :host, :keys do
+  requires_when_unmet "no known_hosts conflicts".with(host)
+  met? do
+    shell?("ssh -o PasswordAuthentication=no root@#{host} 'true'").tap do |result|
+      log "root@#{host} is#{"n't" unless result} accessible via publickey auth.", as: (:ok if result)
+    end
+  end
+  meet do
+    shell "ssh root@#{host} 'mkdir -p ~/.ssh; cat > ~/.ssh/authorized_keys'", input: keys
+  end
 end
 
-dep 'babushka bootstrapped', :host do
-  met? {
-    raw_shell("ssh root@#{host} 'babushka --version'").stdout[/[\d\.]{5,} \([0-9a-f]{7,}\)/].tap {|result|
+dep "babushka bootstrapped", :host do
+  met? do
+    raw_shell("ssh root@#{host} 'babushka --version'").stdout[/[\d\.]{5,} \([0-9a-f]{7,}\)/].tap do |result|
       log_ok "#{host} is running babushka-#{result}." if result
-    }
-  }
-  meet {
-    shell %{ssh root@#{host} 'sh -'}, :input => shell('curl https://babushka.me/up'), :log => true
-  }
+    end
+  end
+  meet do
+    shell %{ssh root@#{host} 'sh -'}, input: shell("curl https://babushka.me/up"), log: true
+  end
 end
 
 meta :remote do
-  def as user, &block
+  def as(user)
     previous_user, @user = @user, user
     yield
   ensure
@@ -48,37 +48,37 @@ meta :remote do
     "#{@user || 'root'}@#{host}"
   end
 
-  def remote_shell *cmd
+  def remote_shell(*cmd)
     opening_message = [
       host_spec.colorize("on grey"), # user@host spec
-      cmd.map {|i| i.sub(/^(.{50})(.{3}).*/m, '\1...') }.join(' ') # the command, with long args truncated
-    ].join(' $ ')
-    log opening_message, :closing_status => opening_message do
-      shell "ssh", "-o", "PermitLocalCommand=no", "-A", host_spec, cmd.map{|i| "'#{i}'" }.join(' '), :log => true
+      cmd.map {|i| i.sub(/^(.{50})(.{3}).*/m, '\1...') }.join(" ") # the command, with long args truncated
+    ].join(" $ ")
+    log opening_message, closing_status: opening_message do
+      shell "ssh", "-o", "PermitLocalCommand=no", "-A", host_spec, cmd.map{|i| "'#{i}'" }.join(" "), log: true
     end
   end
 
-  def remote_babushka dep_spec, args = {}
+  def remote_babushka(dep_spec, args = {})
     remote_args = [
-      '--defaults',
-      ('--update' if Babushka::Base.task.opt(:update)),
-      ('--debug'  if Babushka::Base.task.opt(:debug)),
-      ('--colour' if $stdin.tty?),
-      '--show-args'
+      "--defaults",
+      ("--update" if Babushka::Base.task.opt(:update)),
+      ("--debug"  if Babushka::Base.task.opt(:debug)),
+      ("--colour" if $stdin.tty?),
+      "--show-args"
     ].compact
 
     remote_args.concat args.keys.map {|k| "#{k}=#{args[k]}" }
 
     remote_shell(
-      'babushka',
+      "babushka",
       dep_spec,
       *remote_args
-    ).tap {|result|
+    ).tap do |result|
       unmeetable! "The remote babushka reported an error." unless result
-    }
+    end
   end
 
-  def failable_remote_babushka dep_spec, args = {}
+  def failable_remote_babushka(dep_spec, args = {})
     remote_babushka(dep_spec, args)
   rescue Babushka::UnmeetableDep
     log "That remote run was marked as failable; moving on."
@@ -87,49 +87,47 @@ meta :remote do
 end
 
 # This dep couples two concerns together (kernel & apt upgrade) and should be refactored.
-dep 'host updated', :host, :template => 'remote' do
-
+dep "host updated", :host, template: "remote" do
   def reboot_remote!
-    remote_shell('reboot')
+    remote_shell("reboot")
 
-    log "Waiting for #{host} to go offline...", :newline => false
-    while shell?("ssh", '-o', 'ConnectTimeout=1', host_spec, 'true')
-      print '.'
+    log "Waiting for #{host} to go offline...", newline: false
+    while shell?("ssh", "-o", "ConnectTimeout=1", host_spec, "true")
+      print "."
       sleep 5
     end
     puts " gone."
 
-    log "Waiting for #{host} to boot...", :newline => false
-    until shell?("ssh", '-o', 'ConnectTimeout=1', host_spec, 'true')
-      print '.'
+    log "Waiting for #{host} to boot...", newline: false
+    until shell?("ssh", "-o", "ConnectTimeout=1", host_spec, "true")
+      print "."
       sleep 5
     end
     puts " booted."
   end
 
-  met? {
+  met? do
     # Make sure we're running on the correct kernel (it should have been installed and booted
     # by the above upgrade; this dep won't attempt an install).
-    remote_babushka 'conversation:kernel running', :version => '3.2.0-43-generic' # linux-3.2.0-43.68, for the CVE-2013-2094 fix.
-  }
+    remote_babushka "conversation:kernel running", version: "3.2.0-43-generic" # linux-3.2.0-43.68, for the CVE-2013-2094 fix.
+  end
 
-  meet {
+  meet do
     # First we need to configure apt. This involves a dist-upgrade, which should update the kernel.
-    remote_babushka 'conversation:apt configured'
+    remote_babushka "conversation:apt configured"
     # The above update could have touched the kernel and/or glibc, so a reboot might be required.
     reboot_remote!
-  }
+  end
 end
 
 # This is massive and needs a refactor, but it works for now.
-dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content, :template => 'remote' do
-
+dep "host provisioned", :host, :host_name, :ref, :env, :app_name, :app_user, :domain, :app_root, :keys, :check_path, :expected_content_path, :expected_content, template: "remote" do
   # In production, default the domain to the app user (specified per-app).
-  domain.default!(app_user) if env == 'production'
+  domain.default!(app_user) if env == "production"
 
-  keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
-  app_root.default!('~/current')
-  check_path.default!('/health')
+  keys.default!((dependency.load_path.parent / "config/authorized_keys").read)
+  app_root.default!("~/current")
+  check_path.default!("/health")
 
   def curl_command
     "curl -v -L --connect-timeout 5 --max-time 30 --resolve #{domain}:80:#{host} --resolve #{domain}:443:#{host}"
@@ -144,7 +142,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     else
       log_ok "#{host} is up."
 
-      if cmd.stderr.val_for('Status') != '200 OK'
+      if cmd.stderr.val_for("Status") != "200 OK"
         log_warn "#{domain}#{check_path} on #{host} reported a problem:\n#{cmd.stdout}"
         :non_200
       else
@@ -171,7 +169,7 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     end
   end
 
-  met? {
+  met? do
     case check_host
     when :down
       false
@@ -181,91 +179,91 @@ dep 'host provisioned', :host, :host_name, :ref, :env, :app_name, :app_user, :do
     when :ok
       @run || log_warn("The app seems to be up; babushkaing anyway. (How bad could it be?)")
     end
-  }
+  end
 
-  prepare {
+  prepare do
     unmeetable! "OK, bailing." if @confirm_beforehand && !confirm("Sure you want to provision #{domain} on #{host}?")
-  }
+  end
 
-  requires_when_unmet 'public key in place'.with(host, keys)
-  requires_when_unmet 'babushka bootstrapped'.with(host)
-  requires_when_unmet 'git remote'.with(env, app_user, host)
+  requires_when_unmet "public key in place".with(host, keys)
+  requires_when_unmet "babushka bootstrapped".with(host)
+  requires_when_unmet "git remote".with(env, app_user, host)
 
-  meet {
-    as('root') {
+  meet do
+    as("root") do
       # First, UTF-8 everything. (A new shell is required to test this, hence 2 runs.)
-      failable_remote_babushka 'common:set.locale', :locale_name => 'en_AU'
-      remote_babushka 'common:set.locale', :locale_name => 'en_AU'
+      failable_remote_babushka "common:set.locale", locale_name: "en_AU"
+      remote_babushka "common:set.locale", locale_name: "en_AU"
 
       # Build ruby separately, because it changes the ruby binary for subsequent deps.
-      remote_babushka 'conversation:ruby.src', :version => '2.4.2', :patchlevel => 'p198'
+      remote_babushka "conversation:ruby.src", version: "2.4.2", patchlevel: "p198"
 
       # All the system-wide config for this app, like packages and user accounts.
-      remote_babushka "conversation:system provisioned", :host_name => host_name, :env => env, :app_name => app_name, :app_user => app_user, :key => keys
-    }
+      remote_babushka "conversation:system provisioned", host_name: host_name, env: env, app_name: app_name, app_user: app_user, key: keys
+    end
 
-    as(app_user) {
+    as(app_user) do
       # This has to run on a separate login from 'deploy user setup', which requires zsh to already be active.
-      remote_babushka 'conversation:user setup', :key => keys
+      remote_babushka "conversation:user setup", key: keys
 
       # Set up the app user for deploys: db user, env vars, and ~/current.
-      remote_babushka 'conversation:deploy user setup', :env => env, :app_name => app_name, :domain => domain
-    }
+      remote_babushka "conversation:deploy user setup", env: env, app_name: app_name, domain: domain
+    end
 
     # The initial deploy.
-    Dep('common:pushed.push').meet(ref, env)
+    Dep("common:pushed.push").meet(ref, env)
 
-    as(app_user) {
+    as(app_user) do
       # Now that the code is in place, provision the app.
-      remote_babushka "conversation:app provisioned", :env => env, :host => host, :domain => domain, :app_name => app_name, :app_user => app_user, :app_root => app_root, :key => keys
-    }
+      remote_babushka "conversation:app provisioned", env: env, host: host, domain: domain, app_name: app_name, app_user: app_user, app_root: app_root, key: keys
+    end
 
-    as('root') {
+    as("root") do
       # Lastly, revoke sudo to lock the box down per-user.
       remote_babushka "conversation:passwordless sudo removed"
-    }
+    end
 
     @run = true
-  }
+  end
 end
 
-dep 'apt configured' do
+dep "apt configured" do
   requires [
-    'apt-transport-https.bin',
-    'apt sources',
-    'apt packages removed'.with([/apache/i, /mysql/i, /php/i, /dovecot/]),
-    'upgrade apt packages'
+    "apt-transport-https.bin",
+    "apt sources",
+    "apt packages removed".with([/apache/i, /mysql/i, /php/i, /dovecot/]),
+    "upgrade apt packages"
   ]
 end
 
-dep 'system provisioned', :host_name, :env, :app_name, :app_user, :key do
+dep "system provisioned", :host_name, :env, :app_name, :app_user, :key do
   requires [
-    'localhost hosts entry',
-    'hostname'.with(host_name),
-    'utc',
-    'secured ssh logins',
-    'firewall rules',
-    'papertrail config',
-    'core software',
-    'local caching dns server',
-    'lax host key checking',
-    'admins can sudo',
-    'tmp cleaning grace period',
+    "localhost hosts entry",
+    "hostname".with(host_name),
+    "utc",
+    "secured ssh logins",
+    "firewall rules",
+    "papertrail config",
+    "core software",
+    "local caching dns server",
+    "lax host key checking",
+    "admins can sudo",
+    "tmp cleaning grace period",
     "#{app_name} packages",
-    'user setup'.with(:key => key),
+    "user setup".with(key: key),
     "#{app_name} system".with(app_user, key, env),
-    'user setup for provisioning'.with(app_user, key)
+    "user setup for provisioning".with(app_user, key)
   ]
-  setup {
-    unmeetable! "This dep has to be run as root." unless shell('whoami') == 'root'
-  }
+  setup do
+    unmeetable! "This dep has to be run as root." unless shell("whoami") == "root"
+  end
 end
 
-dep 'app provisioned', :env, :host, :domain, :app_name, :app_user, :app_root, :key do
+dep "app provisioned", :env, :host, :domain, :app_name, :app_user, :app_root, :key do
   requires [
     "#{app_name} app".with(env, host, domain, app_user, app_root, key)
   ]
-  setup {
-    unmeetable! "This dep has to be run as the app user, #{app_user}." unless shell('whoami') == app_user
-  }
+  setup do
+    unmeetable! "This dep has to be run as the app user, #{app_user}." unless shell("whoami") == app_user
+  end
 end

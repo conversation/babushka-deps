@@ -1,5 +1,5 @@
 meta :systemd do
-  accepts_value_for :respawn, 'no' # Restart the process when it exits.
+  accepts_value_for :respawn, "no" # Restart the process when it exits.
   accepts_value_for :description, "Unnamed service"
   accepts_value_for :pid_file
   accepts_value_for :command
@@ -14,8 +14,8 @@ meta :systemd do
     [setuid, basename, suffix]
       .compact
       .map { |token| token.to_s.gsub(/[ ,]/, "_") }
-      .reject { |token| token.blank? }
-      .join('_')
+      .reject(&:blank?)
+      .join("_")
   end
 
   def conf_dest

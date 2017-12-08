@@ -1,9 +1,9 @@
-dep 'provision ci', :keys, :host, :user, :buildkite_token do
-  keys.default!((dependency.load_path.parent / 'config/authorized_keys').read)
+dep "provision ci", :keys, :host, :user, :buildkite_token do
+  keys.default!((dependency.load_path.parent / "config/authorized_keys").read)
   user.default!("buildkite-agent")
 
-  requires_when_unmet 'public key in place'.with(host, keys)
-  requires_when_unmet 'babushka bootstrapped'.with(host)
+  requires_when_unmet "public key in place".with(host, keys)
+  requires_when_unmet "babushka bootstrapped".with(host)
 
   met? { false }
   meet do
@@ -18,64 +18,64 @@ dep 'provision ci', :keys, :host, :user, :buildkite_token do
   end
 end
 
-dep 'ci prepared' do
+dep "ci prepared" do
   requires [
-    'common:set.locale'.with(:locale_name => 'en_AU'),
-    'ruby.src'.with(:version => '2.4.2', :patchlevel => 'p198'),
+    "common:set.locale".with(locale_name: "en_AU"),
+    "ruby.src".with(version: "2.4.2", patchlevel: "p198"),
   ]
 end
 
-dep 'ci provisioned', :user, :keys, :buildkite_token do
+dep "ci provisioned", :user, :keys, :buildkite_token do
   requires [
-    'ci prepared',
-    'localhost hosts entry',
-    'lax host key checking',
-    'tc common packages',
-    'sharejs common packages',
-    'counter common packages',
-    'jobs common packages',
-    'ci packages',
-    'ci firewall rules',
-    'buildkite-agent installed'.with(buildkite_token: buildkite_token),
-    'postgres access'.with(:username => user, :flags => '-sdrw'),
-    'docker-gc'
+    "ci prepared",
+    "localhost hosts entry",
+    "lax host key checking",
+    "tc common packages",
+    "sharejs common packages",
+    "counter common packages",
+    "jobs common packages",
+    "ci packages",
+    "ci firewall rules",
+    "buildkite-agent installed".with(buildkite_token: buildkite_token),
+    "postgres access".with(username: user, flags: "-sdrw"),
+    "docker-gc"
   ]
 end
 
-dep 'ci packages' do
+dep "ci packages" do
   requires [
-    'ack-grep.bin',
-    'silversearcher.bin',
-    'docker.bin',
-    'docker-compose',
-    'firefox.bin',
-    'nodejs.bin',
-    'phantomjs',
-    'python.bin',
-    'redis-server.bin',
-    'sasl.lib',
-    'slack-cli.npm',
-    'terraform',
-    'tmux.bin',
-    'ufw.bin',
-    'xvfb.bin'
+    "ack-grep.bin",
+    "silversearcher.bin",
+    "docker.bin",
+    "docker-compose",
+    "firefox.bin",
+    "nodejs.bin",
+    "phantomjs",
+    "python.bin",
+    "redis-server.bin",
+    "sasl.lib",
+    "slack-cli.npm",
+    "terraform",
+    "tmux.bin",
+    "ufw.bin",
+    "xvfb.bin"
   ]
 end
 
-dep 'ci firewall rules' do
-  met? {
+dep "ci firewall rules" do
+  met? do
     shell? %q(ufw status | grep "Status: active")
-  }
+  end
 
-  meet {
+  meet do
     shell "ufw allow ssh/tcp"
     shell "ufw allow postgresql/tcp"
     shell "ufw --force enable"
-  }
+  end
 end
 
-dep 'phantomjs', :version do
-  version.default!('2.1.1')
+dep "phantomjs", :version do
+  version.default!("2.1.1")
   def phantomjs_uri
     if Babushka.host.linux?
       "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-#{version}-linux-x86_64.tar.bz2"
@@ -85,45 +85,45 @@ dep 'phantomjs', :version do
       unmeetable! "Not sure where to download a phantomjs binary for #{Babushka.base.host}."
     end
   end
-  met? {
+  met? do
     in_path? "phantomjs >= #{version}"
-  }
-  meet {
-    Babushka::Resource.extract phantomjs_uri do |archive|
+  end
+  meet do
+    Babushka::Resource.extract phantomjs_uri do |_archive|
       shell "cp -r . /usr/local/phantomjs"
       shell "ln -fs /usr/local/phantomjs/bin/phantomjs /usr/local/bin"
     end
-  }
+  end
 end
 
-dep 'ack-grep.bin' do
-  provides 'ack'
+dep "ack-grep.bin" do
+  provides "ack"
 end
 
-dep 'python.bin' do
-  provides 'python'
+dep "python.bin" do
+  provides "python"
 end
 
-dep 'xvfb.bin' do
-  provides 'Xvfb'
+dep "xvfb.bin" do
+  provides "Xvfb"
 end
 
-dep 'firefox.bin', :version do
-  version.default!('56.0')
+dep "firefox.bin", :version do
+  version.default!("56.0")
 
-  met? {
+  met? do
     in_path? "firefox >= #{version}"
-  }
+  end
 end
 
-dep 'terraform', :version do
-  version.default!('0.10.2')
-  met? {
+dep "terraform", :version do
+  version.default!("0.10.2")
+  met? do
     in_path? "terraform >= #{version}"
-  }
-  meet {
-    Babushka::Resource.extract "https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip" do |archive|
+  end
+  meet do
+    Babushka::Resource.extract "https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip" do
       shell "cp -r terraform /usr/local/bin/terraform"
     end
-  }
+  end
 end

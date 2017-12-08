@@ -1,31 +1,33 @@
-dep 'docker.bin', :version do
-  version.default!('17.09.0-ce')
+dep "docker.bin", :version do
+  version.default!("17.09.0-ce")
 
   requires [
-    'docker config',
-    'docker credentials'
+    "docker config",
+    "docker credentials"
   ]
 
-  requires_when_unmet {
-    on :apt, 'keyed apt source'.with(
-      :uri => 'https://download.docker.com/linux/ubuntu',
-      :release => 'xenial',
-      :repo => 'stable',
-      :key_sig => '0EBFCD88',
-      :key_uri => 'https://download.docker.com/linux/ubuntu/gpg'
+  requires_when_unmet do
+    on :apt, "keyed apt source".with(
+      uri: "https://download.docker.com/linux/ubuntu",
+      release: "xenial",
+      repo: "stable",
+      key_sig: "0EBFCD88",
+      key_uri: "https://download.docker.com/linux/ubuntu/gpg"
     )
-  }
+  end
 
-  installs {
+  installs do
     via :apt, "docker-ce"
     via :brew, "docker"
-  }
+  end
 
   provides "docker >= #{version}"
 end
 
-dep 'docker config' do
-  def docker_config; "/root/.docker/config.json"; end
+dep "docker config" do
+  def docker_config
+    "/root/.docker/config.json"
+  end
 
   met? { docker_config.p.exists? }
 
@@ -36,48 +38,59 @@ dep 'docker config' do
   end
 end
 
-dep 'docker-compose', :version do
-  version.default!('1.16.1')
-  met? {
+dep "docker-compose", :version do
+  version.default!("1.16.1")
+  met? do
     in_path? "docker-compose >= #{version}"
-  }
-  meet {
+  end
+  meet do
     shell "curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
     shell "chmod a+x /usr/local/bin/docker-compose"
-  }
+  end
 end
 
-dep 'docker-gc' do
-  def docker_gc_src; "docker/docker-gc.erb" end
-  def docker_gc_dest; "/etc/cron.hourly/docker-gc" end
-  def docker_gc_exclude_src; "docker/docker-gc-exclude.erb" end
-  def docker_gc_exclude_dest; "/etc/docker-gc-exclude" end
+dep "docker-gc" do
+  def docker_gc_src
+    "docker/docker-gc.erb"
+  end
+
+  def docker_gc_dest
+    "/etc/cron.hourly/docker-gc"
+  end
+
+  def docker_gc_exclude_src
+    "docker/docker-gc-exclude.erb"
+  end
+
+  def docker_gc_exclude_dest
+    "/etc/docker-gc-exclude"
+  end
 
   def up_to_date?(source_name, dest)
     source = dependency.load_path.parent / source_name
     Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
   end
 
-  met? {
+  met? do
     up_to_date?(docker_gc_src, docker_gc_dest) &&
     up_to_date?(docker_gc_exclude_src, docker_gc_exclude_dest)
-  }
-
-  meet {
-    render_erb(docker_gc_src, to: docker_gc_dest)
-    render_erb(docker_gc_exclude_src, to: docker_gc_exclude_dest)
-  }
-
-  after {
-    shell "chmod a+x #{docker_gc_dest}"
-  }
-end
-
-dep 'docker credentials' do
-  met? { in_path? 'docker-credential-ecr-login' }
+  end
 
   meet do
-    shell 'curl -L https://github.com/lox/amazon-ecr-credential-helper/releases/download/v1.0.0/docker-credential-ecr-login_linux_amd64 > /usr/local/bin/docker-credential-ecr-login'
-    shell 'chmod a+x /usr/local/bin/docker-credential-ecr-login'
+    render_erb(docker_gc_src, to: docker_gc_dest)
+    render_erb(docker_gc_exclude_src, to: docker_gc_exclude_dest)
+  end
+
+  after do
+    shell "chmod a+x #{docker_gc_dest}"
+  end
+end
+
+dep "docker credentials" do
+  met? { in_path? "docker-credential-ecr-login" }
+
+  meet do
+    shell "curl -L https://github.com/lox/amazon-ecr-credential-helper/releases/download/v1.0.0/docker-credential-ecr-login_linux_amd64 > /usr/local/bin/docker-credential-ecr-login"
+    shell "chmod a+x /usr/local/bin/docker-credential-ecr-login"
   end
 end
