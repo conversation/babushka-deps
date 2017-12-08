@@ -1,14 +1,15 @@
-require 'uri'
+require "uri"
 
+# Provides common utility methods that can be used in our deps.
 module Util
   def self.database_name(root, env)
-    config = YAML.load_file(root / 'config/database.yml')
+    config = YAML.load_file(root / "config/database.yml")
     raise "There is no database.yml file" unless config
 
-    if database = config.dig(env.to_s, 'database')
+    if database = config.dig(env.to_s, "database")
       database
-    elsif url = config.dig(env.to_s, 'url')
-      URI.parse(url).path.gsub(/^\//, '')
+    elsif url = config.dig(env.to_s, "url")
+      URI.parse(url).path.gsub(/^\//, "")
     else
       raise "There is no database defined in database.yml"
     end
@@ -30,7 +31,7 @@ module Util
     Babushka::ShellHelpers.log_shell("Restarting #{name}...", "systemctl restart #{name}", sudo: true)
   end
 
-  def self.psql(query, as: 'postgres', db: nil)
+  def self.psql(query, as: "postgres", db: nil)
     Babushka::ShellHelpers.shell("psql #{db || as} -t", as: as, input: query).strip
   end
 end

@@ -13,10 +13,10 @@ class ProxyService
   #   jobs, etc.
   #
   def initialize(api_key, service_name)
-    @fastly = Fastly.new(:api_key => api_key)
-    @service = @fastly.list_services.detect { |service|
+    @fastly = Fastly.new(api_key: api_key)
+    @service = @fastly.list_services.detect do |service|
       service.name == service_name
-    }
+    end
     @backend_name = "prod-master"
     raise ArgumentError, "service #{service_name} not found" unless @service
   end
@@ -51,90 +51,89 @@ class ProxyService
   private
 
   def get_backend(version)
-    backend = @fastly.list_backends(:service_id => @service.id, :version => version.number).detect { |b|
+    backend = @fastly.list_backends(service_id: @service.id, version: version.number).detect do |b|
       b.name == @backend_name
-    }
+    end
     raise "backend #{backend_name} not found" if backend.nil?
     backend
   end
-
 end
 
-dep 'promote staging-a to master' do
+dep "promote staging-a to master" do
   requires [
-    'promote psql to master'.with(:host => "staging-a.tc-dev.net"),
+    "promote psql to master".with(host: "staging-a.tc-dev.net"),
   ]
 end
 
-dep 'promote staging-b to master' do
+dep "promote staging-b to master" do
   requires [
-    'promote psql to master'.with(:host => "staging-b.tc-dev.net"),
+    "promote psql to master".with(host: "staging-b.tc-dev.net"),
   ]
 end
 
-dep 'promote dallas to master' do
+dep "promote dallas to master" do
   requires [
-    'fastly.gem',
-    'promote psql to master'.with(:host => "prod-dal.tc-dev.net"),
-    'update fastly'.with(:new_master_domain => 'prod-dal.tc-dev.net'),
+    "fastly.gem",
+    "promote psql to master".with(host: "prod-dal.tc-dev.net"),
+    "update fastly".with(new_master_domain: "prod-dal.tc-dev.net"),
   ]
 end
 
-dep 'promote london to master' do
+dep "promote london to master" do
   requires [
-    'fastly.gem',
-    'promote psql to master'.with(:host => "prod-lon.tc-dev.net"),
-    'update fastly'.with(:new_master_domain => 'prod-lon.tc-dev.net'),
+    "fastly.gem",
+    "promote psql to master".with(host: "prod-lon.tc-dev.net"),
+    "update fastly".with(new_master_domain: "prod-lon.tc-dev.net"),
   ]
 end
 
-dep 'promote london3 to master' do
+dep "promote london3 to master" do
   requires [
-    'fastly.gem',
-    'promote psql to master'.with(:host => "prod-lon3.tc-dev.net"),
-    'update fastly'.with(:new_master_domain => 'prod-lon3.tc-dev.net'),
+    "fastly.gem",
+    "promote psql to master".with(host: "prod-lon3.tc-dev.net"),
+    "update fastly".with(new_master_domain: "prod-lon3.tc-dev.net"),
   ]
 end
 
-dep 'promote psql to master', :host do
-  met? {
+dep "promote psql to master", :host do
+  met? do
     # this command will return 'f' for master postgres clusters and 't'
     # for standby clusters
     result = shell(%Q{ssh postgres@#{host} "psql postgres -t -c 'SELECT pg_is_in_recovery()'"}).strip
     result == "f"
-  }
-  meet {
+  end
+  meet do
     confirm "OK to promote psql on #{host} to master. There's no going back!" do
       shell(%Q{ssh postgres@#{host} "touch /var/lib/postgresql/9.6/main/trigger"})
     end
-  }
+  end
 end
 
-dep 'update fastly', :new_master_domain, :fastly_api_key do
+dep "update fastly", :new_master_domain, :fastly_api_key do
   requires [
-    "update fastly backend".with(:service => "tc",     :backend_address => "dot-com.#{new_master_domain}", :fastly_api_key => fastly_api_key),
-    "update fastly backend".with(:service => "dw",     :backend_address => "dw.#{new_master_domain}",      :fastly_api_key => fastly_api_key),
-    "update fastly backend".with(:service => "donate", :backend_address => "donate.#{new_master_domain}",  :fastly_api_key => fastly_api_key),
-    "update fastly backend".with(:service => "jobs",   :backend_address => "jobs.#{new_master_domain}",    :fastly_api_key => fastly_api_key)
+    "update fastly backend".with(service: "tc",     backend_address: "dot-com.#{new_master_domain}", fastly_api_key: fastly_api_key),
+    "update fastly backend".with(service: "dw",     backend_address: "dw.#{new_master_domain}",      fastly_api_key: fastly_api_key),
+    "update fastly backend".with(service: "donate", backend_address: "donate.#{new_master_domain}",  fastly_api_key: fastly_api_key),
+    "update fastly backend".with(service: "jobs",   backend_address: "jobs.#{new_master_domain}",    fastly_api_key: fastly_api_key)
   ]
 end
 
-dep 'update fastly backend', :service, :backend_address, :fastly_api_key do
+dep "update fastly backend", :service, :backend_address, :fastly_api_key do
   def proxy
     ProxyService.new(fastly_api_key, service)
   end
 
-  requires ['fastly.gem']
+  requires ["fastly.gem"]
 
-  setup {
-    require 'fastly'
-  }
-  met? {
+  setup do
+    require "fastly"
+  end
+  met? do
     log("checking if current backend address is #{backend_address}")
     proxy.backend_address == backend_address
-  }
-  meet {
+  end
+  meet do
     log("updating backend address to #{backend_address}")
     proxy.update_backend_address(backend_address)
-  }
+  end
 end

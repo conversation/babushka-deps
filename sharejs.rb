@@ -1,41 +1,41 @@
-dep 'sharejs system', :app_user, :key, :env
+dep "sharejs system", :app_user, :key, :env
 
-dep 'sharejs env vars set', :domain
+dep "sharejs env vars set", :domain
 
-dep 'sharejs app', :env, :host, :domain, :app_user, :app_root, :key do
+dep "sharejs app", :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    'user exists'.with(:username => app_user),
+    "user exists".with(username: app_user),
     "sharejs.systemd".with(app_user, env, app_root, "sharejs_#{env}")
   ]
 end
 
-dep 'sharejs packages' do
+dep "sharejs packages" do
   requires [
-    'postgres',
-    'curl.lib',
-    'running.nginx',
-    'sharejs common packages'
+    "postgres",
+    "curl.lib",
+    "running.nginx",
+    "sharejs common packages"
   ]
 end
 
-dep 'sharejs dev' do
+dep "sharejs dev" do
   requires [
-    'sharejs common packages',
-    'phantomjs' # for js testing
+    "sharejs common packages",
+    "phantomjs" # for js testing
   ]
 end
 
-dep 'sharejs common packages' do
+dep "sharejs common packages" do
   requires [
-    'bundler.gem',
-    'postgres.bin'
+    "bundler.gem",
+    "postgres.bin"
   ]
 end
 
-dep 'sharejs.systemd', :username, :env, :app_root, :db_name do
-  requires 'sharejs setup'.with(username, app_root, db_name)
+dep "sharejs.systemd", :username, :env, :app_root, :db_name do
+  requires "sharejs setup".with(username, app_root, db_name)
 
-  username.default!(shell('whoami'))
+  username.default!(shell("whoami"))
   db_name.default!("tc_#{env}")
 
   description "ShareJS server"
@@ -43,17 +43,17 @@ dep 'sharejs.systemd', :username, :env, :app_root, :db_name do
   environment "NODE_ENV=#{env}"
   setuid username
   chdir "/srv/http/#{username}/current"
-  respawn 'yes'
+  respawn "yes"
 
-  met? {
+  met? do
     shell"curl -I localhost:9000/health"
-  }
+  end
 end
 
-dep 'sharejs setup', :username, :app_root, :db_name do
+dep "sharejs setup", :username, :app_root, :db_name do
   requires [
-    'schema loaded'.with(:username => username, :root => app_root, :db_name => db_name),
-    'npm packages installed'.with('~/current'),
-    'rack.logrotate'.with(username),
+    "schema loaded".with(username: username, root: app_root, db_name: db_name),
+    "npm packages installed".with("~/current"),
+    "rack.logrotate".with(username),
   ]
 end

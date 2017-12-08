@@ -1,51 +1,51 @@
-dep 'core software' do
+dep "core software" do
   requires [
-    'sudo.bin',
-    'man.bin',
-    'host.bin',
-    'lsof.bin',
-    'vim.bin',
-    'curl.bin',
-    'traceroute.bin',
-    'htop.bin',
-    'iotop.bin',
-    'jnettop.bin',
-    'tmux.bin',
-    'ufw.bin',
-    'nmap.bin',
-    'tree.bin',
-    'pv.bin',
-    's3cmd.bin',
-    'trickle.bin',
-    'apt-transport-https.bin'
+    "sudo.bin",
+    "man.bin",
+    "host.bin",
+    "lsof.bin",
+    "vim.bin",
+    "curl.bin",
+    "traceroute.bin",
+    "htop.bin",
+    "iotop.bin",
+    "jnettop.bin",
+    "tmux.bin",
+    "ufw.bin",
+    "nmap.bin",
+    "tree.bin",
+    "pv.bin",
+    "s3cmd.bin",
+    "trickle.bin",
+    "apt-transport-https.bin"
   ]
 end
 
-dep 'hostname', :host_name, :for => :linux do
+dep "hostname", :host_name, for: :linux do
   def current_hostname
-    shell('hostname -f')
+    shell("hostname -f")
   end
-  host_name.default(shell('hostname'))
-  met? {
+  host_name.default(shell("hostname"))
+  met? do
     current_hostname == host_name
-  }
-  meet {
+  end
+  meet do
     sudo "echo #{host_name} > /etc/hostname"
     sudo "sed -ri 's/^127.0.0.1.*$/127.0.0.1 #{host_name} #{host_name.to_s.sub(/\..*$/, '')} localhost.localdomain localhost/' /etc/hosts"
     sudo "hostname #{host_name}"
-  }
+  end
 end
 
-dep 'localhost hosts entry' do
-  met? {
+dep "localhost hosts entry" do
+  met? do
     "/etc/hosts".p.grep(/^127\.0\.0\.1/)
-  }
-  meet {
+  end
+  meet do
     "/etc/hosts".p.append("127.0.0.1 localhost.localdomain localhost\n")
-  }
+  end
 end
 
-dep 'local caching dns server' do
+dep "local caching dns server" do
   requires "unbound"
 
   def up_to_date?(source_name, dest)
@@ -53,16 +53,16 @@ dep 'local caching dns server' do
     Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
   end
 
-  met? {
+  met? do
     up_to_date?("system/resolv.conf.erb", "/etc/resolv.conf")
-  }
-  meet {
-    render_erb "system/resolv.conf.erb", :to => "/etc/resolv.conf", :sudo => true
-  }
+  end
+  meet do
+    render_erb "system/resolv.conf.erb", to: "/etc/resolv.conf", sudo: true
+  end
 end
 
-dep 'monitored with collectd', :librato_user, :librato_password do
-  requires 'collectd.bin'
+dep "monitored with collectd", :librato_user, :librato_password do
+  requires "collectd.bin"
 
   def conf_files
     {
@@ -88,7 +88,7 @@ dep 'monitored with collectd', :librato_user, :librato_password do
   end
 
   def monitored_network_interface
-    shell("ifconfig -s", :sudo => true).split("\n").map { |line|
+    shell("ifconfig -s", sudo: true).split("\n").map { |line|
       line[/^([a-z]+\d)\s+/,1]
     }.compact.first || "eth0"
   end
@@ -103,60 +103,60 @@ dep 'monitored with collectd', :librato_user, :librato_password do
     }.first
   end
 
-  met? {
+  met? do
     conf_files.all? { |source, dest| up_to_date?(source, dest) }
-  }
-  meet {
-    conf_files.each { |source, dest|
-      render_erb(source, :to => dest, :sudo => true)
-    }
-    log_shell "Restarting collectd", "/etc/init.d/collectd restart", :sudo => true
-  }
+  end
+  meet do
+    conf_files.each do |source, dest|
+      render_erb(source, to: dest, sudo: true)
+    end
+    log_shell "Restarting collectd", "/etc/init.d/collectd restart", sudo: true
+  end
 end
 
-dep 'lax host key checking' do
-  def ssh_conf_path file
+dep "lax host key checking" do
+  def ssh_conf_path(file)
     "/etc#{'/ssh' if Babushka.host.linux?}/#{file}_config"
   end
-  met? {
+  met? do
     ssh_conf_path(:ssh).p.grep(/^StrictHostKeyChecking[ \t]+no/)
-  }
-  meet {
+  end
+  meet do
     shell("sed -i'' -e 's/^[# ]*StrictHostKeyChecking\\W*\\w*$/StrictHostKeyChecking no/' #{ssh_conf_path(:ssh)}")
-  }
+  end
 end
 
 # It's hard to test for other timezones (EST maps to Australia/Melbourne, etc),
 # and we only need UTC right now :)
-dep 'utc' do
-  met? {
-    shell('date')[/\bUTC\b/]
-  }
-  meet {
-    sudo 'timedatectl set-timezone Etc/UTC'
-  }
+dep "utc" do
+  met? do
+    shell("date")[/\bUTC\b/]
+  end
+  meet do
+    sudo "timedatectl set-timezone Etc/UTC"
+  end
 end
 
-dep 'admins can sudo' do
-  requires 'admin group'
-  met? {
-    !'/etc/sudoers'.p.read.split("\n").grep(/^%admin\b/).empty?
-  }
-  meet {
-    '/etc/sudoers'.p.append("%admin  ALL=(ALL) ALL\n")
-  }
+dep "admins can sudo" do
+  requires "admin group"
+  met? do
+    !"/etc/sudoers".p.read.split("\n").grep(/^%admin\b/).empty?
+  end
+  meet do
+    "/etc/sudoers".p.append("%admin  ALL=(ALL) ALL\n")
+  end
 end
 
-dep 'admin group' do
-  met? { '/etc/group'.p.grep(/^admin\:/) }
-  meet { sudo 'groupadd admin' }
+dep "admin group" do
+  met? { "/etc/group".p.grep(/^admin\:/) }
+  meet { sudo "groupadd admin" }
 end
 
-dep 'tmp cleaning grace period', :for => :ubuntu do
-  met? {
+dep "tmp cleaning grace period", for: :ubuntu do
+  met? do
     "/etc/default/rcS".p.grep(/^[^#]*TMPTIME=0/).nil?
-  }
-  meet {
+  end
+  meet do
     shell("sed -i'' -e 's/^TMPTIME=0$/TMPTIME=30/' '/etc/default/rcS'")
-  }
+  end
 end

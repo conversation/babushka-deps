@@ -1,21 +1,22 @@
-dep 'babushka caches removed' do
+dep "babushka caches removed" do
   def paths
     %w[
       ~/.babushka/downloads/*
       ~/.babushka/build/*
     ]
   end
+
   def to_remove
-    paths.reject {|p|
+    paths.reject do |p|
       Dir[p.p].empty?
-    }
+    end
   end
-  met? {
+  met? do
     to_remove.empty?
-  }
-  meet {
-    to_remove.each {|path|
+  end
+  meet do
+    to_remove.each do |path|
       shell %Q{rm -rf #{path}}
-    }
-  }
+    end
+  end
 end
