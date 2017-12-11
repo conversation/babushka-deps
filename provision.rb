@@ -254,6 +254,7 @@ dep "system provisioned", :host_name, :env, :app_name, :app_user, :key, :mailgun
     "admins can sudo",
     "tmp cleaning grace period",
     "configured.postfix".with(mailgun_password),
+    "memcached",
     "#{app_name} packages",
     "user setup".with(key: key),
     "#{app_name} system".with(app_user, key, env),

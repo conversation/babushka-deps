@@ -57,7 +57,6 @@ dep "tc packages" do
     "postgresql-contrib.lib", # for unaccent, for search
     "running.postfix",
     "running.nginx",
-    "memcached", # for fragment caching
     "tc common packages"
   ]
 end
