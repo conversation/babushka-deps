@@ -24,16 +24,6 @@ meta :nginx do
   def upstream_name
     "#{domain}.upstream"
   end
-
-  def nginx_running?
-    shell? "systemctl is-active nginx"
-  end
-
-  def reload_nginx
-    if nginx_running?
-      log_shell "Reloading nginx", "systemctl reload nginx", sudo: true
-    end
-  end
 end
 
 dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https, :proxy_host, :proxy_port do
@@ -45,7 +35,7 @@ dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https, :prox
     sudo "ln -sf '#{vhost_conf}' '#{vhost_link}'"
   end
 
-  after { reload_nginx }
+  after { Util.reload_service('nginx') }
 end
 
 dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https, :proxy_host, :proxy_port do
@@ -97,14 +87,14 @@ end
 dep "http basic logins.nginx", :domain, :username, :pass do
   met? { shell("curl -I -u #{username}:#{pass} #{domain}").val_for("HTTP/1.1")[/^[25]0\d\b/] }
   meet { (nginx_prefix / "conf/htpasswd").append("#{username}:#{pass.to_s.crypt(pass)}") }
-  after { reload_nginx }
+  after { Util.reload_service('nginx') }
 end
 
 dep "running.nginx" do
   requires "configured.nginx"
 
   met? do
-    nginx_running?.tap do |result|
+    Util.service_running?('nginx').tap do |result|
       log "There is #{result ? 'something' : 'nothing'} listening on port 80."
     end
   end

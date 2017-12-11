@@ -27,8 +27,18 @@ module Util
     Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
   end
 
+  def self.service_running?(name)
+    Babushka::ShellHelpers.shell?("systemctl is-active #{name}")
+  end
+
   def self.restart_service(name)
     Babushka::ShellHelpers.log_shell("Restarting #{name}...", "systemctl restart #{name}", sudo: true)
+  end
+
+  def self.reload_service(name)
+    if service_running?(name)
+      Babushka::ShellHelpers.log_shell("Reloading #{name}...", "systemctl reload #{name}", sudo: true)
+    end
   end
 
   def self.psql(query, as: "postgres", db: nil)
