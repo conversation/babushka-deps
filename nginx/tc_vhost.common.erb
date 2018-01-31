@@ -17,7 +17,7 @@ location ~ ^/assets/ {
 location /sharejs/ {
   # auth_basic off;
 
-  proxy_pass            http://<%= proxy_host %>:<%= proxy_port %>/;
+  proxy_pass            http://sharejs/;
   proxy_redirect        off;
 
   proxy_set_header      Host            $host;

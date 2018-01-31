@@ -5,6 +5,11 @@ upstream <%= upstream_name %> {
   server unix:<%= application_socket %> fail_timeout=0;
 }
 
+upstream sharejs {
+  server 127.0.0.1:9000 backup;
+  server 127.0.0.1:9001;
+}
+
 # Canonical www. redirect
 server {
   listen 80;
