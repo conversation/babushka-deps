@@ -46,7 +46,7 @@ dep "sharejs.systemd", :username, :env, :app_root, :db_name do
   respawn "yes"
 
   met? do
-    shell"curl -I localhost:9000/health"
+    shell "curl -I 127.0.0.1:9000/health"
   end
 end
 
