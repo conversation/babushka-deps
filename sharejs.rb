@@ -40,7 +40,7 @@ dep "sharejs.systemd", :username, :env, :app_root, :db_name do
 
   description "ShareJS server"
   command "/usr/bin/npm start"
-  environment "NODE_ENV=#{env}"
+  environment "NODE_ENV=#{env}", "PORT=9001"
   setuid username
   chdir "/srv/http/#{username}/current"
   respawn "yes"
