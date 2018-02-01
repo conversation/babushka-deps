@@ -26,8 +26,8 @@ meta :nginx do
   end
 end
 
-dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https, :proxy_host, :proxy_port do
-  requires "vhost configured.nginx".with(app_name, env, domain, path, enable_https, proxy_host, proxy_port)
+dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https do
+  requires "vhost configured.nginx".with(app_name, env, domain, path, enable_https)
 
   met? { vhost_link.exists? }
 
@@ -38,11 +38,9 @@ dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https, :prox
   after { Util.reload_service('nginx') }
 end
 
-dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https, :proxy_host, :proxy_port do
+dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https do
   env.default!("production")
   enable_https.default!("yes")
-  proxy_host.default("localhost")
-  proxy_port.default("8000")
 
   def application_socket
     if has_unicorn_config?
