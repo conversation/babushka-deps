@@ -113,7 +113,7 @@ dep "xvfb.bin" do
 end
 
 dep "firefox.bin", :version do
-  version.default!("56.0")
+  version.default!("58.0")
 
   met? do
     in_path? "firefox >= #{version}"
