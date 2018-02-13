@@ -50,6 +50,7 @@ dep "ci packages" do
     "docker.bin",
     "docker-compose",
     "firefox.bin",
+    "geckodriver",
     "nodejs.bin",
     "phantomjs",
     "python.bin",
@@ -117,6 +118,38 @@ dep "firefox.bin", :version do
 
   met? do
     in_path? "firefox >= #{version}"
+  end
+end
+
+dep "geckodriver", :version do
+  version.default!("0.19.1")
+
+  def geckodriver_uri
+    if Babushka.host.linux?
+      "https://github.com/mozilla/geckodriver/releases/download/v#{version}/geckodriver-v#{version}-linux64.tar.gz"
+    elsif Babushka.host.osx?
+      "https://github.com/mozilla/geckodriver/releases/download/v#{version}/geckodriver-v#{version}-macos.tar.gz"
+    else
+      unmeetable! "Not sure where to download a geckodriver binary for #{Babushka.base.host}."
+    end
+  end
+
+  def temp_archive
+    "/tmp/geckodriver.tar.gz"
+  end
+
+  met? do
+    in_path? "geckodriver >= #{version}"
+  end
+
+  meet do
+    # Babushka::Resource.extract -> .get -> .download method uses curl to download and recursive calls
+    # to follow redirects, ending with a invalid filename and a big URL. Calling wget and Babushka::Asset is simpler.
+    # https://github.com/benhoskings/babushka/blob/937ed6fd117baa1ba2eda1a59d9e580fe6841097/lib/babushka/resource.rb#L30-L51
+    shell "wget #{geckodriver_uri} -O #{temp_archive}"
+    Babushka::Asset.for(temp_archive).extract do |_archive|
+      shell "mv ./geckodriver /usr/local/bin"
+    end
   end
 end
 
