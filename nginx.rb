@@ -38,6 +38,18 @@ dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https do
   after { Util.reload_service('nginx') }
 end
 
+dep "proxy vhost enabled.nginx", :app_name, :domain, :enable_https, :proxy_port do
+  requires "proxy vhost configured.nginx".with(app_name, domain, enable_https, proxy_port)
+
+  met? { vhost_link.exists? }
+
+  meet do
+    sudo "ln -sf '#{vhost_conf}' '#{vhost_link}'"
+  end
+
+  after { Util.reload_service('nginx') }
+end
+
 dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https do
   env.default!("production")
   enable_https.default!("yes")
@@ -68,6 +80,31 @@ dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https do
   end
 
   path.default("~#{domain}/current".p) if shell?("id", domain)
+
+  requires "configured.nginx"
+
+  met? do
+    up_to_date?("nginx/#{app_name}_vhost.conf.erb", vhost_conf) &&
+    up_to_date?("nginx/#{app_name}_vhost.common.erb", vhost_common)
+  end
+
+  meet do
+    render_erb "nginx/#{app_name}_vhost.conf.erb", to: vhost_conf, sudo: true
+    render_erb "nginx/#{app_name}_vhost.common.erb", to: vhost_common, sudo: true if (dependency.load_path.parent / "nginx/#{app_name}_vhost.common.erb").p.exists?
+  end
+end
+
+dep "proxy vhost configured.nginx", :app_name, :domain, :enable_https, :proxy_port do
+  enable_https.default!("yes")
+
+  def up_to_date?(source_name, dest)
+    source = dependency.load_path.parent / source_name
+    if !source.p.exists?
+      true # If the source config doesn't exist, this is optional (i.e. a .common conf).
+    else
+      Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
+    end
+  end
 
   requires "configured.nginx"
 

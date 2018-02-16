@@ -96,3 +96,23 @@ dep "docker credentials" do
     shell "chmod a+x /usr/local/bin/docker-credential-ecr-login"
   end
 end
+
+dep 'docker swarm initialised' do
+  met? do
+    shell('docker info').val_for('Swarm') == 'active'
+  end
+
+  meet do
+    shell 'docker swarm init'
+  end
+end
+
+dep 'docker secret', :key, :value do
+  met? do
+    shell? "docker secret inspect #{key}"
+  end
+
+  meet do
+    shell "echo '#{value}' | docker secret create #{key} -"
+  end
+end

@@ -273,3 +273,24 @@ dep "app provisioned", :env, :host, :domain, :app_name, :app_user, :app_root, :k
     unmeetable! "This dep has to be run as the app user, #{app_user}." unless shell("whoami") == app_user
   end
 end
+
+# Ensures that the SSL certs are copied onto the server. They should be located
+# in the `config/ssl` directory of the app.
+dep 'app certs installed', :host do
+  src_dir = 'config/ssl'.p
+  target_dir = '/etc/ssl'.p
+  filter = "--include='*.crt' --include='*.key'"
+
+  met? do
+    if !src_dir.exists?
+      # Don't bother checking if there are no certs.
+      true
+    else
+      shell("rsync -cinr #{filter} #{src_dir}/ root@#{host}:#{target_dir}/") == ''
+    end
+  end
+
+  meet do
+    log_shell 'Installing certs', "rsync -acz #{filter} #{src_dir}/ root@#{host}:#{target_dir}/"
+  end
+end
