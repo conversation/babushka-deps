@@ -47,6 +47,8 @@ dep "ci packages" do
   requires [
     "ack-grep.bin",
     "silversearcher.bin",
+    "chromedriver",
+    "chromium-browser.bin",
     "docker.bin",
     "docker-compose",
     "firefox.bin",
@@ -150,6 +152,38 @@ dep "geckodriver", :version do
     Babushka::Asset.for(temp_archive).extract do |_archive|
       shell "mv ./geckodriver /usr/local/bin"
     end
+  end
+end
+
+dep "chromedriver", :version do
+  version.default!("2.35")
+
+  def chromedriver_uri
+    if Babushka.host.linux?
+      "https://chromedriver.storage.googleapis.com/#{version}/chromedriver_linux64.zip"
+    elsif Babushka.host.osx?
+      "https://chromedriver.storage.googleapis.com/#{version}/chromedriver_mac64.zip"
+    else
+      unmeetable! "Not sure where to download a chromedriver binary for #{Babushka.base.host}."
+    end
+  end
+
+  met? do
+    in_path? "chromedriver >= #{version}"
+  end
+
+  meet do
+    Babushka::Resource.extract chromedriver_uri do |_archive|
+      shell "mv ./chromedriver /usr/local/bin"
+    end
+  end
+end
+
+dep "chromium-browser.bin", :version do
+  version.default!("64")
+
+  met? do
+    in_path? "chromium-browser >= #{version}"
   end
 end
 
