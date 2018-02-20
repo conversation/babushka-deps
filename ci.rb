@@ -48,6 +48,7 @@ dep "ci packages" do
     "ack-grep.bin",
     "silversearcher.bin",
     "chromedriver",
+    "chromium-browser.bin",
     "docker.bin",
     "docker-compose",
     "firefox.bin",
@@ -175,6 +176,14 @@ dep "chromedriver", :version do
     Babushka::Resource.extract chromedriver_uri do |_archive|
       shell "mv ./chromedriver /usr/local/bin"
     end
+  end
+end
+
+dep "chromium-browser.bin", :version do
+  version.default!("64")
+
+  met? do
+    in_path? "chromium-browser >= #{version}"
   end
 end
 
