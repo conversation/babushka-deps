@@ -32,7 +32,7 @@ end
 
 dep "schema loaded", :username, :root, :schema_path, :db_name do
   root.default!(".")
-  schema_path.default!("db/schema.sql")
+  schema_path.default!(root / "db/schema.sql")
   requires "existing db".with(username, db_name)
 
   met? do
@@ -44,7 +44,7 @@ dep "schema loaded", :username, :root, :schema_path, :db_name do
   end
 
   meet do
-    log_shell "Applying #{schema_path} to #{db_name}", "psql #{db_name} -f -", input: (root / schema_path).p.read!
+    log_shell "Applying #{schema_path} to #{db_name}", "psql #{db_name} -f -", input: schema_path.p.read!
   end
 end
 
