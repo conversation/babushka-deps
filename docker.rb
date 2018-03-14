@@ -39,14 +39,14 @@ dep "docker config" do
 end
 
 dep "docker-compose", :version do
-  version.default!("1.18.0")
+  version.default!("1.19.0")
 
   met? do
     in_path? "docker-compose >= #{version}"
   end
 
   meet do
-    shell "curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+    shell "curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
     shell "chmod a+x /usr/local/bin/docker-compose"
   end
 end
