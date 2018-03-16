@@ -156,7 +156,7 @@ dep "geckodriver", :version do
 end
 
 dep "chromedriver", :version do
-  version.default!("2.35")
+  version.default!("2.36")
 
   def chromedriver_uri
     if Babushka.host.linux?
@@ -180,11 +180,18 @@ dep "chromedriver", :version do
 end
 
 dep "chromium-browser.bin", :version do
-  version.default!("64")
+  version.default!("65")
 
   met? do
     in_path? "chromium-browser >= #{version}"
   end
+
+  meet {
+    log_shell "Guarantee we have add-apt-repository command", "apt-get --yes install software-properties-common", spinner: true, sudo: true
+    log_shell "Adding Chromium apt-repository", "add-apt-repository \"ppa:canonical-chromium-builds/stage\"", spinner: true, sudo: true
+    log_shell "Updating apt lists to load Chromium.", "apt-get update", sudo: true
+    log_shell "Download latest chromium", "apt-get --yes install chromium-browser", sudo: true
+  }
 end
 
 dep "terraform", :version do
