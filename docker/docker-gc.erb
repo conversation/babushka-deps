@@ -5,6 +5,7 @@ set -e
 docker run --rm \
 -e FORCE_IMAGE_REMOVAL=1 \
 -e MINIMUM_IMAGES_TO_SAVE=10 \
+-e GRACE_PERIOD_SECONDS=86400 \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v /etc:/etc:ro \
 spotify/docker-gc
