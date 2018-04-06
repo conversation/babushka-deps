@@ -7,7 +7,7 @@ dep "buildkite-agent installed", :buildkite_token do
 end
 
 dep "buildkite-agent.bin", :version do
-  version.default!("3.0-beta.27")
+  version.default!("3.0")
 
   requires "buildkite apt key installed"
 
