@@ -10,6 +10,7 @@ dep "core software" do
     "htop.bin",
     "iotop.bin",
     "jnettop.bin",
+    "jq.bin",
     "tmux.bin",
     "ufw.bin",
     "nmap.bin",
