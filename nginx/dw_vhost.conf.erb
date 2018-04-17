@@ -2,6 +2,7 @@ server {
   charset utf-8;
   server_name <%= domain %>;
   listen 80;
+
 <% if enable_https[/^y/] %>
   listen 443 ssl;
 
@@ -13,13 +14,31 @@ server {
   ssl_prefer_server_ciphers on;
 <% end %>
 
+  satisfy any;
+  allow 127.0.0.1; # Allow local connections
+  allow 172.16.0.0/12; # Allow connections from docker
+  deny all;
+  auth_basic "Authentication Required";
+  auth_basic_user_file .htpasswd;
+
   location / {
-    satisfy any;
-    allow 127.0.0.1; # Allow local connections
-    allow 172.16.0.0/12; # Allow connections from docker
-    deny all;
-    auth_basic "Authentication Required";
-    auth_basic_user_file .htpasswd;
+
+    proxy_pass           http://127.0.0.1:<%= proxy_port %>;
+    proxy_redirect       off;
+
+    proxy_buffer_size    64k;
+    proxy_buffers        32 16k;
+
+    proxy_set_header     Host              $host;
+    proxy_set_header     Client-Ip         $tc_client_ip;
+    proxy_set_header     X-Real-IP         $remote_addr;
+    proxy_set_header     X-Forwarded-Proto $tc_client_scheme;
+    proxy_set_header     X-Request-Start   "t=${msec}";
+  }
+
+  location /health {
+    allow all;
+    auth_basic off;
 
     proxy_pass           http://127.0.0.1:<%= proxy_port %>;
     proxy_redirect       off;
