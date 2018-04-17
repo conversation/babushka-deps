@@ -8,7 +8,7 @@ meta :ssl do
   end
 
   def cert_name
-    "STAR_#{domain.gsub('.', '_')}"
+    "STAR_#{domain.to_s.gsub('.', '_')}"
   end
 
   def dest_cert_path

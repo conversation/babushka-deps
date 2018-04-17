@@ -24,6 +24,10 @@ meta :nginx do
   def upstream_name
     "#{domain}.upstream"
   end
+
+  def cert_name
+    "STAR_#{domain.to_s.gsub('.', '_')}"
+  end
 end
 
 dep "vhost enabled.nginx", :app_name, :env, :domain, :path, :enable_https do
