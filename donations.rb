@@ -4,10 +4,6 @@ dep "donations env vars set", :domain
 
 dep "donations app", :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    "ssl cert in place".with(domain: domain, env: env)
-  ]
-
-  requires [
     "db".with(
       env: env,
       username: app_user,

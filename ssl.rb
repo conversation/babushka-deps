@@ -1,29 +1,27 @@
-dep "ssl cert in place", :domain, :env, :cert_dir, template: "nginx" do
-  cert_dir.default!("~/current/config/certs")
-
-  def cert_path
+meta :ssl do
+  def cert_dir
     "/etc/ssl/certs".p
   end
 
-  def key_path
+  def key_dir
     "/etc/ssl/private".p
   end
 
-  def src_cert_path
-    cert_dir / "#{domain}.crt"
-  end
-
-  def src_key_path
-    cert_dir / "#{domain}.key"
+  def cert_name
+    "STAR_#{domain.to_s.gsub('.', '_')}"
   end
 
   def dest_cert_path
-    cert_path / "#{domain}.crt"
+    cert_dir / "#{cert_name}.pem"
   end
 
   def dest_key_path
-    key_path / "#{domain}.key"
+    key_dir / "#{cert_name}.key"
   end
+end
+
+dep "ssl cert downloaded", :dnsimple_token, :domain, template: "ssl" do
+  domain.default!("theconversation.com")
 
   met? do
     # We need to check the `dest_key_path` using sudo because it's in a private
@@ -32,8 +30,8 @@ dep "ssl cert in place", :domain, :env, :cert_dir, template: "nginx" do
   end
 
   meet do
-    sudo "ln -sf '#{src_cert_path}' '#{dest_cert_path}'"
-    sudo "ln -sf '#{src_key_path}' '#{dest_key_path}'"
+    sudo "curl -H 'Authorization: Bearer #{dnsimple_token}' -H 'Accept: application/json' -s 'https://api.dnsimple.com/v2/4840/domains/#{domain}/certificates/44929/download' | jq -r '.data.server, .data.chain[0], .data.root' > #{dest_cert_path}"
+    sudo "curl -H 'Authorization: Bearer #{dnsimple_token}' -H 'Accept: application/json' -s 'https://api.dnsimple.com/v2/4840/domains/#{domain}/certificates/44929/private_key' | jq -r '.data.private_key' > #{dest_key_path}"
   end
 end
 

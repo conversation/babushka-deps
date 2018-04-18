@@ -113,6 +113,8 @@ end
 
 dep "host.bin"
 
+dep "jq.bin"
+
 dep "logrotate.bin"
 
 dep "lsof.bin"
