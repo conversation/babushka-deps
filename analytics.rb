@@ -4,14 +4,6 @@ dep "analytics env vars set", :domain
 
 dep "analytics app", :env, :host, :domain, :app_user, :app_root, :key do
   requires [
-    "ssl cert in place".with(domain: domain, env: env)
-  ]
-
-  if env == "production"
-    requires "ssl cert in place".with(domain: "analytics.theconversation.com", env: env)
-  end
-
-  requires [
     "user exists".with(username: app_user),
 
     "db".with(

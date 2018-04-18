@@ -8,13 +8,8 @@ dep "tc app", :env, :host, :domain, :app_user, :app_root, :key do
   requires [
     "postgres extension".with(app_user, Util.database_name(app_root, env), "unaccent"),
     "postgres extension".with(app_user, Util.database_name(app_root, env), "pg_trgm"),
-    "postgres extension".with(app_user, Util.database_name(app_root, env), "fuzzystrmatch"),
-    "ssl cert in place".with(domain: domain, env: env)
+    "postgres extension".with(app_user, Util.database_name(app_root, env), "fuzzystrmatch")
   ]
-
-  if env == "production"
-    requires "ssl cert in place".with(domain: "theconversation.edu.au", env: env)
-  end
 
   requires [
     "user exists".with(username: app_user),

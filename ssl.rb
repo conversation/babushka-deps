@@ -35,45 +35,6 @@ dep "ssl cert downloaded", :dnsimple_token, :domain, template: "ssl" do
   end
 end
 
-dep "ssl cert in place", :domain, :env, :cert_dir, template: "nginx" do
-  cert_dir.default!("~/current/config/certs")
-
-  def cert_path
-    "/etc/ssl/certs".p
-  end
-
-  def key_path
-    "/etc/ssl/private".p
-  end
-
-  def src_cert_path
-    cert_dir / "#{domain}.crt"
-  end
-
-  def src_key_path
-    cert_dir / "#{domain}.key"
-  end
-
-  def dest_cert_path
-    cert_path / "#{domain}.crt"
-  end
-
-  def dest_key_path
-    key_path / "#{domain}.key"
-  end
-
-  met? do
-    # We need to check the `dest_key_path` using sudo because it's in a private
-    # directory.
-    dest_cert_path.exists? && shell?("ls '#{dest_key_path}'", sudo: true)
-  end
-
-  meet do
-    sudo "ln -sf '#{src_cert_path}' '#{dest_cert_path}'"
-    sudo "ln -sf '#{src_key_path}' '#{dest_key_path}'"
-  end
-end
-
 dep "public key" do
   met? { "~/.ssh/id_dsa.pub".p.grep(/^ssh-dss/) }
   meet { log shell("ssh-keygen -t dsa -f ~/.ssh/id_dsa -N ''") }

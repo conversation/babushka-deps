@@ -3,10 +3,7 @@ dep "jobs system", :app_user, :key, :env
 dep "jobs env vars set", :domain
 
 dep "jobs app", :env, :host, :domain, :app_user, :app_root, :key do
-  requires [
-    "postgres extension".with(app_user, Util.database_name(app_root, env), "pg_trgm"),
-    "ssl cert in place".with(domain: domain, env: env),
-  ]
+  requires "postgres extension".with(app_user, Util.database_name(app_root, env), "pg_trgm")
 
   requires [
     "user exists".with(username: app_user),
