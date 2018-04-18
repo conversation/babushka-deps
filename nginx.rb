@@ -26,7 +26,13 @@ meta :nginx do
   end
 
   def cert_name
-    "STAR_#{domain.to_s.gsub('.', '_')}"
+    # Grab the TLD from the domain (e.g. dw.theconversation.com ->
+    # theconversation.com).
+    cert_domain = domain.to_s
+      .match(/([^.]+)\.([^.]+)$/).to_s
+      .gsub('.', '_')
+
+    "STAR_#{cert_domain}"
   end
 end
 
@@ -54,9 +60,10 @@ dep "proxy vhost enabled.nginx", :app_name, :domain, :enable_https, :proxy_port 
   after { Util.reload_service('nginx') }
 end
 
-dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https do
+dep "vhost configured.nginx", :app_name, :env, :domain, :enable_https, :path do
   env.default!("production")
   enable_https.default!("yes")
+  path.default("~#{domain}/current".p) if shell?("id", domain)
 
   def application_socket
     if has_unicorn_config?
@@ -82,8 +89,6 @@ dep "vhost configured.nginx", :app_name, :env, :domain, :path, :enable_https do
       Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
     end
   end
-
-  path.default("~#{domain}/current".p) if shell?("id", domain)
 
   requires "configured.nginx"
 
