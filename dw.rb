@@ -112,7 +112,6 @@ dep(
     'proxy vhost enabled.nginx'.with(
       app_name: 'dw',
       domain: domain,
-      enable_https: 'no',
       proxy_port: '9292'
     )
   ]
