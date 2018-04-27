@@ -195,14 +195,14 @@ dep "chromium-browser.bin", :version do
 end
 
 dep "terraform", :version do
-  version.default!("0.10.5")
+  version.default!("0.11.7")
 
   met? do
     in_path? "terraform >= #{version}"
   end
 
   meet do
-    Babushka::Resource.extract "https://releases.hashicorp.com/terraform/0.10.5/terraform_0.10.5_linux_amd64.zip" do
+    Babushka::Resource.extract "https://releases.hashicorp.com/terraform/#{version}/terraform_#{version}_linux_amd64.zip" do
       shell "cp -r terraform /usr/local/bin/terraform"
     end
   end
