@@ -29,6 +29,19 @@ dep "collectd.bin" do
   end
 end
 
+dep "npm.bin" do
+  met? do
+    npm_version = log_shell("checking for npm@5.5.1", "npm --version")
+    npm_version == "5.5.1"
+  end
+
+  meet do
+    log_shell("installing npm 5.5.1", "npm install --global npm@5.5.1")
+  end
+
+  requires "nodejs.bin"
+end
+
 dep "nodejs.bin", :version do
   version.default!("8")
   requires_when_unmet do
