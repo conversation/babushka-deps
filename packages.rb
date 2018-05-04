@@ -30,10 +30,10 @@ dep "collectd.bin" do
 end
 
 dep "nodejs.bin", :version do
-  version.default!("6.10")
+  version.default!("8")
   requires_when_unmet do
     on :apt, "keyed apt source".with(
-      uri: "https://deb.nodesource.com/node_6.x",
+      uri: "https://deb.nodesource.com/node_8.x",
       release: "xenial",
       repo: "main",
       key_sig: "68576280",
