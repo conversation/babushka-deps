@@ -45,7 +45,8 @@ dep "tc app", :env, :host, :domain, :app_user, :app_root, :key do
       env: env,
       domain: domain,
       username: app_user,
-      path: app_root
+      path: app_root,
+      enable_https: "yes"
     )
   ]
 end
