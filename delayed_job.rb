@@ -20,7 +20,7 @@ dep "delayed_job.systemd", :env, :user, :queue do
   chdir "/srv/http/#{user}/current"
 
   met? do
-    shell?("ps ux | grep -v grep | grep 'rake jobs:work'")
+    shell?("ps u -u #{user} | grep -v grep | grep 'rake jobs:work #{vars.join(' ')}'")
   end
 end
 
