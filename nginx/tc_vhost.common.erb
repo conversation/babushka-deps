@@ -3,19 +3,22 @@ charset utf-8;
 root <%= path / 'public' %>;
 
 # auth_basic "Restricted";
-# auth_basic_user_file htpasswd;
+# auth_basic_user_file .htpasswd;
 
 location ~ ^/assets/ {
+  auth_basic off;
+
   expires max;
   gzip_static on;
   add_header Cache-Control public;
   add_header Last-Modified "";
   add_header ETag "";
+
   break;
 }
 
 location /sharejs/ {
-  # auth_basic off;
+  auth_basic off;
 
   proxy_pass            http://127.0.0.1:9000/;
   proxy_redirect        off;
