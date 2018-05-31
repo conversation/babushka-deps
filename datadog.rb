@@ -1,7 +1,7 @@
 dep "datadog agent installed", :datadog_api_key do
   requires [
     "datadog-agent.bin",
-    "datadog api key installed".with(datadog_api_key: datadog_api_key)
+    "datadog configured".with(datadog_api_key: datadog_api_key)
   ]
 
   met? do
@@ -37,9 +37,22 @@ dep "datadog-agent.bin", :version do
   provides "datadog-agent"
 end
 
-dep "datadog api key installed", :datadog_api_key do
-  met? { "/etc/datadog-agent/datadog.yaml".p.grep(/#{datadog_api_key}/) }
-  meet { sudo %Q(sed 's/api_key:.*/api_key: #{datadog_api_key}/' /etc/datadog-agent/datadog.yaml.example > /etc/datadog-agent/datadog.yaml) }
+dep "datadog configured", :datadog_api_key do
+  met? do
+    "/etc/datadog-agent/datadog.yaml".p.grep(/^api_key: #{datadog_api_key}/) &&
+    "/etc/datadog-agent/datadog.yaml".p.grep(/^use_dogstatsd: yes/) &&
+    "/etc/datadog-agent/datadog.yaml".p.grep(/^dogstatsd_port: 8126/)
+  end
+
+  meet do
+    sudo %W[
+      sed
+      -e 's/api_key:.*/api_key: #{datadog_api_key}/'
+      -e 's/# use_dogstatsd:.*/use_dogstatsd: yes/'
+      -e 's/# dogstatsd_port:.*/dogstatsd_port: 8126/'
+      /etc/datadog-agent/datadog.yaml.example > /etc/datadog-agent/datadog.yaml
+    ].join(" ")
+  end
 end
 
 dep "datadog apt key installed" do
