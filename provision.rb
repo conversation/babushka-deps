@@ -240,7 +240,7 @@ dep "apt configured" do
   ]
 end
 
-dep "system provisioned", :host_name, :env, :app_name, :app_user, :key, :mailgun_password do
+dep "system provisioned", :host_name, :env, :app_name, :app_user, :key, :mailgun_password, :datadog_api_key do
   requires [
     "localhost hosts entry",
     "hostname".with(host_name),
@@ -258,7 +258,8 @@ dep "system provisioned", :host_name, :env, :app_name, :app_user, :key, :mailgun
     "#{app_name} packages",
     "user setup".with(key: key),
     "#{app_name} system".with(app_user, key, env),
-    "user setup for provisioning".with(app_user, key)
+    "user setup for provisioning".with(app_user, key),
+    "datadog agent installed".with(datadog_api_key)
   ]
   setup do
     unmeetable! "This dep has to be run as root." unless shell("whoami") == "root"
