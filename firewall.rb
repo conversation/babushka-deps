@@ -18,6 +18,7 @@ dep "firewall rules" do
 
     # Allow collectd connections from docker.
     shell "ufw allow in on docker_gwbridge proto any from 172.16.0.0/12 to any port 8125"
+    shell "ufw allow in on docker_gwbridge proto any from 172.16.0.0/12 to any port 8126"
 
     # Allow memcached connections from docker.
     shell "ufw allow in on docker_gwbridge proto tcp from 172.16.0.0/12 to any port 11211"
