@@ -1,6 +1,7 @@
 dep "datadog agent installed", :datadog_api_key do
   requires [
     "datadog-agent.bin",
+    "stats endpoint configured.nginx",
     "datadog configured".with(datadog_api_key: datadog_api_key)
   ]
 
