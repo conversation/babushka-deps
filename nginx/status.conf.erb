@@ -1,0 +1,13 @@
+server {
+  listen 81;
+  server_name localhost;
+
+  location /nginx_status {
+    access_log off;
+
+    allow 127.0.0.1;
+    deny all;
+
+    stub_status;
+  }
+}

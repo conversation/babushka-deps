@@ -9,6 +9,10 @@ meta :nginx do
     nginx_prefix / "nginx.conf"
   end
 
+  def status_conf
+    nginx_prefix / "conf.d/status.conf"
+  end
+
   def vhost_conf
     nginx_prefix / "sites-available/#{domain}.conf"
   end
@@ -125,6 +129,27 @@ dep "proxy vhost configured.nginx", :app_name, :domain, :enable_https, :proxy_po
   meet do
     render_erb "nginx/#{app_name}_vhost.conf.erb", to: vhost_conf, sudo: true
     render_erb "nginx/#{app_name}_vhost.common.erb", to: vhost_common, sudo: true if (dependency.load_path.parent / "nginx/#{app_name}_vhost.common.erb").p.exists?
+  end
+end
+
+dep "stats endpoint configured.nginx" do
+  def up_to_date?(source_name, dest)
+    source = dependency.load_path.parent / source_name
+    if !source.p.exists?
+      true # If the source config doesn't exist, this is optional (i.e. a .common conf).
+    else
+      Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
+    end
+  end
+
+  requires "configured.nginx"
+
+  met? do
+    up_to_date?("nginx/status.conf.erb", status_conf)
+  end
+
+  meet do
+    render_erb "nginx/status.conf.erb", to: status_conf, sudo: true
   end
 end
 
