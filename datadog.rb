@@ -39,20 +39,30 @@ dep "datadog-agent.bin", :version do
 end
 
 dep "datadog configured", :datadog_api_key do
+  def nginx_src
+    "datadog/nginx.yaml".p
+  end
+
+  def nginx_dest
+    "/etc/datadog-agent/conf.d/nginx.d/conf.yaml".p
+  end
+
   met? do
     "/etc/datadog-agent/datadog.yaml".p.grep(/^api_key: #{datadog_api_key}/) &&
     "/etc/datadog-agent/datadog.yaml".p.grep(/^use_dogstatsd: yes/) &&
-    "/etc/datadog-agent/datadog.yaml".p.grep(/^dogstatsd_port: 8126/)
+    "/etc/datadog-agent/datadog.yaml".p.grep(/^dogstatsd_port: 8126/) &&
+    nginx_dest.exists?
   end
 
   meet do
-    sudo %W[
-      sed
-      -e 's/api_key:.*/api_key: #{datadog_api_key}/'
-      -e 's/# use_dogstatsd:.*/use_dogstatsd: yes/'
-      -e 's/# dogstatsd_port:.*/dogstatsd_port: 8126/'
-      /etc/datadog-agent/datadog.yaml.example > /etc/datadog-agent/datadog.yaml
-    ].join(" ")
+    sudo %(
+      sed \
+      -e 's/api_key:.*/api_key: #{datadog_api_key}/' \
+      -e 's/# use_dogstatsd:.*/use_dogstatsd: yes/' \
+      -e 's/# dogstatsd_port:.*/dogstatsd_port: 8126/' \
+      /etc/datadog-agent/datadog.yaml.example > /etc/datadog-agent/datadog.yaml && \
+      cp #{nginx_src.abs} #{nginx_dest.abs}
+    )
   end
 end
 
