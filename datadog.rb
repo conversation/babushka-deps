@@ -39,6 +39,14 @@ dep "datadog-agent.bin", :version do
 end
 
 dep "datadog configured", :datadog_api_key do
+  def datadog_src
+    "datadog/datadog.yaml.erb".p
+  end
+
+  def datadog_dest
+    "/etc/datadog-agent/datadog.yaml".p
+  end
+
   def nginx_src
     "datadog/nginx.yaml".p
   end
@@ -47,22 +55,18 @@ dep "datadog configured", :datadog_api_key do
     "/etc/datadog-agent/conf.d/nginx.d/conf.yaml".p
   end
 
+  def up_to_date?(source, dest)
+    Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
+  end
+
   met? do
-    "/etc/datadog-agent/datadog.yaml".p.grep(/^api_key: #{datadog_api_key}/) &&
-    "/etc/datadog-agent/datadog.yaml".p.grep(/^use_dogstatsd: yes/) &&
-    "/etc/datadog-agent/datadog.yaml".p.grep(/^dogstatsd_port: 8126/) &&
+    up_to_date?(datadog_src, datadog_dest) &&
     nginx_dest.exists?
   end
 
   meet do
-    sudo %(
-      sed \
-      -e 's/api_key:.*/api_key: #{datadog_api_key}/' \
-      -e 's/# use_dogstatsd:.*/use_dogstatsd: yes/' \
-      -e 's/# dogstatsd_port:.*/dogstatsd_port: 8126/' \
-      /etc/datadog-agent/datadog.yaml.example > /etc/datadog-agent/datadog.yaml && \
-      cp #{nginx_src.abs} #{nginx_dest.abs}
-    )
+    render_erb datadog_src, to: datadog_dest, sudo: true
+    sudo "cp #{nginx_src.abs} #{nginx_dest.abs}"
   end
 end
 
