@@ -48,7 +48,7 @@ dep "datadog configured", :datadog_api_key, :datadog_postgres_password do
   end
 
   def docker_src
-    "datadog/docker.yaml".p
+    "datadog/docker.yaml.erb".p
   end
 
   def docker_dest
@@ -56,7 +56,7 @@ dep "datadog configured", :datadog_api_key, :datadog_postgres_password do
   end
 
   def nginx_src
-    "datadog/nginx.yaml".p
+    "datadog/nginx.yaml.erb".p
   end
 
   def nginx_dest
@@ -77,15 +77,15 @@ dep "datadog configured", :datadog_api_key, :datadog_postgres_password do
 
   met? do
     up_to_date?(datadog_src, datadog_dest) &&
-    docker_dest.exists? &&
-    nginx_dest.exists? &&
+    up_to_date?(docker_src, docker_dest) &&
+    up_to_date?(nginx_src, nginx_dest) &&
     up_to_date?(postgres_src, postgres_dest)
   end
 
   meet do
     render_erb datadog_src, to: datadog_dest, sudo: true
-    sudo "cp #{docker_src.abs} #{docker_dest.abs}"
-    sudo "cp #{nginx_src.abs} #{nginx_dest.abs}"
+    render_erb docker_src, to: docker_dest, sudo: true
+    render_erb nginx_src, to: nginx_dest, sudo: true
     render_erb postgres_src, to: postgres_dest, sudo: true
   end
 end
