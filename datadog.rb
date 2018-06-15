@@ -47,6 +47,14 @@ dep "datadog configured", :datadog_api_key do
     "/etc/datadog-agent/datadog.yaml".p
   end
 
+  def docker_src
+    "datadog/docker.yaml".p
+  end
+
+  def docker_dest
+    "/etc/datadog-agent/conf.d/docker.d/conf.yaml".p
+  end
+
   def nginx_src
     "datadog/nginx.yaml".p
   end
@@ -61,11 +69,13 @@ dep "datadog configured", :datadog_api_key do
 
   met? do
     up_to_date?(datadog_src, datadog_dest) &&
+    docker_dest.exists? &&
     nginx_dest.exists?
   end
 
   meet do
     render_erb datadog_src, to: datadog_dest, sudo: true
+    sudo "cp #{docker_src.abs} #{docker_dest.abs}"
     sudo "cp #{nginx_src.abs} #{nginx_dest.abs}"
   end
 end
