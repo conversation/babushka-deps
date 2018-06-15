@@ -1,8 +1,8 @@
-dep "datadog agent installed", :datadog_api_key do
+dep "datadog agent installed", :datadog_api_key, :datadog_postgres_password do
   requires [
     "datadog-agent.bin",
     "stats endpoint configured.nginx",
-    "datadog configured".with(datadog_api_key: datadog_api_key)
+    "datadog configured".with(datadog_api_key: datadog_api_key, datadog_postgres_password: datadog_postgres_password)
   ]
 
   met? do
@@ -38,7 +38,7 @@ dep "datadog-agent.bin", :version do
   provides "datadog-agent"
 end
 
-dep "datadog configured", :datadog_api_key do
+dep "datadog configured", :datadog_api_key, :datadog_postgres_password do
   def datadog_src
     "datadog/datadog.yaml.erb".p
   end
@@ -63,6 +63,14 @@ dep "datadog configured", :datadog_api_key do
     "/etc/datadog-agent/conf.d/nginx.d/conf.yaml".p
   end
 
+  def postgres_src
+    "datadog/postgres.yaml.erb".p
+  end
+
+  def postgres_dest
+    "/etc/datadog-agent/conf.d/postgres.d/conf.yaml".p
+  end
+
   def up_to_date?(source, dest)
     Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
   end
@@ -70,13 +78,15 @@ dep "datadog configured", :datadog_api_key do
   met? do
     up_to_date?(datadog_src, datadog_dest) &&
     docker_dest.exists? &&
-    nginx_dest.exists?
+    nginx_dest.exists? &&
+    up_to_date?(postgres_src, postgres_dest)
   end
 
   meet do
     render_erb datadog_src, to: datadog_dest, sudo: true
     sudo "cp #{docker_src.abs} #{docker_dest.abs}"
     sudo "cp #{nginx_src.abs} #{nginx_dest.abs}"
+    render_erb postgres_src, to: postgres_dest, sudo: true
   end
 end
 
