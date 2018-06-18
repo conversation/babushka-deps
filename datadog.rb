@@ -1,8 +1,8 @@
-dep "datadog agent installed", :datadog_api_key do
+dep "datadog agent installed", :datadog_api_key, :datadog_postgres_password do
   requires [
     "datadog-agent.bin",
     "stats endpoint configured.nginx",
-    "datadog configured".with(datadog_api_key: datadog_api_key)
+    "datadog configured".with(datadog_api_key: datadog_api_key, datadog_postgres_password: datadog_postgres_password)
   ]
 
   met? do
@@ -38,31 +38,55 @@ dep "datadog-agent.bin", :version do
   provides "datadog-agent"
 end
 
-dep "datadog configured", :datadog_api_key do
+dep "datadog configured", :datadog_api_key, :datadog_postgres_password do
+  def datadog_src
+    "datadog/datadog.yaml.erb".p
+  end
+
+  def datadog_dest
+    "/etc/datadog-agent/datadog.yaml".p
+  end
+
+  def docker_src
+    "datadog/docker.yaml.erb".p
+  end
+
+  def docker_dest
+    "/etc/datadog-agent/conf.d/docker.d/conf.yaml".p
+  end
+
   def nginx_src
-    "datadog/nginx.yaml".p
+    "datadog/nginx.yaml.erb".p
   end
 
   def nginx_dest
     "/etc/datadog-agent/conf.d/nginx.d/conf.yaml".p
   end
 
+  def postgres_src
+    "datadog/postgres.yaml.erb".p
+  end
+
+  def postgres_dest
+    "/etc/datadog-agent/conf.d/postgres.d/conf.yaml".p
+  end
+
+  def up_to_date?(source, dest)
+    Babushka::Renderable.new(dest).from?(source) && Babushka::Renderable.new(dest).clean?
+  end
+
   met? do
-    "/etc/datadog-agent/datadog.yaml".p.grep(/^api_key: #{datadog_api_key}/) &&
-    "/etc/datadog-agent/datadog.yaml".p.grep(/^use_dogstatsd: yes/) &&
-    "/etc/datadog-agent/datadog.yaml".p.grep(/^dogstatsd_port: 8126/) &&
-    nginx_dest.exists?
+    up_to_date?(datadog_src, datadog_dest) &&
+    up_to_date?(docker_src, docker_dest) &&
+    up_to_date?(nginx_src, nginx_dest) &&
+    up_to_date?(postgres_src, postgres_dest)
   end
 
   meet do
-    sudo %(
-      sed \
-      -e 's/api_key:.*/api_key: #{datadog_api_key}/' \
-      -e 's/# use_dogstatsd:.*/use_dogstatsd: yes/' \
-      -e 's/# dogstatsd_port:.*/dogstatsd_port: 8126/' \
-      /etc/datadog-agent/datadog.yaml.example > /etc/datadog-agent/datadog.yaml && \
-      cp #{nginx_src.abs} #{nginx_dest.abs}
-    )
+    render_erb datadog_src, to: datadog_dest, sudo: true
+    render_erb docker_src, to: docker_dest, sudo: true
+    render_erb nginx_src, to: nginx_dest, sudo: true
+    render_erb postgres_src, to: postgres_dest, sudo: true
   end
 end
 
