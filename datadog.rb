@@ -55,6 +55,14 @@ dep "datadog configured", :datadog_api_key, :datadog_postgres_password do
     "/etc/datadog-agent/conf.d/docker.d/conf.yaml".p
   end
 
+  def network_src
+    "datadog/network.yaml.erb".p
+  end
+
+  def network_dest
+    "/etc/datadog-agent/conf.d/network.d/conf.yaml".p
+  end
+
   def nginx_src
     "datadog/nginx.yaml.erb".p
   end
@@ -78,6 +86,7 @@ dep "datadog configured", :datadog_api_key, :datadog_postgres_password do
   met? do
     up_to_date?(datadog_src, datadog_dest) &&
     up_to_date?(docker_src, docker_dest) &&
+    up_to_date?(network_src, network_dest) &&
     up_to_date?(nginx_src, nginx_dest) &&
     up_to_date?(postgres_src, postgres_dest)
   end
@@ -85,6 +94,7 @@ dep "datadog configured", :datadog_api_key, :datadog_postgres_password do
   meet do
     render_erb datadog_src, to: datadog_dest, sudo: true
     render_erb docker_src, to: docker_dest, sudo: true
+    render_erb network_src, to: network_dest, sudo: true
     render_erb nginx_src, to: nginx_dest, sudo: true
     render_erb postgres_src, to: postgres_dest, sudo: true
   end
