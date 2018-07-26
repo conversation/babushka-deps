@@ -28,7 +28,7 @@ location /sharejs/ {
   proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
 
   client_max_body_size  10m;
-  proxy_buffers         4 32k;
+  proxy_buffering       off;
 }
 
 # POSTs are intended for the app, not cached pages. We use '=' to let @app set the response code.
