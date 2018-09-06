@@ -21,10 +21,14 @@ server {
     proxy_buffer_size    64k;
     proxy_buffers        32 16k;
 
+    proxy_http_version   1.1;
+
     proxy_set_header     Host              $host;
     proxy_set_header     Client-Ip         $tc_client_ip;
     proxy_set_header     X-Real-IP         $remote_addr;
     proxy_set_header     X-Forwarded-Proto $tc_client_scheme;
     proxy_set_header     X-Request-Start   "t=${msec}";
+    proxy_set_header     Upgrade           $http_upgrade;
+    proxy_set_header     Connection        "upgrade";
   }
 }
