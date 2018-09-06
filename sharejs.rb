@@ -3,9 +3,20 @@ dep "sharejs system", :app_user, :key, :env
 dep "sharejs env vars set", :domain
 
 dep "sharejs app", :env, :host, :domain, :app_user, :app_root, :key do
+  if env == 'production'
+    domain.default!('sharejs.theconversation.com')
+  else
+    domain.default!('sharejs.tc-dev.net')
+  end
+
   requires [
     "user exists".with(username: app_user),
-    "sharejs.systemd".with(app_user, env, app_root, "sharejs_#{env}")
+    "sharejs.systemd".with(app_user, env, app_root, "sharejs_#{env}"),
+    "proxy vhost enabled.nginx".with(
+      app_name: "sharejs",
+      domain: domain,
+      proxy_port: "9000"
+    )
   ]
 end
 
