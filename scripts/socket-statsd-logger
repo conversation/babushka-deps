@@ -41,8 +41,8 @@ loop do
   queued = proc_lines.select { |line| line.match(/02\s+\d+\s+#{socket_path}/)}.size
   active = proc_lines.select { |line| line.match(/03\s+\d+\s+#{socket_path}/)}.size
 
-  UDPSocket.new.send("#{metric_name}.queued:#{queued}|g", 0, '127.0.0.1', 8125)
-  UDPSocket.new.send("#{metric_name}.active:#{active}|g", 0, '127.0.0.1', 8125)
+  UDPSocket.new.send("#{metric_name}.queued:#{queued}|g", 0, '127.0.0.1', 8126)
+  UDPSocket.new.send("#{metric_name}.active:#{active}|g", 0, '127.0.0.1', 8126)
 
   sleep(1)
 end
