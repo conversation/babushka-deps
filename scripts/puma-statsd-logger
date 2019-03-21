@@ -67,10 +67,10 @@ end
 loop do
   data = `cd #{puma_app_path} && ./bin/pumactl stats`.strip.split("\n").last
   stats = PumaStats.new(JSON.parse(data))
-  UDPSocket.new.send("#{metric_name}.workers:#{stats.workers}|g", 0, '127.0.0.1', 8125)
-  UDPSocket.new.send("#{metric_name}.booted_workers:#{stats.booted_workers}|g", 0, '127.0.0.1', 8125)
-  UDPSocket.new.send("#{metric_name}.running:#{stats.running}|g", 0, '127.0.0.1', 8125)
-  UDPSocket.new.send("#{metric_name}.backlog:#{stats.backlog}|g", 0, '127.0.0.1', 8125)
+  UDPSocket.new.send("#{metric_name}.workers:#{stats.workers}|g", 0, '127.0.0.1', 8126)
+  UDPSocket.new.send("#{metric_name}.booted_workers:#{stats.booted_workers}|g", 0, '127.0.0.1', 8126)
+  UDPSocket.new.send("#{metric_name}.running:#{stats.running}|g", 0, '127.0.0.1', 8126)
+  UDPSocket.new.send("#{metric_name}.backlog:#{stats.backlog}|g", 0, '127.0.0.1', 8126)
 
   sleep(1)
 end
