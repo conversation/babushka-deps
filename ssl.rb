@@ -20,7 +20,7 @@ meta :ssl do
   end
 end
 
-dep "ssl cert downloaded", :dnsimple_token, :domain, template: "ssl" do
+dep "ssl cert downloaded", :dnsimple_token, :domain, :certificate_id, template: "ssl" do
   domain.default!("theconversation.com")
 
   met? do
@@ -30,8 +30,8 @@ dep "ssl cert downloaded", :dnsimple_token, :domain, template: "ssl" do
   end
 
   meet do
-    sudo "curl -H 'Authorization: Bearer #{dnsimple_token}' -H 'Accept: application/json' -s 'https://api.dnsimple.com/v2/4840/domains/#{domain}/certificates/44929/download' | jq -r '.data.server, .data.chain[0], .data.root' > #{dest_cert_path}"
-    sudo "curl -H 'Authorization: Bearer #{dnsimple_token}' -H 'Accept: application/json' -s 'https://api.dnsimple.com/v2/4840/domains/#{domain}/certificates/44929/private_key' | jq -r '.data.private_key' > #{dest_key_path}"
+    sudo "curl -H 'Authorization: Bearer #{dnsimple_token}' -H 'Accept: application/json' -s 'https://api.dnsimple.com/v2/4840/domains/#{domain}/certificates/#{certificate_id}/download' | jq -r '.data.server, .data.chain[0], .data.root' > #{dest_cert_path}"
+    sudo "curl -H 'Authorization: Bearer #{dnsimple_token}' -H 'Accept: application/json' -s 'https://api.dnsimple.com/v2/4840/domains/#{domain}/certificates/#{certificate_id}/private_key' | jq -r '.data.private_key' > #{dest_key_path}"
   end
 end
 
