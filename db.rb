@@ -30,6 +30,15 @@ dep "migrated db", :username, :root, :env, :db_name, :deploying, template: "task
   end
 end
 
+dep "migrated data", :username, :root, :env, :db_name, :deploying, template: "task" do
+  root.default!(".")
+  deploying.default!("no")
+  requires "migrated db".with(username, root, env, db_name, "no")
+  run do
+    shell! "bundle exec rake data:migrate --trace RAILS_ENV=#{env} RACK_ENV=#{env}", cd: root, log: true
+  end
+end
+
 dep "schema loaded", :username, :root, :schema_path, :db_name do
   root.default!(".")
   schema_path.default!(root / "db/schema.sql")
